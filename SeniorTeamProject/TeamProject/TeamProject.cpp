@@ -13,7 +13,7 @@
 
 TeamProject::TeamProject()
 {
-    mPongFrameListener = 0;
+    mFrameListener = 0;
     mRoot = 0;
     // Provide a nice cross platform solution for locating the configuration files
     // On windows files are searched for in the current working directory, on OS X however
@@ -29,8 +29,8 @@ TeamProject::TeamProject()
 /// Standard destructor
 TeamProject::~TeamProject()
 {
-    if (mPongFrameListener)
-        delete mPongFrameListener;
+    if (mFrameListener)
+        delete mFrameListener;
     if (mRoot)
         delete mRoot;
 }
@@ -54,8 +54,8 @@ TeamProject::createCamera()
 void 
 TeamProject::createFrameListener(void)
 {
-	mPongFrameListener = new MainListener(mWindow, mInputHandler, mWorld, mGameCamera);
-	mRoot->addFrameListener(mPongFrameListener);
+	mFrameListener = new MainListener(mWindow, mInputHandler, mWorld, mGameCamera);
+	mRoot->addFrameListener(mFrameListener);
 }
 
 // We will have a single viewport.  If you wanted splitscreen, or a rear-view mirror, then
@@ -119,7 +119,7 @@ TeamProject::setup(void)
     if (!carryOn) return false;
 
     // Create the SceneManager, in this case a generic one
-    mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "PongSMInstance");
+    mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "SMInstance");
     createCamera();
     createViewports();
 

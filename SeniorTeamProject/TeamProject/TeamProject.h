@@ -64,7 +64,7 @@ protected:
 	void createFrameListener(void);
 
 
-	MainListener *mPongFrameListener;
+	MainListener *mFrameListener;
 
 	InputHandler *mInputHandler;
 	World *mWorld;
