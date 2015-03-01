@@ -114,6 +114,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MainListener.h" />
+    <ClInclude Include="Receivers.h" />
     <ClInclude Include="TeamProject.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

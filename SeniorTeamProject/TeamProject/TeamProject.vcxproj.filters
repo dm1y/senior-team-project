@@ -30,6 +30,9 @@
     <ClInclude Include="TeamProject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Receivers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="World.cpp">
