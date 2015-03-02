@@ -115,16 +115,20 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Kinect.h" />
     <ClInclude Include="MainListener.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Receivers.h" />
     <ClInclude Include="TeamProject.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Kinect.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainListener.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="TeamProject.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>

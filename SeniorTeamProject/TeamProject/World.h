@@ -10,6 +10,7 @@ namespace Ogre {
 // Forward delcarations of our own classes
 class GameCamera;
 class InputHandler;
+class Player;
 
 
 class World
@@ -35,12 +36,7 @@ protected:
 	InputHandler *mInputHandler;
 	GameCamera *mCamera;
 
-	// Here is where you keep all your world data.
-	//  You probably want to use containers (arrays / lists / classes / etc) to ogranize them, 
-	//    instead of a whole list of variables.  
-
-	Ogre::SceneNode *mCoinNode;
-
+	Player *mPlayer;
 };
 
 #endif
