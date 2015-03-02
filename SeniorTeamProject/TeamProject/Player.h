@@ -21,6 +21,9 @@ public:
 
 	Player(World *world, /*Kinect *k,*/ Ogre::SceneManager *sceneManager, InputHandler *input);
 
+	void addOgreEntity(Ogre::String mesh); 
+	void setScale(Ogre::Vector3 v);
+
 	void Think(float time);
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 

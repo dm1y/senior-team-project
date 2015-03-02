@@ -12,21 +12,18 @@ Player::Player(World *world, /*Kinect *k,*/ Ogre::SceneManager *sceneManager, In
 	mWorld(world), /*mKinect(k),*/ mSceneManager(sceneManager), mInputHandler(input)
 {
 	playerNode = SceneManager()->getRootSceneNode()->createChildSceneNode();
-
-	Ogre::Entity *ent1 =SceneManager()->createEntity("Box001.mesh");
-	Ogre::Entity *ent2 =SceneManager()->createEntity("coin.mesh");
-	playerNode->attachObject(ent1);
-	playerNode->attachObject(ent2);
-	playerNode->scale(5,5,5);
-	//setup();
 }
 
-//void Player::setup()
-//{
-//	mPlayerObject = new GameObject(GameObject::PLAYER);
-//	mPlayerObject->loadModel("coin.mesh", mWorld->SceneManager());
-//	mPlayerObject->setScale(Ogre::Vector3(5,6,10));
-//}
+void Player::addOgreEntity(Ogre::String m)
+{
+	Ogre::Entity *ent = SceneManager()->createEntity(m);
+	playerNode->attachObject(ent);
+}
+
+void Player::setScale(Ogre::Vector3 v)
+{
+	playerNode->scale(v);
+}
 
 void 
 Player::Think(float time)
@@ -37,7 +34,6 @@ Player::Think(float time)
 	// This is a pretty silly think method, but it gives you some ideas about how
 	//  to proceed.  The single object will rotate
 
-	// //mCoinNode->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
 	playerNode->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
 	//// We can move the single object around using the input manager ...
 

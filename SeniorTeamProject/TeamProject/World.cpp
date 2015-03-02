@@ -26,6 +26,9 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input)   : mSceneMa
 	mSceneManager->setAmbientLight(Ogre::ColourValue(0,1,256));
 
 	mPlayer = new Player (this, sceneManager, input);
+	mPlayer->addOgreEntity("Box001.mesh");
+	mPlayer->addOgreEntity("coin.mesh");
+	mPlayer->setScale(Ogre::Vector3(5,5,5));
 
 	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
 	while (iter.hasMoreElements()) 

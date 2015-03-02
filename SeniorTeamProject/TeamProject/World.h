@@ -30,10 +30,10 @@ public:
 
 protected:
 
-
 	Ogre::SceneManager *mSceneManager;
 
 	InputHandler *mInputHandler;
+
 	GameCamera *mCamera;
 
 	Player *mPlayer;
