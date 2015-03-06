@@ -7,7 +7,7 @@
 
 GameObject::GameObject(ObjectType type) : mType(type)
 {
-    mCollision = NULL;
+    //mCollision = NULL;
     mSceneNode = NULL;
     mOrentation = Ogre::Quaternion::IDENTITY;
     mPosition = Ogre::Vector3::ZERO;

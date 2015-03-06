@@ -1,10 +1,10 @@
-#pragma once
+//#pragma once
 
 #include "OgreString.h"
 #include "OgreVector3.h"
-#include "OgreQuaternion.h"
+//#include "OgreQuaternion.h"
 
-class OBB;
+//class OBB;
 
 namespace Ogre
 {
@@ -55,7 +55,7 @@ public:
 protected:
 	ObjectType mType;
     Ogre::SceneNode *mSceneNode;
-    OBB *mCollision;
+//    OBB *mCollision;
     Ogre::Vector3 mPosition;
     Ogre::Quaternion mOrentation;
     Ogre::SceneManager *mSceneManager;
