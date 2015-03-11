@@ -2,11 +2,11 @@
 #include "InputHandler.h"
 #include "World.h"
 #include "Camera.h"
+#include "Kinect.h"
 #include <ois.h>
 
-
-MainListener::MainListener(Ogre::RenderWindow *mainWindow, InputHandler *inputManager, World *world, GameCamera *cam) :
-mRenderWindow(mainWindow), mInputHandler(inputManager), mWorld(world), mGameCamera(cam)
+MainListener::MainListener(Ogre::RenderWindow *mainWindow, InputHandler *inputManager, World *world, GameCamera *cam, Kinect *sensor) :
+mRenderWindow(mainWindow), mInputHandler(inputManager), mWorld(world), mGameCamera(cam), mKinect(sensor)
 {
 	x = 0;
 }
@@ -24,6 +24,7 @@ bool
     //  The only reason we have the Think method of the InputHandler return
     //   a value, is for the escape key to cause our application to end.
     //   Feel free to change this to something that makes more sense to you.
+	mKinect->update(evt.timeSinceLastFrame);
 	mInputHandler->Think(time);
 	mWorld->Think(time);
     mGameCamera->Think(time);

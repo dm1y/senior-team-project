@@ -17,6 +17,7 @@ class InputHandler;
 class World;
 class GameCamera;
 class MainListener;
+class Kinect;
 
 class TeamProject :  public Ogre::WindowEventListener
 {
@@ -69,6 +70,7 @@ protected:
 	InputHandler *mInputHandler;
 	World *mWorld;
     GameCamera *mGameCamera;
+	Kinect *mKinect;
 	
     Ogre::Root *mRoot;
     Ogre::Camera* mCamera;

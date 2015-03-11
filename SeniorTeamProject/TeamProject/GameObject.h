@@ -1,31 +1,23 @@
-//#pragma once
-
 #include "OgreString.h"
 #include "OgreVector3.h"
-//#include "OgreQuaternion.h"
-
-//class OBB;
 
 namespace Ogre
 {
     class SceneManager;
     class SceneNode;
 }
+
+class World;
+
 class GameObject
 {
 public:
 
-	enum ObjectType {PLAYER, COIN, BLADE, SPEED, SHEILD, MAGNET, REBUILD_ARMOR};
+	GameObject(World *world, Ogre::SceneManager *sceneManager); 
 
-    GameObject(ObjectType type);
-    ~GameObject(void);
+    void loadModel(Ogre::String modelName);
 
-	ObjectType type() {return mType;}
-
-    void loadModel(Ogre::String modelName, Ogre::SceneManager *sm);
-    void setPosition(Ogre::Vector3 newPosition);
-    void setOrientation(Ogre::Quaternion newOrientation);
-    void yaw(Ogre::Degree d);
+	void yaw(Ogre::Degree d);
     void pitch(Ogre::Degree d);
     void roll(Ogre::Degree d);
 
@@ -36,16 +28,6 @@ public:
 
 	void setAlpha(float alpha);
 
-	void translate(Ogre::Vector3 delta);
-
-    bool collides(GameObject *other, Ogre::Vector3 &MTD);
-    bool collides(const GameObject &other, Ogre::Vector3 &MTD);
-
-	Ogre::Vector3 minPointLocalScaled();
-	Ogre::Vector3 maxPointLocalScaled();
-
-    Ogre::Vector3 getPosition() { return mPosition; }
-    Ogre::Quaternion getOrientation() { return mOrentation; }
     Ogre::Vector3 getScale() { return mScale;}
 
 	void setMaterial(Ogre::String materialName);
@@ -53,16 +35,11 @@ public:
 	Ogre::SceneNode *getSceneNode() { return mSceneNode; }
 
 protected:
-	ObjectType mType;
     Ogre::SceneNode *mSceneNode;
-//    OBB *mCollision;
-    Ogre::Vector3 mPosition;
-    Ogre::Quaternion mOrentation;
     Ogre::SceneManager *mSceneManager;
     Ogre::Vector3 mScale;
-	Ogre::Vector3 mMinPointLocal;
-	Ogre::Vector3 mMaxPointLocal;
 	Ogre::Entity *mEntity;
 	Ogre::String mMaterialName;
+	World *mWorld;
 };
 

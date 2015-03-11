@@ -34,22 +34,40 @@ Player::Think(float time)
 	playerNode->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
 	//// We can move the single object around using the input manager ...
 
-	 if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
-	 {
-		 playerNode->translate(time * COIN_SPEED, 0, 0);
-	 }
-	 else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
-	 {
-		 playerNode->translate(-time * COIN_SPEED, 0, 0);
-	 }
+	// testing kinect 
+	if (mInputHandler->IsKeyDown(OIS::KC_SPACE))
+	{
+		mEnableKeyboard = false;
+		mEnableKinect = true; 
+	}
 
-	 else if (mInputHandler->IsKeyDown(OIS::KC_UP))
-	 {
-		 playerNode->translate(0, time*COIN_SPEED, 0);
-	 }
+	// If kinect is enabled 
+	if (mKinect) 
+	{
+		//playerNode->translate(mKinect->leftRightAngle(), 0, 0);
+		//angle2 = mKinect->frontBackAngle() * 0.8f *  mKinectSensitivityFB;
+	}
 
-	 else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
-	 {
-		 playerNode->translate(0, -time*COIN_SPEED, 0);
-	 }
+	// If the keyboard is enabled 
+	if (mEnableKeyboard) 
+	{
+		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
+		{
+			playerNode->translate(time * COIN_SPEED, 0, 0);
+		}
+		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
+		{
+			 playerNode->translate(-time * COIN_SPEED, 0, 0);
+		}
+
+		 else if (mInputHandler->IsKeyDown(OIS::KC_UP))
+		 {
+			 playerNode->translate(0, time*COIN_SPEED, 0);
+		 }
+
+		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
+		{
+			playerNode->translate(0, -time*COIN_SPEED, 0);
+		}
+	}
 }

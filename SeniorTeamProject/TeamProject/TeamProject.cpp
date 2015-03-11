@@ -3,6 +3,7 @@
 #include "InputHandler.h"
 #include "MainListener.h"
 #include "Camera.h"
+#include "Kinect.h"
 
 #include "Ogre.h"
 #include "OgreConfigFile.h"
@@ -54,7 +55,7 @@ TeamProject::createCamera()
 void 
 TeamProject::createFrameListener(void)
 {
-	mFrameListener = new MainListener(mWindow, mInputHandler, mWorld, mGameCamera);
+	mFrameListener = new MainListener(mWindow, mInputHandler, mWorld, mGameCamera, mKinect);
 	mRoot->addFrameListener(mFrameListener);
 }
 
@@ -81,11 +82,13 @@ TeamProject::createScene()
 	//   access to the player), you can add the pointers later.  Here's an example of both ways
 	//   of doing it, giving the world access to the camera and the input handler.
 
-    mWorld = new World(mSceneMgr, mInputHandler);
+	mWorld = new World(mSceneMgr, mInputHandler, mKinect);
     mGameCamera = new GameCamera(mCamera, mWorld, mInputHandler);
 
 	mWorld->addCamera(mGameCamera);
 
+	mKinect = new Kinect();
+	mKinect->initSensor();
 }
 
 bool 

@@ -4,33 +4,32 @@
 //#include "CollisionManager.h"
 #include "OgreSubEntity.h"
 #include "OgreMaterial.h"
+#include "World.h"
 
-GameObject::GameObject(ObjectType type) : mType(type)
+GameObject::GameObject(World *world, Ogre::SceneManager *sceneManager) :
+	mWorld(world), mSceneManager(mSceneManager)
 {
-    //mCollision = NULL;
     mSceneNode = NULL;
-    mOrentation = Ogre::Quaternion::IDENTITY;
-    mPosition = Ogre::Vector3::ZERO;
 }
 
 
-GameObject::~GameObject(void)
-{
-    mScale = Ogre::Vector3::UNIT_SCALE;
-    if (mSceneNode != NULL)
-    {
-        	mSceneManager->getRootSceneNode()->removeChild(mSceneNode);
-
-	unsigned short index = 0;
-	Ogre::MovableObject *mo = mSceneNode->detachObject(index);
-	Ogre::Entity *ent = static_cast<Ogre::Entity *>(mo);
-
-	mSceneManager->destroyEntity(ent);
-	mSceneManager->destroySceneNode(mSceneNode);
-
-    }
-//    delete mCollision;
-}
+//GameObject::~GameObject(void)
+//{
+//    mScale = Ogre::Vector3::UNIT_SCALE;
+//    if (mSceneNode != NULL)
+//    {
+//        	mSceneManager->getRootSceneNode()->removeChild(mSceneNode);
+//
+//	unsigned short index = 0;
+//	Ogre::MovableObject *mo = mSceneNode->detachObject(index);
+//	Ogre::Entity *ent = static_cast<Ogre::Entity *>(mo);
+//
+//	mSceneManager->destroyEntity(ent);
+//	mSceneManager->destroySceneNode(mSceneNode);
+//
+//    }
+////    delete mCollision;
+//}
 
 
 //bool GameObject::collides(GameObject *other, Ogre::Vector3 &MTD)
@@ -53,32 +52,16 @@ void GameObject::setScale(Ogre::Vector3 newScale)
 	//mCollision->setScale(newScale);
 }
 
-	Ogre::Vector3 
-		GameObject::minPointLocalScaled()
-	{
-		return mMinPointLocal * mScale;
-	}
-	Ogre::Vector3 
-		GameObject::maxPointLocalScaled()
-	{
-		return mMaxPointLocal * mScale;
-	}
 
 
 void 
-	GameObject::loadModel(Ogre::String modelName, Ogre::SceneManager *sm)
+	GameObject::loadModel(Ogre::String modelName)
 {
-    mSceneManager = sm;
-    mEntity =sm->createEntity(modelName);
-	mSceneNode =sm->getRootSceneNode()->createChildSceneNode();
+    mEntity = mSceneManager->createEntity(modelName);
+	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode();
 	mSceneNode->attachObject(mEntity);
-    //mCollision = new OBB(mEntity->getBoundingBox());
-	mMaxPointLocal = mEntity->getBoundingBox().getMaximum();
-	mMinPointLocal =  mEntity->getBoundingBox().getMinimum();
 	mMaterialName = mEntity->getSubEntity(0)->getMaterialName();
 }
-
-
 
 void GameObject::setMaterial(Ogre::String materialName)
 {

@@ -307,12 +307,13 @@ Kinect::updateKinectSkeleton()
 			// Position only, ignore for now.
 		}
 	}
-	//mToso1Overlay->setRotate(Ogre::Radian(-mLeftRightAngle));
+	mToso1Overlay->setRotate(Ogre::Radian(-mLeftRightAngle));
 
 	mToso1Overlay->setRotate(Ogre::Radian(-mLeftRightAngle));
 	mToso1Overlay->setScroll(0.85f, 0.8f);
 
 	mToso2Overlay->setRotate(Ogre::Radian(-mFrontBackAngle));
+
 	mToso2Overlay->setScroll(0.65f, 0.8f);
 #endif
 }

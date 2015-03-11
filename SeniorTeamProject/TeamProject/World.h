@@ -9,15 +9,17 @@ namespace Ogre {
 
 // Forward delcarations of our own classes
 class GameCamera;
+class GameObject;
 class InputHandler;
 class Player;
+class Kinect;
 
 
 class World
 {
 public:
 	
-    World(Ogre::SceneManager *sceneManager, InputHandler *input);
+    World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor);
 
     // You'll want various methods to access & change your world here
     
@@ -35,8 +37,11 @@ protected:
 	InputHandler *mInputHandler;
 
 	GameCamera *mCamera;
+	Kinect *mKinect;
 
 	Player *mPlayer;
+
+	GameObject *mGameObject;
 };
 
 #endif
