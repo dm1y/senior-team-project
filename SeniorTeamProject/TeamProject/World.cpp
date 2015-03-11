@@ -28,13 +28,14 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	// Global illumination for now.  Adding individual light sources will make you scene look more realistic
 	mSceneManager->setAmbientLight(Ogre::ColourValue(0,1,256));
 
-	mPlayer = new Player (this, mSceneManager, mInputHandler);
+	mPlayer = new Player (this, mKinect, mSceneManager, mInputHandler);
 	mPlayer->addOgreEntity("Box001.mesh");
 	//mPlayer->addOgreEntity("coin.mesh");
 	mPlayer->setScale(Ogre::Vector3(5,5,5));
 
-	//mGameObject = new GameObject(this, sceneManager);
-	//mGameObject->loadModel("coin.mesh");
+	mGameObject = new GameObject(this, mSceneManager);
+	mGameObject->loadModel("coin.mesh");
+	mGameObject->setScale(Ogre::Vector3(3, 3, 3));
 
 	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
 	//while (iter.hasMoreElements()) 
@@ -57,6 +58,7 @@ World::Think(float time)
 	const float COIN_SPEED = 30;
 
 	mPlayer->Think(time);
+	mGameObject->Think(time);
 
 }
 

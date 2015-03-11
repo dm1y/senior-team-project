@@ -15,6 +15,8 @@ public:
 
 	GameObject(World *world, Ogre::SceneManager *sceneManager); 
 
+	Ogre::SceneManager *SceneManager() { return mSceneManager; }
+	void Think(float time);
     void loadModel(Ogre::String modelName);
 
 	void yaw(Ogre::Degree d);

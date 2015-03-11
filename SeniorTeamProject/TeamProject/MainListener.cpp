@@ -38,6 +38,12 @@ bool
 	// modify this as you like.
 	if (mInputHandler->IsKeyDown(OIS::KC_ESCAPE) || mRenderWindow->isClosed())
 	{
+		// have the kinect stop callibrating 
+		if (mKinect->callibrating())
+        {
+            mKinect->cancelCallibration();
+        }
+
 		keepGoing = false;
 	}
 

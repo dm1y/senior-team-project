@@ -8,8 +8,8 @@
 #include "InputHandler.h"
 #include <ois/ois.h>
 
-Player::Player(World *world, /*Kinect *k,*/ Ogre::SceneManager *sceneManager, InputHandler *input) : 
-	mWorld(world), /*mKinect(k),*/ mSceneManager(sceneManager), mInputHandler(input)
+Player::Player(World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input) : 
+	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input)
 {
 	playerNode = SceneManager()->getRootSceneNode()->createChildSceneNode();
 }
@@ -42,7 +42,7 @@ Player::Think(float time)
 	}
 
 	// If kinect is enabled 
-	if (mKinect) 
+	if (mEnableKinect) 
 	{
 		//playerNode->translate(mKinect->leftRightAngle(), 0, 0);
 		//angle2 = mKinect->frontBackAngle() * 0.8f *  mKinectSensitivityFB;

@@ -3,14 +3,62 @@
 #include "OgreEntity.h"
 //#include "CollisionManager.h"
 #include "OgreSubEntity.h"
+
 #include "OgreMaterial.h"
 #include "World.h"
 
 GameObject::GameObject(World *world, Ogre::SceneManager *sceneManager) :
-	mWorld(world), mSceneManager(mSceneManager)
+	mWorld(world), mSceneManager(sceneManager)
 {
-    mSceneNode = NULL;
+    mSceneNode = SceneManager()->getRootSceneNode()->createChildSceneNode();
 }
+
+void GameObject::setScale(Ogre::Vector3 newScale)
+{
+	mScale = newScale;
+	mSceneNode->setScale(newScale);
+	//mCollision->setScale(newScale);
+}
+
+void GameObject::loadModel(Ogre::String modelName)
+{
+    mEntity = SceneManager()->createEntity(modelName);
+	mSceneNode->attachObject(mEntity);
+	mMaterialName = mEntity->getSubEntity(0)->getMaterialName();
+}
+
+void GameObject::setMaterial(Ogre::String materialName)
+{
+	mEntity->setMaterialName(materialName);
+}
+
+void GameObject::restoreOriginalMaterial()
+{
+	mEntity->setMaterialName(mMaterialName);
+}
+
+
+void GameObject::Think(float time)
+{
+	const float RADIANS_PER_SECOND = 0.5;
+	const float COIN_SPEED = 30;
+	
+	mSceneNode->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
+}
+	//->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
+
+
+//void GameObject::setAlpha(float alpha)
+//{
+//	for (unsigned int i = 0; i < mEntity->getNumSubEntities(); i++)
+//	{
+//
+//		mEntity->getSubEntity(i)->getMaterial()->getBestTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+//		mEntity->getSubEntity(i)->getMaterial()->getBestTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, alpha);
+//
+//	}
+
+
 
 
 //GameObject::~GameObject(void)
@@ -41,51 +89,6 @@ GameObject::GameObject(World *world, Ogre::SceneManager *sceneManager) :
 //{
 //    return mCollision->collides(other.mCollision, MTD);
 //}
-
-
-
-
-void GameObject::setScale(Ogre::Vector3 newScale)
-{
-	mScale = newScale;
-	mSceneNode->setScale(newScale);
-	//mCollision->setScale(newScale);
-}
-
-
-
-void 
-	GameObject::loadModel(Ogre::String modelName)
-{
-    mEntity = mSceneManager->createEntity(modelName);
-	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode();
-	mSceneNode->attachObject(mEntity);
-	mMaterialName = mEntity->getSubEntity(0)->getMaterialName();
-}
-
-void GameObject::setMaterial(Ogre::String materialName)
-{
-	mEntity->setMaterialName(materialName);
-}
-
-void GameObject::restoreOriginalMaterial()
-{
-	mEntity->setMaterialName(mMaterialName);
-}
-
-
-void GameObject::setAlpha(float alpha)
-{
-	for (unsigned int i = 0; i < mEntity->getNumSubEntities(); i++)
-	{
-
-		mEntity->getSubEntity(i)->getMaterial()->getBestTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
-		mEntity->getSubEntity(i)->getMaterial()->getBestTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, alpha);
-
-	}
-
-
-}
 
 //void GameObject::setPosition(Ogre::Vector3 newPosition)
 //{
