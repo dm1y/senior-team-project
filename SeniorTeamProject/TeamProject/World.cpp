@@ -26,11 +26,11 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor)
 {
 	// Global illumination for now.  Adding individual light sources will make you scene look more realistic
-	mSceneManager->setAmbientLight(Ogre::ColourValue(0,1,256));
+	mSceneManager->setAmbientLight(Ogre::ColourValue(1,1,1));
 
 	mPlayer = new Player (this, mKinect, mSceneManager, mInputHandler);
 	mPlayer->addOgreEntity("Box001.mesh");
-	//mPlayer->addOgreEntity("coin.mesh");
+	mPlayer->addOgreEntity("coin.mesh");
 	mPlayer->setScale(Ogre::Vector3(5,5,5));
 
 	mGameObject = new GameObject(this, mSceneManager);
