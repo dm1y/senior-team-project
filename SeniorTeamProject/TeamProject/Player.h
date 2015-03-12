@@ -38,7 +38,7 @@ protected:
 
 	Ogre::SceneManager *mSceneManager;
 	InputHandler *mInputHandler;
-	Ogre::SceneNode *playerNode;
+	//Ogre::SceneNode *playerNode;
 	World *mWorld;
 	Kinect *mKinect;
 	GameObject *mPlayerObject;

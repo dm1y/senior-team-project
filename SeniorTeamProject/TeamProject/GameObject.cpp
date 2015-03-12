@@ -45,6 +45,11 @@ void GameObject::Think(float time)
 	
 	mSceneNode->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
 }
+
+void GameObject::translate(Ogre::Vector3 vector)
+{
+	mSceneNode->translate(vector);
+}
 	//->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
 
 

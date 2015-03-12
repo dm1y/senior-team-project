@@ -89,6 +89,7 @@ TeamProject::createScene()
 
 	mKinect = new Kinect();
 	mKinect->initSensor();
+
 }
 
 bool 

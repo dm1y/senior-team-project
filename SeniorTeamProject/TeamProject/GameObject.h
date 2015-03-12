@@ -36,6 +36,8 @@ public:
 	void restoreOriginalMaterial();
 	Ogre::SceneNode *getSceneNode() { return mSceneNode; }
 
+	void translate(Ogre::Vector3 vector); 
+
 protected:
     Ogre::SceneNode *mSceneNode;
     Ogre::SceneManager *mSceneManager;
