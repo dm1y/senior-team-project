@@ -17,6 +17,7 @@ Player::Player(World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputH
 void Player::addOgreEntity(Ogre::String m)
 {
 	Ogre::Entity *ent = SceneManager()->createEntity(m);
+	ent->setCastShadows(true);
 	playerNode->attachObject(ent);
 }
 
