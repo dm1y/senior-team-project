@@ -1,9 +1,11 @@
-﻿Build started 3/12/2015 1:47:20 PM.
+﻿Build started 3/12/2015 2:21:39 PM.
      1>Project "C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\TeamProject\TeamProject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include/OGRE/Overlay" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/boost/" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include/OIS" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include/OGRE" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt GameObject.cpp World.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include/OGRE/Overlay" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/boost/" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include/OIS" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include/OGRE" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Player.cpp World.cpp
+         Player.cpp
+         Generating Code...
+         Compiling...
          World.cpp
-         GameObject.cpp
          Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\Debug\TeamProject.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\Microsoft SDKs\Kinect\v1.8\lib\x86" /LIBPATH:"C:\OGRE\OgreSDK_vc11_v1-9-0/boost/lib" /LIBPATH:"C:\OGRE\OgreSDK_vc11_v1-9-0/lib/Debug" OIS_d.lib OgreMain_d.lib OgreOverlay_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\Debug\TeamProject.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\Debug\TeamProject.lib" /MACHINE:X86 Debug\Camera.obj
@@ -45,4 +47,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:38.89
+Time Elapsed 00:00:52.87

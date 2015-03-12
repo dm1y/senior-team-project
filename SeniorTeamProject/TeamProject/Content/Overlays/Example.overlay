@@ -21,7 +21,7 @@ Sample
          font_name BlueHighwayBig
          char_height 0.05
          colour 1 1 1
-         caption Sample Text.
+         caption Kinect is enabled and should be working
 		}
     }
 }

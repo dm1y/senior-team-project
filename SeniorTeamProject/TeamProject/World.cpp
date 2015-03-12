@@ -50,28 +50,30 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
  
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
 
+	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
+	while (iter.hasMoreElements()) 
+	{ 
+		iter.getNext()->load(); 
+	}
+
+	// Now we will show the sample overlay.  Look in the file Content/Overlays/Example to
+	// see how this overlay is defined
+	Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
+	Ogre::Overlay *overly = om.getByName("Sample");
+//	overly->show();
+
 	mPlayer = new Player (this, mKinect, mSceneManager, mInputHandler);
 	mPlayer->addOgreEntity("tunacan.MESH.mesh");
 	//mPlayer->addOgreEntity("coin.mesh");
 	mPlayer->setScale(Ogre::Vector3(.5, .5, .5));
 
+	// For testing purposes 
+	mPlayer->setOverlay(overly);
+
 	mGameObject = new GameObject(this, mSceneManager);
 	mGameObject->loadModel("coin.mesh");
 	mGameObject->setScale(Ogre::Vector3(3, 3, 3));
-
-	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
-	//while (iter.hasMoreElements()) 
-	//{ 
-	//	iter.getNext()->load(); 
-	//}
-
-	// Now we will show the sample overlay.  Look in the file Content/Overlays/Example to
-	// see how this overlay is defined
-	//Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
-	//Ogre::Overlay *overly = om.getByName("Sample");
-	//overly->show();
 }
-
 
 void 
 World::Think(float time)

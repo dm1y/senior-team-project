@@ -8,10 +8,19 @@
 #include "InputHandler.h"
 #include <ois/ois.h>
 
+
+#include "OgreOverlayManager.h"
+#include "OgreOverlay.h"
+#include "OgreFontManager.h"
+#include "OgreTextAreaOverlayElement.h"
+
 Player::Player(World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input) : 
 	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input)
 {
 	mPlayerObject = new GameObject(mWorld, mSceneManager);
+
+	// For testing purposes 
+	overlyBool = false; 
 }
 
 void Player::addOgreEntity(Ogre::String m)
@@ -32,6 +41,9 @@ Player::Think(float time)
 
 	//playerNode->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
 	//// We can move the single object around using the input manager ...
+
+	if (overlyBool)
+		overly->show();
 
 	// testing kinect 
 	if (mInputHandler->IsKeyDown(OIS::KC_SPACE))

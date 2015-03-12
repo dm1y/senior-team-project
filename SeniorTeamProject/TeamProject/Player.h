@@ -4,6 +4,11 @@
 #include "OgreSceneNode.h"
 #include <ois/ois.h>
 
+#include "OgreOverlayManager.h"
+#include "OgreOverlay.h"
+#include "OgreFontManager.h"
+#include "OgreTextAreaOverlayElement.h"
+
 // Forward delcarations of Ogre classes.  Note the Ogre namespace!
 namespace Ogre {
     class SceneNode;
@@ -33,16 +38,20 @@ public:
 	bool getEnableKeyboard() { return mEnableKeyboard; }
 	void setEnableKeyboard(bool enable) { mEnableKeyboard = enable; }
 
+	// For testing purposes
+	Ogre::Overlay *setOverlay(Ogre::Overlay *o) { return overly = o;}
 
 protected:
 
 	Ogre::SceneManager *mSceneManager;
 	InputHandler *mInputHandler;
-	//Ogre::SceneNode *playerNode;
 	World *mWorld;
 	Kinect *mKinect;
 	GameObject *mPlayerObject;
 
+	// For testing purposes 
+	Ogre::Overlay *overly; 
+	bool overlyBool; 
 	
 	bool mEnableKinect;
 	bool mEnableKeyboard;
