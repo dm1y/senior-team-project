@@ -11,22 +11,17 @@
 Player::Player(World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input) : 
 	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input)
 {
-	//playerNode = SceneManager()->getRootSceneNode()->createChildSceneNode();
 	mPlayerObject = new GameObject(mWorld, mSceneManager);
 }
 
 void Player::addOgreEntity(Ogre::String m)
 {
 	mPlayerObject->loadModel(m);
-	//Ogre::Entity *ent = SceneManager()->createEntity(m);
-	//ent->setCastShadows(true);
-	//playerNode->attachObject(ent);
 }
 
 void Player::setScale(Ogre::Vector3 v)
 {
 	mPlayerObject->setScale(v);
-	//playerNode->scale(v);
 }
 
 void 

@@ -37,20 +37,10 @@ void GameObject::restoreOriginalMaterial()
 	mEntity->setMaterialName(mMaterialName);
 }
 
-
-void GameObject::Think(float time)
-{
-	const float RADIANS_PER_SECOND = 0.5;
-	const float COIN_SPEED = 30;
-	
-	mSceneNode->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
-}
-
 void GameObject::translate(Ogre::Vector3 vector)
 {
 	mSceneNode->translate(vector);
 }
-	//->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
 
 
 //void GameObject::setAlpha(float alpha)
@@ -84,7 +74,6 @@ void GameObject::translate(Ogre::Vector3 vector)
 ////    delete mCollision;
 //}
 
-
 //bool GameObject::collides(GameObject *other, Ogre::Vector3 &MTD)
 //{
 //    return mCollision->collides(other->mCollision, MTD);
@@ -95,61 +84,53 @@ void GameObject::translate(Ogre::Vector3 vector)
 //    return mCollision->collides(other.mCollision, MTD);
 //}
 
-//void GameObject::setPosition(Ogre::Vector3 newPosition)
-//{
-//	mSceneNode->setPosition(newPosition);
+void GameObject::setPosition(Ogre::Vector3 newPosition)
+{
+	mSceneNode->setPosition(newPosition);
 //	mCollision->setPosition(newPosition);
 //	mPosition = newPosition;
-//
-//}
+}
+
 //void GameObject::setOrientation(Ogre::Quaternion newOrientation)
 //{
 //    mSceneNode->setOrientation(newOrientation);
 //    mCollision->setOrientation(newOrientation);
 //    mOrentation = newOrientation;
 //}
-//void GameObject::yaw(Ogre::Degree d)
-//{
-//    mSceneNode->yaw(d);
+
+void GameObject::yaw(Ogre::Degree d)
+{
+    mSceneNode->yaw(d);
 //    mCollision->setOrientation(mSceneNode->getOrientation());
-//}
-//void GameObject::pitch(Ogre::Degree d)
-//{
-//    mSceneNode->pitch(d);
+}
+
+void GameObject::pitch(Ogre::Degree d)
+{
+    mSceneNode->pitch(d);
 //    mCollision->setOrientation(mSceneNode->getOrientation());
-//}
-//
-//void GameObject::translate(Ogre::Vector3 delta)
-//{
-//	mCollision->translate(delta);
-//	mSceneNode->translate(delta);
-//	mPosition += delta;
-//}
-//
-//
-//
-//void GameObject::roll(Ogre::Degree d)
-//{
-//    mSceneNode->roll(d);
+}
+
+
+void GameObject::roll(Ogre::Degree d)
+{
+    mSceneNode->roll(d);
 //    mCollision->setOrientation(mSceneNode->getOrientation());
-//
-//
-//}
-//
-//void GameObject::yaw(Ogre::Radian r)
-//{
-//        mSceneNode->yaw(r);
+}
+
+void GameObject::yaw(Ogre::Radian r)
+{
+    mSceneNode->yaw(r);
 //    mCollision->setOrientation(mSceneNode->getOrientation());
-//
-//}
-//void GameObject::pitch(Ogre::Radian r)
-//{
-//        mSceneNode->pitch(r);
+}
+
+void GameObject::pitch(Ogre::Radian r)
+{
+    mSceneNode->pitch(r);
 //    mCollision->setOrientation(mSceneNode->getOrientation());
-//
-//}
-//void GameObject::roll(Ogre::Radian r)
-//{
-//        mSceneNode->roll(r);
+}
+
+void GameObject::roll(Ogre::Radian r)
+{
+    mSceneNode->roll(r);
 //    mCollision->setOrientation(mSceneNode->getOrientation());
-//
+}

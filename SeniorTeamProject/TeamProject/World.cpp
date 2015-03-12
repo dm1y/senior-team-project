@@ -80,7 +80,8 @@ World::Think(float time)
 	const float COIN_SPEED = 30;
 
 	mPlayer->Think(time);
-	mGameObject->Think(time);
+	
+	mGameObject->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
 
 }
 

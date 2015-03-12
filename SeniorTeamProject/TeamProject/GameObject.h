@@ -28,6 +28,9 @@ public:
     void roll(Ogre::Radian r);
     void setScale(Ogre::Vector3 newScale);
 
+	void GameObject::setPosition(Ogre::Vector3 newPosition);
+	void translate(Ogre::Vector3 vector); 
+
 	void setAlpha(float alpha);
 
     Ogre::Vector3 getScale() { return mScale;}
@@ -36,7 +39,6 @@ public:
 	void restoreOriginalMaterial();
 	Ogre::SceneNode *getSceneNode() { return mSceneNode; }
 
-	void translate(Ogre::Vector3 vector); 
 
 protected:
     Ogre::SceneNode *mSceneNode;
