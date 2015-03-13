@@ -68,33 +68,13 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	//mPlayer->addOgreEntity("coin.mesh");
 	mPlayer->setScale(Ogre::Vector3(.5, .5, .5));
 
-<<<<<<< HEAD
 	// For testing purposes 
 	mPlayer->setOverlay(overly);
 
-	mGameObject = new GameObject(this, mSceneManager);
-	mGameObject->loadModel("coin.mesh");
-	mGameObject->setScale(Ogre::Vector3(3, 3, 3));
-}
-
-=======
 	mGameObject = new GameObject(this, mSceneManager, GameObject::NOTPLAYER);
 	mGameObject->loadModel("coin.mesh");
 	mGameObject->setScale(Ogre::Vector3(3, 3, 3));
 	mGameObject->setPosition(Ogre::Vector3(0, 0, 0));
-
-	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
-	//while (iter.hasMoreElements()) 
-	//{ 
-	//	iter.getNext()->load(); 
-	//}
-
-	// Now we will show the sample overlay.  Look in the file Content/Overlays/Example to
-	// see how this overlay is defined
-	//Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
-	//Ogre::Overlay *overly = om.getByName("Sample");
-	//overly->show();
-
 
 	/*Quick and Dirty list of gameobjects*/
 	gameObjects.push_front(mGameObject);
@@ -102,7 +82,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 }
 
->>>>>>> origin/master
+
 void 
 World::Think(float time)
 {
@@ -110,13 +90,9 @@ World::Think(float time)
 	const float COIN_SPEED = 30;
 
 	mPlayer->Think(time);
-<<<<<<< HEAD
 	
 	mGameObject->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
 
-=======
-	mGameObject->Think(time);
->>>>>>> origin/master
 }
 
 

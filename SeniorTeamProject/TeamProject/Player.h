@@ -38,14 +38,14 @@ public:
 	bool getEnableKeyboard() { return mEnableKeyboard; }
 	void setEnableKeyboard(bool enable) { mEnableKeyboard = enable; }
 
-<<<<<<< HEAD
+
 	// For testing purposes
 	Ogre::Overlay *setOverlay(Ogre::Overlay *o) { return overly = o;}
-=======
+
 	GameObject *getGameObject() { return mPlayerObject; }
 
 	void checkCollision();
->>>>>>> origin/master
+
 
 protected:
 
@@ -54,16 +54,13 @@ protected:
 	World *mWorld;
 	Kinect *mKinect;
 	GameObject *mPlayerObject;
-<<<<<<< HEAD
 
 	// For testing purposes 
 	Ogre::Overlay *overly; 
 	bool overlyBool; 
 
 	// For kinect 
-=======
-	
->>>>>>> origin/master
+
 	bool mEnableKinect;
 	bool mEnableKeyboard;
 	bool mAutoCallibrate;

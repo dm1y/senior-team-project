@@ -45,11 +45,6 @@ public:
 	void restoreOriginalMaterial();
 
 	Ogre::SceneNode *getSceneNode() { return mSceneNode; }
-
-<<<<<<< HEAD
-=======
-	
-	void translate(Ogre::Vector3 vector); 
 	
 	bool collides(GameObject *other, Ogre::Vector3 &MTD);
     bool collides(const GameObject &other, Ogre::Vector3 &MTD);
@@ -57,12 +52,6 @@ public:
 	Ogre::Vector3 minPointLocalScaled();
 	Ogre::Vector3 maxPointLocalScaled();
 
-	void setPosition(Ogre::Vector3 newPosition);
-	void setOrientation(Ogre::Quaternion newOrientation);
-
-	Ogre::Vector3 getPosition() { return mPosition; }
-    Ogre::Quaternion getOrientation() { return mOrentation; }
->>>>>>> origin/master
 
 protected:
     Ogre::SceneNode *mSceneNode;
@@ -78,7 +67,5 @@ protected:
 	Ogre::Vector3 mMaxPointLocal;
 	ObjectType objType;
 	OBB *mCollision;
-    Ogre::Vector3 mPosition;
-    Ogre::Quaternion mOrentation;
 };
 

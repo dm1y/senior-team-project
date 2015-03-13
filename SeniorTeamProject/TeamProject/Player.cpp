@@ -19,17 +19,16 @@
 Player::Player(World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input) : 
 	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input)
 {
-<<<<<<< HEAD
-	mPlayerObject = new GameObject(mWorld, mSceneManager);
+	//mPlayerObject = new GameObject(mWorld, mSceneManager);
 
 	mAutoCallibrate = true;
 
 	// For testing purposes 
 	overlyBool = false; 
-=======
+
 	//playerNode = SceneManager()->getRootSceneNode()->createChildSceneNode();
 	mPlayerObject = new GameObject(mWorld, mSceneManager, GameObject::PLAYER);
->>>>>>> origin/master
+
 }
 
 void Player::addOgreEntity(Ogre::String m)
@@ -40,11 +39,10 @@ void Player::addOgreEntity(Ogre::String m)
 void Player::setScale(Ogre::Vector3 v)
 {
 	mPlayerObject->setScale(v);
-<<<<<<< HEAD
-=======
+
+
 	mPlayerObject->setPosition(Ogre::Vector3(50, 0, 0));
 	//playerNode->scale(v);
->>>>>>> origin/master
 }
 
 void 
