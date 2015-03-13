@@ -8,16 +8,19 @@
 #include "InputHandler.h"
 #include <ois/ois.h>
 
-
 #include "OgreOverlayManager.h"
 #include "OgreOverlay.h"
 #include "OgreFontManager.h"
 #include "OgreTextAreaOverlayElement.h"
 
+#include "Kinect.h"
+
 Player::Player(World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input) : 
 	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input)
 {
 	mPlayerObject = new GameObject(mWorld, mSceneManager);
+
+	mAutoCallibrate = true;
 
 	// For testing purposes 
 	overlyBool = false; 
@@ -52,11 +55,22 @@ Player::Think(float time)
 		mEnableKinect = true; 
 	}
 
+	if (mAutoCallibrate) {
+//		mKinect->callibrate(4.0f, [this]() { });
+//		mEnableKinect = true;
+	}
+
 	// If kinect is enabled 
 	if (mEnableKinect) 
 	{
+		// add code here for movement via kinect sensor 
+
+		//mPlayerObject->translate(mKinect->leftRightAngle(), 0, 0); 
 		//playerNode->translate(mKinect->leftRightAngle(), 0, 0);
 		//angle2 = mKinect->frontBackAngle() * 0.8f *  mKinectSensitivityFB;
+
+		overlyBool = true; 
+
 	}
 
 	// If the keyboard is enabled 

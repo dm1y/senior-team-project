@@ -18,6 +18,8 @@ void GameObject::setScale(Ogre::Vector3 newScale)
 	mScale = newScale;
 	mSceneNode->setScale(newScale);
 	//mCollision->setScale(newScale);
+    mOrientation = Ogre::Quaternion::IDENTITY;
+    mPosition = Ogre::Vector3::ZERO;
 }
 
 void GameObject::loadModel(Ogre::String modelName)
@@ -88,15 +90,15 @@ void GameObject::setPosition(Ogre::Vector3 newPosition)
 {
 	mSceneNode->setPosition(newPosition);
 //	mCollision->setPosition(newPosition);
-//	mPosition = newPosition;
+	mPosition = newPosition;
 }
 
-//void GameObject::setOrientation(Ogre::Quaternion newOrientation)
-//{
-//    mSceneNode->setOrientation(newOrientation);
-//    mCollision->setOrientation(newOrientation);
-//    mOrentation = newOrientation;
-//}
+void GameObject::setOrientation(Ogre::Quaternion newOrientation)
+{
+    mSceneNode->setOrientation(newOrientation);
+    //mcollision->setorientation(neworientation);
+    mOrientation = newOrientation;
+}
 
 void GameObject::yaw(Ogre::Degree d)
 {

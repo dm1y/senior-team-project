@@ -52,7 +52,10 @@ protected:
 	// For testing purposes 
 	Ogre::Overlay *overly; 
 	bool overlyBool; 
-	
+
+	// For kinect 
 	bool mEnableKinect;
 	bool mEnableKeyboard;
+	bool mAutoCallibrate;
+
 };

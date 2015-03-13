@@ -26,17 +26,20 @@ public:
     void yaw(Ogre::Radian r);
     void pitch(Ogre::Radian r);
     void roll(Ogre::Radian r);
-    void setScale(Ogre::Vector3 newScale);
-
-	void GameObject::setPosition(Ogre::Vector3 newPosition);
 	void translate(Ogre::Vector3 vector); 
 
+	void setScale(Ogre::Vector3 newScale);
+	void setPosition(Ogre::Vector3 newPosition);
+	void setOrientation(Ogre::Quaternion newOrientation);
 	void setAlpha(float alpha);
 
+	Ogre::Vector3 getPosition() { return mPosition; }
+    Ogre::Quaternion getOrientation() { return mOrientation; }
     Ogre::Vector3 getScale() { return mScale;}
 
 	void setMaterial(Ogre::String materialName);
 	void restoreOriginalMaterial();
+
 	Ogre::SceneNode *getSceneNode() { return mSceneNode; }
 
 
@@ -46,6 +49,8 @@ protected:
     Ogre::Vector3 mScale;
 	Ogre::Entity *mEntity;
 	Ogre::String mMaterialName;
+	Ogre::Quaternion mOrientation;
+	Ogre::Vector3 mPosition;
 	World *mWorld;
 };
 
