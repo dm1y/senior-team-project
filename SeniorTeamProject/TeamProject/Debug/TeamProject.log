@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿Build started 3/12/2015 11:17:00 PM.
      1>Project "C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\TeamProject\TeamProject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
@@ -44,3 +45,10 @@
 Build succeeded.
 
 Time Elapsed 00:00:34.42
+=======
+﻿Build started 3/12/2015 6:25:22 PM.
+
+Build succeeded.
+
+Time Elapsed 00:00:00.03
+>>>>>>> origin/master

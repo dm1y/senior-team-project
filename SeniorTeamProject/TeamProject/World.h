@@ -1,11 +1,15 @@
 #ifndef __World_h_
 #define __World_h_
 
+#include <list>
+
 // Forward delcarations of Ogre classes.  Note the Ogre namespace!
 namespace Ogre {
     class SceneNode;
     class SceneManager;
 }
+
+using namespace std;
 
 // Forward delcarations of our own classes
 class GameCamera;
@@ -29,6 +33,7 @@ public:
 
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 
+	list<GameObject*> getWorldObjects() { return gameObjects; } 
 
 protected:
 
@@ -42,6 +47,8 @@ protected:
 	Player *mPlayer;
 
 	GameObject *mGameObject;
+
+	list<GameObject*> gameObjects;
 };
 
 #endif
