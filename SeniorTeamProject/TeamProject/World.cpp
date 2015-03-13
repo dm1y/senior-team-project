@@ -21,6 +21,7 @@
 #include "InputHandler.h"
 #include "Player.h"
 #include "Kinect.h"
+#include <list>
 
 World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor)
@@ -55,9 +56,10 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	//mPlayer->addOgreEntity("coin.mesh");
 	mPlayer->setScale(Ogre::Vector3(.5, .5, .5));
 
-	mGameObject = new GameObject(this, mSceneManager);
+	mGameObject = new GameObject(this, mSceneManager, GameObject::NOTPLAYER);
 	mGameObject->loadModel("coin.mesh");
 	mGameObject->setScale(Ogre::Vector3(3, 3, 3));
+	mGameObject->setPosition(Ogre::Vector3(0, 0, 0));
 
 	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
 	//while (iter.hasMoreElements()) 
@@ -70,8 +72,13 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	//Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
 	//Ogre::Overlay *overly = om.getByName("Sample");
 	//overly->show();
-}
 
+
+	/*Quick and Dirty list of gameobjects*/
+	gameObjects.push_front(mGameObject);
+
+
+}
 
 void 
 World::Think(float time)
@@ -81,7 +88,6 @@ World::Think(float time)
 
 	mPlayer->Think(time);
 	mGameObject->Think(time);
-
 }
 
 

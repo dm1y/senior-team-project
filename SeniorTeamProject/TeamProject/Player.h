@@ -33,6 +33,9 @@ public:
 	bool getEnableKeyboard() { return mEnableKeyboard; }
 	void setEnableKeyboard(bool enable) { mEnableKeyboard = enable; }
 
+	GameObject *getGameObject() { return mPlayerObject; }
+
+	void checkCollision();
 
 protected:
 
@@ -42,7 +45,6 @@ protected:
 	World *mWorld;
 	Kinect *mKinect;
 	GameObject *mPlayerObject;
-
 	
 	bool mEnableKinect;
 	bool mEnableKeyboard;

@@ -6,13 +6,14 @@
 #include "OgreSceneManager.h"
 #include "OgreSceneNode.h"
 #include "InputHandler.h"
+#include <list>
 #include <ois/ois.h>
 
 Player::Player(World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input) : 
 	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input)
 {
 	//playerNode = SceneManager()->getRootSceneNode()->createChildSceneNode();
-	mPlayerObject = new GameObject(mWorld, mSceneManager);
+	mPlayerObject = new GameObject(mWorld, mSceneManager, GameObject::PLAYER);
 }
 
 void Player::addOgreEntity(Ogre::String m)
@@ -26,6 +27,7 @@ void Player::addOgreEntity(Ogre::String m)
 void Player::setScale(Ogre::Vector3 v)
 {
 	mPlayerObject->setScale(v);
+	mPlayerObject->setPosition(Ogre::Vector3(50, 0, 0));
 	//playerNode->scale(v);
 }
 
@@ -72,6 +74,28 @@ Player::Think(float time)
 		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
 		{
 			mPlayerObject->translate(Ogre::Vector3(0, -time*COIN_SPEED, 0));
+		}
+		
+		checkCollision();
+	}
+}
+
+void Player::checkCollision()
+{
+	Ogre::Vector3 MTD;
+
+	std::list<GameObject*> worldObjs = mWorld->getWorldObjects();
+
+	for(GameObject* go : worldObjs)
+	{
+
+		if (mPlayerObject->collides(go, MTD))
+		{
+			go->setScale(Ogre::Vector3(10,10,10));
+		}
+		else
+		{
+			go->setScale(Ogre::Vector3(3,3,3));
 		}
 	}
 }

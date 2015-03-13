@@ -7,13 +7,17 @@ namespace Ogre
     class SceneNode;
 }
 
+class OBB;
 class World;
 
 class GameObject
 {
 public:
 
-	GameObject(World *world, Ogre::SceneManager *sceneManager); 
+	enum ObjectType { PLAYER, NOTPLAYER };
+	ObjectType getType() { return objType; }
+
+	GameObject(World *world, Ogre::SceneManager *sceneManager, ObjectType gameObjType); 
 
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 	void Think(float time);
@@ -36,7 +40,20 @@ public:
 	void restoreOriginalMaterial();
 	Ogre::SceneNode *getSceneNode() { return mSceneNode; }
 
+	
 	void translate(Ogre::Vector3 vector); 
+	
+	bool collides(GameObject *other, Ogre::Vector3 &MTD);
+    bool collides(const GameObject &other, Ogre::Vector3 &MTD);
+
+	Ogre::Vector3 minPointLocalScaled();
+	Ogre::Vector3 maxPointLocalScaled();
+
+	void setPosition(Ogre::Vector3 newPosition);
+	void setOrientation(Ogre::Quaternion newOrientation);
+
+	Ogre::Vector3 getPosition() { return mPosition; }
+    Ogre::Quaternion getOrientation() { return mOrentation; }
 
 protected:
     Ogre::SceneNode *mSceneNode;
@@ -45,5 +62,12 @@ protected:
 	Ogre::Entity *mEntity;
 	Ogre::String mMaterialName;
 	World *mWorld;
+
+	Ogre::Vector3 mMinPointLocal;
+	Ogre::Vector3 mMaxPointLocal;
+	ObjectType objType;
+	OBB *mCollision;
+    Ogre::Vector3 mPosition;
+    Ogre::Quaternion mOrentation;
 };
 
