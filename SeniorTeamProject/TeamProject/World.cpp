@@ -28,6 +28,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 {
 	// Global illumination for now.  Adding individual light sources will make you scene look more realistic
 	mSceneManager->setAmbientLight(Ogre::ColourValue(1,1,1));
+	
 	mSceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
 	Ogre::Light* pointLight = mSceneManager->createLight("pointLight");
@@ -50,6 +51,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
     spotLight->setPosition(Ogre::Vector3(300, 300, 0));
  
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
+	
 
 	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
 	while (iter.hasMoreElements()) 
@@ -76,9 +78,13 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	mGameObject->setScale(Ogre::Vector3(3, 3, 3));
 	mGameObject->setPosition(Ogre::Vector3(0, 0, 0));
 
+	plain = new GameObject(this, mSceneManager, GameObject::NOTPLAYER);
+	plain->loadModel("terrain.MESH.mesh");
+	plain->setScale(Ogre::Vector3(.5, .5, .5));
+	plain->setPosition(Ogre::Vector3(0, -25, 0));
+
 	/*Quick and Dirty list of gameobjects*/
 	gameObjects.push_front(mGameObject);
-
 
 }
 

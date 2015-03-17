@@ -149,7 +149,7 @@ protected:
 class SessionListener
 {
 public:
- virtual void StartSession() { }
+  virtual void StartSession() { }
   virtual void EndSession() { }
 
 protected:

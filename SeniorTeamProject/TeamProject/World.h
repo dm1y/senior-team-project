@@ -18,7 +18,6 @@ class InputHandler;
 class Player;
 class Kinect;
 
-
 class World
 {
 public:
@@ -47,8 +46,11 @@ protected:
 	Player *mPlayer;
 
 	GameObject *mGameObject;
+	GameObject *plain;
+
 
 	list<GameObject*> gameObjects;
+
 };
 
 #endif
