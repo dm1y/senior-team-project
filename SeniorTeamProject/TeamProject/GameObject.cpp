@@ -14,6 +14,7 @@ GameObject::GameObject(World *world, Ogre::SceneManager *sceneManager, ObjectTyp
     mSceneNode = SceneManager()->getRootSceneNode()->createChildSceneNode();
 }
 
+
 void GameObject::setScale(Ogre::Vector3 newScale)
 {
 	mScale = newScale;
@@ -26,6 +27,10 @@ void GameObject::setScale(Ogre::Vector3 newScale)
 	mCollision->setScale(newScale);
 }
 
+
+/* Attaches a mesh named <modelName> to the GameObject instance's
+ * scene node.
+ */
 void GameObject::loadModel(Ogre::String modelName)
 {
     mEntity = SceneManager()->createEntity(modelName);
@@ -34,8 +39,8 @@ void GameObject::loadModel(Ogre::String modelName)
 	mCollision = new OBB(mEntity->getBoundingBox());
 	mMaxPointLocal = mEntity->getBoundingBox().getMaximum();
 	mMinPointLocal =  mEntity->getBoundingBox().getMinimum();
-
 }
+
 
 void GameObject::setMaterial(Ogre::String materialName)
 {
@@ -135,4 +140,9 @@ void GameObject::roll(Ogre::Radian r)
     mSceneNode->roll(r);
 //    mCollision->setOrientation(mSceneNode->getOrientation());
     mCollision->setOrientation(mSceneNode->getOrientation());
+}
+
+void GameObject::Think(float time) {
+
+
 }

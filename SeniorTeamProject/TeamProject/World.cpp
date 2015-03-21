@@ -26,6 +26,10 @@
 World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor)
 {
+	physManager = new PhysicsManager();
+	physManager->addPlane();
+
+
 	// Global illumination for now.  Adding individual light sources will make you scene look more realistic
 	mSceneManager->setAmbientLight(Ogre::ColourValue(1,1,1));
 	
@@ -53,11 +57,10 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
 	
 
-	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
-	while (iter.hasMoreElements()) 
-	{ 
-		iter.getNext()->load(); 
+	for(int i = 0; i < 10; i++) {
+		coins.push_back(new Coin(Ogre::Vector3(i * 3 % 2,20,20), sceneManager, physManager));
 	}
+<<<<<<< HEAD
 
 	// Now we will show the sample overlay.  Look in the file Content/Overlays/Example to
 	// see how this overlay is defined
@@ -86,19 +89,19 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	/*Quick and Dirty list of gameobjects*/
 	gameObjects.push_front(mGameObject);
 
+=======
+>>>>>>> origin/Moscow
 }
 
 
 void 
 World::Think(float time)
 {
-	const float RADIANS_PER_SECOND = 0.5;
-	const float COIN_SPEED = 30;
+	physManager->stepSimulation(time);
 
-	mPlayer->Think(time);
-	
-	mGameObject->pitch(Ogre::Radian(time * RADIANS_PER_SECOND));
-
+	for (std::list<Coin*>::iterator it = coins.begin(); it != coins.end(); it++) {
+		it._Ptr->_Myval->update();
+	}
 }
 
 

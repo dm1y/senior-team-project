@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;C:\Users\Jordan\Desktop\bullet3-master\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -112,11 +112,13 @@ copy resources.cfg "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Kinect.h" />
     <ClInclude Include="MainListener.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Receivers.h" />
     <ClInclude Include="TeamProject.h" />
@@ -124,15 +126,30 @@ copy resources.cfg "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="PhysObject.h" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Kinect.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainListener.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PhysObject.cpp" />
     <ClCompile Include="TeamProject.cpp" />
     <ClCompile Include="World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Desktop\bullet3-master\build3\vs2010\BulletCollision.vcxproj">
+      <Project>{6aa8d57a-d40b-8342-979c-6b0956ad20a6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Desktop\bullet3-master\build3\vs2010\BulletDynamics.vcxproj">
+      <Project>{24756162-2a89-e44a-9c6f-001f802a472c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Desktop\bullet3-master\build3\vs2010\LinearMath.vcxproj">
+      <Project>{3c0698dc-e11b-4d4e-bfff-e3a35ab4cad3}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
