@@ -1,24 +1,7 @@
-material TunaBlue
+material Orange
 {
-	technique
-	{
-		pass
-		{
-			texture_unit
-			{
-				texture tunauvw.jpg
-			}
-
-
-		}
-
-	}
-
-}
-
-
-material TunaMetal
-{
+    receive_shadows on
+	
 	technique
 	{
 		pass

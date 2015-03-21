@@ -81,11 +81,9 @@ TeamProject::createScene()
 	//   or, if you need circular accesses (player needs access to the world, and the world needs
 	//   access to the player), you can add the pointers later.  Here's an example of both ways
 	//   of doing it, giving the world access to the camera and the input handler.
-
-	mWorld = new World(mSceneMgr, mInputHandler, mKinect);
-    mGameCamera = new GameCamera(mCamera, mWorld, mInputHandler);
-
-	mWorld->addCamera(mGameCamera);
+	mGameCamera = new GameCamera(mCamera, mInputHandler);
+	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera);
+    
 
 	mKinect = new Kinect();
 	mKinect->initSensor();

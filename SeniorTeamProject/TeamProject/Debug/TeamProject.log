@@ -1,9 +1,9 @@
-﻿Build started 3/21/2015 12:38:03 AM.
+﻿Build started 3/21/2015 4:46:38 AM.
      1>Project "C:\Users\Jordan\senior-team-project\SeniorTeamProject\TeamProject\TeamProject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/include/OGRE/Overlay" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/boost/" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/include/OIS" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/include/OGRE" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/include" /I"C:\Users\Jordan\Desktop\bullet3-master\src" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt World.cpp
          World.cpp
-     1>c:\users\jordan\senior-team-project\seniorteamproject\teamproject\world.cpp(59): warning C4244: 'argument' : conversion from 'int' to 'const Ogre::Real', possible loss of data
+     1>c:\users\jordan\senior-team-project\seniorteamproject\teamproject\world.cpp(68): warning C4244: 'argument' : conversion from 'int' to 'const Ogre::Real', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\TeamProject.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\Microsoft SDKs\Kinect\v1.8\lib\x86" /LIBPATH:"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/boost/lib" /LIBPATH:"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/lib/Debug" OIS_d.lib OgreMain_d.lib OgreOverlay_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\TeamProject.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\TeamProject.lib" /MACHINE:X86 Debug\Camera.obj
          Debug\Coin.obj
@@ -17,6 +17,7 @@
          Debug\PhysicsManager.obj
          Debug\Player.obj
          Debug\PhysObject.obj
+         Debug\StaticScenery.obj
          Debug\TeamProject.obj
          Debug\World.obj
          "C:\Users\Jordan\Desktop\bullet3-master\bin\BulletCollision_vs2010_debug.lib"
@@ -52,4 +53,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:01:00.01
+Time Elapsed 00:01:02.33

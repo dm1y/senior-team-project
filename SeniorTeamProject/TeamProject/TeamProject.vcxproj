@@ -121,6 +121,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Receivers.h" />
+    <ClInclude Include="StaticScenery.h" />
     <ClInclude Include="TeamProject.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
@@ -137,6 +138,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PhysObject.cpp" />
+    <ClCompile Include="StaticScenery.cpp" />
     <ClCompile Include="TeamProject.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
