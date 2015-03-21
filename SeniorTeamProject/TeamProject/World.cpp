@@ -55,10 +55,9 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
  
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
 
-	for(int i = 0; i < 50; i++) {
-		coins.push_back(new Coin(Ogre::Vector3(i * 2,20,20), sceneManager, physManager));
+	for(int i = 0; i < 10; i++) {
+		coins.push_back(new Coin(Ogre::Vector3(i * 3 % 2,20,20), sceneManager, physManager));
 	}
-
 }
 
 
