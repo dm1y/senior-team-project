@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="test">
+      <UniqueIdentifier>{D223FD03-9170-E04B-9FBB-5C1EE69F93DB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\lua">
+      <UniqueIdentifier>{7007E78C-76B8-2C4E-B142-C5264DF9F37F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\test\lua\main.cpp">
+      <Filter>test\lua</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

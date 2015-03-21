@@ -55,10 +55,9 @@ protected:
 
 	list<GameObject*> gameObjects;
 
-<<<<<<< HEAD
-=======
+
 	list<Coin*> coins;
->>>>>>> origin/Moscow
+
 };
 
 #endif

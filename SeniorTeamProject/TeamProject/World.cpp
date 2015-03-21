@@ -60,7 +60,6 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	for(int i = 0; i < 10; i++) {
 		coins.push_back(new Coin(Ogre::Vector3(i * 3 % 2,20,20), sceneManager, physManager));
 	}
-<<<<<<< HEAD
 
 	// Now we will show the sample overlay.  Look in the file Content/Overlays/Example to
 	// see how this overlay is defined
@@ -89,8 +88,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	/*Quick and Dirty list of gameobjects*/
 	gameObjects.push_front(mGameObject);
 
-=======
->>>>>>> origin/Moscow
+
 }
 
 

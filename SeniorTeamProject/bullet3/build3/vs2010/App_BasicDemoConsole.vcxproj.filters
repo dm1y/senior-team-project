@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Demos3">
+      <UniqueIdentifier>{90AF56AD-CA26-0949-ABF0-F30ACAA39642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos3\BasicDemoConsole">
+      <UniqueIdentifier>{ABE64310-6037-8240-9CE6-54BEF6CFB110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{912F29B3-440C-4D48-BAE6-4B1C4CD26F3D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos\BasicDemo">
+      <UniqueIdentifier>{AF1231DA-2CD4-474F-8630-5E9B548A7778}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Demos\BasicDemo\BasicDemoPhysicsSetup.h">
+      <Filter>Demos\BasicDemo</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Demos3\BasicDemoConsole\main.cpp">
+      <Filter>Demos3\BasicDemoConsole</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Demos\BasicDemo\BasicDemoPhysicsSetup.cpp">
+      <Filter>Demos\BasicDemo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\bullet.rc" />
+  </ItemGroup>
+</Project>

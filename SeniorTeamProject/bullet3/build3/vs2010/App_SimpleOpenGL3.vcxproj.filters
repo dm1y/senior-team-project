@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="btgui">
+      <UniqueIdentifier>{783276A4-05DC-A94B-98DA-DB294AD9F768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="btgui\OpenGLWindow">
+      <UniqueIdentifier>{5FFED9E9-9F9D-3543-A8FC-AB8CE2ADD806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="btgui\OpenGLWindow\GlewWindows">
+      <UniqueIdentifier>{A0921C64-6C61-2749-AF8A-02E1B35CEB4A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos3">
+      <UniqueIdentifier>{047D54B8-4D5E-5141-8D42-48A5EA84AD59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos3\SimpleOpenGL3">
+      <UniqueIdentifier>{A5FB8F05-D427-2F44-87C6-E96018479705}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\btgui\OpenGLWindow\GlewWindows\glew.c">
+      <Filter>btgui\OpenGLWindow\GlewWindows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Demos3\SimpleOpenGL3\main.cpp">
+      <Filter>Demos3\SimpleOpenGL3</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

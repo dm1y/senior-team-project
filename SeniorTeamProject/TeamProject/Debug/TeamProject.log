@@ -1,33 +1,37 @@
-﻿Build started 3/21/2015 2:25:56 AM.
+﻿Build started 3/21/2015 3:00:33 AM.
      1>Project "C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\TeamProject\TeamProject.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include/OGRE/Overlay" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/boost/" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include/OIS" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include/OGRE" /I"C:\OGRE\OgreSDK_vc11_v1-9-0/include" /I"../bullet3-master/src" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp Coin.cpp GameObject.cpp InputHandler.cpp Kinect.cpp MainListener.cpp PhysObject.cpp PhysObject.h PhysicsManager.cpp Player.cpp TeamProject.cpp World.cpp main.cpp
-         main.cpp
-         World.cpp
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\physicsmanager.h(3): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         TeamProject.cpp
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\physicsmanager.h(3): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         Player.cpp
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\physicsmanager.h(3): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         PhysicsManager.cpp
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\physicsmanager.h(3): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         PhysObject.h
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\physicsmanager.h(3): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         PhysObject.cpp
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\physicsmanager.h(3): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         MainListener.cpp
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\physicsmanager.h(3): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         Kinect.cpp
-         InputHandler.cpp
-         GameObject.cpp
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\physicsmanager.h(3): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         Coin.cpp
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\coin.h(6): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         Camera.cpp
-     1>c:\users\diana\documents\github\senior-team-project\seniorteamproject\teamproject\physicsmanager.h(3): fatal error C1083: Cannot open include file: 'btBulletDynamicsCommon.h': No such file or directory
-         Generating Code...
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\Debug\TeamProject.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\Microsoft SDKs\Kinect\v1.8\lib\x86" /LIBPATH:"C:\OGRE\OgreSDK_vc11_v1-9-0/boost/lib" /LIBPATH:"C:\OGRE\OgreSDK_vc11_v1-9-0/lib/Debug" OIS_d.lib OgreMain_d.lib OgreOverlay_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\Debug\TeamProject.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\Debug\TeamProject.lib" /MACHINE:X86 Debug\Camera.obj
+         Debug\Coin.obj
+         Debug\CollisionManager.obj
+         Debug\GameObject.obj
+         Debug\PhysObject.obj
+         Debug\InputHandler.obj
+         Debug\Kinect.obj
+         Debug\main.obj
+         Debug\MainListener.obj
+         Debug\PhysicsManager.obj
+         Debug\Player.obj
+         Debug\PhysObject.obj
+         Debug\TeamProject.obj
+         Debug\World.obj
+     1>Debug\PhysObject.obj : warning LNK4042: object specified more than once; extras ignored
+     1>Coin.obj : error LNK2019: unresolved external symbol "void * __cdecl btAlignedAllocInternal(unsigned int,int)" (?btAlignedAllocInternal@@YAPAXIH@Z) referenced in function "public: static void * __cdecl btCollisionObject::operator new(unsigned int)" (??2btCollisionObject@@SAPAXI@Z)
+     1>PhysicsManager.obj : error LNK2001: unresolved external symbol "void * __cdecl btAlignedAllocInternal(unsigned int,int)" (?btAlignedAllocInternal@@YAPAXIH@Z)
+     1>Coin.obj : error LNK2019: unresolved external symbol "void __cdecl btAlignedFreeInternal(void *)" (?btAlignedFreeInternal@@YAXPAX@Z) referenced in function "public: static void __cdecl btCollisionObject::operator delete(void *)" (??3btCollisionObject@@SAXPAX@Z)
+     1>PhysicsManager.obj : error LNK2001: unresolved external symbol "void __cdecl btAlignedFreeInternal(void *)" (?btAlignedFreeInternal@@YAXPAX@Z)
+     1>Coin.obj : error LNK2019: unresolved external symbol "public: __thiscall btCylinderShape::btCylinderShape(class btVector3 const &)" (??0btCylinderShape@@QAE@ABVbtVector3@@@Z) referenced in function "void __cdecl `dynamic initializer for 'public: static class btCollisionShape * Coin::coinHitBox''(void)" (??__E?coinHitBox@Coin@@2PAVbtCollisionShape@@A@@YAXXZ)
+     1>Coin.obj : error LNK2019: unresolved external symbol "public: __thiscall btRigidBody::btRigidBody(struct btRigidBody::btRigidBodyConstructionInfo const &)" (??0btRigidBody@@QAE@ABUbtRigidBodyConstructionInfo@0@@Z) referenced in function "public: __thiscall Coin::Coin(class Ogre::Vector3,class Ogre::SceneManager *,class PhysicsManager *)" (??0Coin@@QAE@VVector3@Ogre@@PAVSceneManager@2@PAVPhysicsManager@@@Z)
+     1>PhysicsManager.obj : error LNK2001: unresolved external symbol "public: __thiscall btRigidBody::btRigidBody(struct btRigidBody::btRigidBodyConstructionInfo const &)" (??0btRigidBody@@QAE@ABUbtRigidBodyConstructionInfo@0@@Z)
+     1>PhysicsManager.obj : error LNK2019: unresolved external symbol "public: __thiscall btCollisionDispatcher::btCollisionDispatcher(class btCollisionConfiguration *)" (??0btCollisionDispatcher@@QAE@PAVbtCollisionConfiguration@@@Z) referenced in function "public: __thiscall PhysicsManager::PhysicsManager(void)" (??0PhysicsManager@@QAE@XZ)
+     1>PhysicsManager.obj : error LNK2019: unresolved external symbol "public: __thiscall btStaticPlaneShape::btStaticPlaneShape(class btVector3 const &,float)" (??0btStaticPlaneShape@@QAE@ABVbtVector3@@M@Z) referenced in function "public: void __thiscall PhysicsManager::addPlane(void)" (?addPlane@PhysicsManager@@QAEXXZ)
+     1>PhysicsManager.obj : error LNK2019: unresolved external symbol "public: __thiscall btDefaultCollisionConfiguration::btDefaultCollisionConfiguration(struct btDefaultCollisionConstructionInfo const &)" (??0btDefaultCollisionConfiguration@@QAE@ABUbtDefaultCollisionConstructionInfo@@@Z) referenced in function "public: __thiscall PhysicsManager::PhysicsManager(void)" (??0PhysicsManager@@QAE@XZ)
+     1>PhysicsManager.obj : error LNK2019: unresolved external symbol "public: __thiscall btDbvtBroadphase::btDbvtBroadphase(class btOverlappingPairCache *)" (??0btDbvtBroadphase@@QAE@PAVbtOverlappingPairCache@@@Z) referenced in function "public: __thiscall PhysicsManager::PhysicsManager(void)" (??0PhysicsManager@@QAE@XZ)
+     1>PhysicsManager.obj : error LNK2019: unresolved external symbol "public: __thiscall btDiscreteDynamicsWorld::btDiscreteDynamicsWorld(class btDispatcher *,class btBroadphaseInterface *,class btConstraintSolver *,class btCollisionConfiguration *)" (??0btDiscreteDynamicsWorld@@QAE@PAVbtDispatcher@@PAVbtBroadphaseInterface@@PAVbtConstraintSolver@@PAVbtCollisionConfiguration@@@Z) referenced in function "public: __thiscall PhysicsManager::PhysicsManager(void)" (??0PhysicsManager@@QAE@XZ)
+     1>PhysicsManager.obj : error LNK2019: unresolved external symbol "public: __thiscall btSequentialImpulseConstraintSolver::btSequentialImpulseConstraintSolver(void)" (??0btSequentialImpulseConstraintSolver@@QAE@XZ) referenced in function "public: __thiscall PhysicsManager::PhysicsManager(void)" (??0PhysicsManager@@QAE@XZ)
+     1>C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\Debug\TeamProject.exe : fatal error LNK1120: 10 unresolved externals
      1>Done Building Project "C:\Users\Diana\Documents\GitHub\senior-team-project\SeniorTeamProject\TeamProject\TeamProject.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:02:12.08
+Time Elapsed 00:00:00.26
