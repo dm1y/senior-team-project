@@ -3,7 +3,7 @@
 
 #include <list>
 #include "PhysicsManager.h"
-#include "PhysObject.h"
+#include "Coin.h"
 
 // Forward delcarations of Ogre classes.  Note the Ogre namespace!
 namespace Ogre {
@@ -54,7 +54,7 @@ protected:
 
 	list<GameObject*> gameObjects;
 
-	list<PhysObject*> physObjects;
+	list<Coin*> coins;
 };
 
 #endif

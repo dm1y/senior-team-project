@@ -112,6 +112,7 @@ copy resources.cfg "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Kinect.h" />
@@ -125,6 +126,7 @@ copy resources.cfg "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="PhysObject.h" />

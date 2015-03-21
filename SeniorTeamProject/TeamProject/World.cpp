@@ -22,8 +22,6 @@
 #include "Player.h"
 #include "Kinect.h"
 #include <list>
-#include "btBulletDynamicsCommon.h"
-#include "PhysObject.h"
 
 World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor)
@@ -57,32 +55,8 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
  
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
 
-	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
-	while (iter.hasMoreElements()) 
-	{ 
-		iter.getNext()->load(); 
-	}
-
-	// Now we will show the sample overlay.  Look in the file Content/Overlays/Example to
-	// see how this overlay is defined
-	Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
-	Ogre::Overlay *overly = om.getByName("Sample");
-//	overly->show();
-
-	mPlayer = new Player (this, mKinect, mSceneManager, mInputHandler);
-	mPlayer->addOgreEntity("tunacan.MESH.mesh");
-	//mPlayer->addOgreEntity("coin.mesh");
-	mPlayer->setScale(Ogre::Vector3(.5, .5, .5));
-
-	// For testing purposes 
-	mPlayer->setOverlay(overly);
-
-	PhysObject *p1;
-
 	for(int i = 0; i < 50; i++) {
-		p1 = new PhysObject(mSceneManager, "coin.mesh", Ogre::Vector3((i*2) % 5, 20, i*2), physManager);
-		p1->mSceneNode->setScale(3,3,3);
-		physObjects.push_back(p1);
+		coins.push_back(new Coin(Ogre::Vector3(i * 2,20,20), sceneManager, physManager));
 	}
 
 }
@@ -91,22 +65,11 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 void 
 World::Think(float time)
 {
-	const float RADIANS_PER_SECOND = 0.5;
-	const float COIN_SPEED = 30;
-
 	physManager->stepSimulation(time);
-	mPlayer->Think(time);	
 
-	int i = 0;
-	for (std::list<PhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) {
-		if(i%2 ==0) {
-			// it._Ptr->_Myval->fallRigidBody->applyForce(btVector3(5,0,0),btVector3(0,0,0));
-		}
-		it._Ptr->_Myval->Think(time);
-		i++;
+	for (std::list<Coin*>::iterator it = coins.begin(); it != coins.end(); it++) {
+		it._Ptr->_Myval->update();
 	}
-
-
 }
 
 

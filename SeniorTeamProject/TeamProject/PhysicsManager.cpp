@@ -27,22 +27,6 @@ PhysicsManager::~PhysicsManager() {
     delete _broadphase;
 }
 
-void PhysicsManager::addBall(btVector3* initialPos) {
-	
-	// create the collision shape and other data needed to make the rigid body
-	btCollisionShape* fallShape = new btSphereShape(1);
-	btDefaultMotionState* fallMotionState =
-		new btDefaultMotionState(btTransform(btQuaternion(90, 3, 20, 45), *initialPos));
-	btScalar mass = 1;
-    btVector3 fallInertia(0, 0, 0);
-    fallShape->calculateLocalInertia(mass, fallInertia);
-
-	// construct the rigid body and add it to the world
-	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, fallShape, fallInertia);
-    btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
-    _world->addRigidBody(fallRigidBody);
-}
-
 void PhysicsManager::addPlane() {
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
 	btDefaultMotionState* groundMotionState =
