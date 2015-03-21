@@ -2,6 +2,8 @@
 #define __World_h_
 
 #include <list>
+#include "PhysicsManager.h"
+#include "PhysObject.h"
 
 // Forward delcarations of Ogre classes.  Note the Ogre namespace!
 namespace Ogre {
@@ -35,6 +37,8 @@ public:
 
 	list<GameObject*> getWorldObjects() { return gameObjects; } 
 
+	PhysicsManager *physManager;
+
 protected:
 
 	Ogre::SceneManager *mSceneManager;
@@ -49,6 +53,8 @@ protected:
 	GameObject *mGameObject;
 
 	list<GameObject*> gameObjects;
+
+	list<PhysObject*> physObjects;
 };
 
 #endif
