@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;../bullet3/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;..\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -85,7 +85,7 @@ copy resources_d.cfg "$(OutDir)"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;..\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,6 +121,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Receivers.h" />
+    <ClInclude Include="StaticScenery.h" />
     <ClInclude Include="TeamProject.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
@@ -137,8 +138,20 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PhysObject.cpp" />
+    <ClCompile Include="StaticScenery.cpp" />
     <ClCompile Include="TeamProject.cpp" />
     <ClCompile Include="World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bullet\build3\vs2010\BulletCollision.vcxproj">
+      <Project>{3c122656-b460-dc4f-9a8e-78e9471242d6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Bullet\build3\vs2010\BulletDynamics.vcxproj">
+      <Project>{2c1e6445-b58c-7d4f-9879-5ecae7cc22f5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Bullet\build3\vs2010\LinearMath.vcxproj">
+      <Project>{d59ca651-7719-8448-8372-e0ca39ce1491}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

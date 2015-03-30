@@ -3,7 +3,7 @@
 /* Initialize static hitbox data
  * The collision box is static since it is the same for all coins.
  */
-btCollisionShape * Coin::coinHitBox = new btCylinderShape(btVector3(5, 5, 5));
+btCollisionShape * Coin::coinHitBox = new btCylinderShape(btVector3(1, 1, 1));
 
 Coin::Coin(Ogre::Vector3 position, Ogre::SceneManager *sceneManager, PhysicsManager *physManager) {
 	
@@ -13,6 +13,7 @@ Coin::Coin(Ogre::Vector3 position, Ogre::SceneManager *sceneManager, PhysicsMana
 
 	// attach the model entity
 	Ogre::Entity *mEntity = sceneManager->createEntity("coin.mesh");
+	mEntity->setCastShadows(true);
 	mSceneNode->attachObject(mEntity);
 
 	// setup rigid body for physics
@@ -27,6 +28,8 @@ Coin::Coin(Ogre::Vector3 position, Ogre::SceneManager *sceneManager, PhysicsMana
     fallRigidBodyCI.m_restitution = 1.0f;
 	fallRigidBody = new btRigidBody(fallRigidBodyCI);
     physManager->_world->addRigidBody(fallRigidBody);
+
+
 }
 
 void Coin::synchWithBullet() {

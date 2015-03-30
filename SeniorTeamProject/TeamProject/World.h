@@ -20,11 +20,12 @@ class InputHandler;
 class Player;
 class Kinect;
 
+
 class World
 {
 public:
 	
-    World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor);
+    World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera);
 
     // You'll want various methods to access & change your world here
     
@@ -50,14 +51,10 @@ protected:
 	Player *mPlayer;
 
 	GameObject *mGameObject;
-	GameObject *plain;
-
 
 	list<GameObject*> gameObjects;
 
-
 	list<Coin*> coins;
-
 };
 
 #endif

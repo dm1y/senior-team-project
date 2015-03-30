@@ -15,15 +15,13 @@ class GameCamera
 {
 
 public:
-    GameCamera(Ogre::Camera *renderCamera, World *world, InputHandler *input); 
+    GameCamera(Ogre::Camera *renderCamera, InputHandler *input); 
+	Ogre::Camera *mRenderCamera; 
     void Think(float time);
     // If you have a different cameras, you'll want some acessor methods here.
     //  If your camera always stays still, you could remove this class entirely
-
 protected:
 
-    Ogre::Camera *mRenderCamera; 
-    World *mWorld;
 	InputHandler *mInputHandler;
 };
 
