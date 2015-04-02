@@ -14,6 +14,8 @@ GameObject::GameObject(Ogre::Vector3 position, PhysicsManager *physManager, Worl
 
 	mSceneNode->setPosition(position);
 
+	hitBox = new btCylinderShape(btVector3(5, 5, 5));
+
 }
 
 
@@ -23,26 +25,25 @@ void GameObject::setScale(Ogre::Vector3 newScale)
 	mSceneNode->setScale(newScale);
 
 	//mCollision->setScale(newScale);
-    mOrientation = Ogre::Quaternion::IDENTITY;
-    mPosition = Ogre::Vector3::ZERO;
+    //mOrientation = Ogre::Quaternion::IDENTITY;
+    //mPosition = Ogre::Vector3::ZERO;
 
 //	mCollision->setScale(newScale);
 }
 
 void GameObject::setRigidBody() 
 {
-	btCollisionShape* fallShape = new btCylinderShape(btVector3(5, 5, 5));
-
 	btDefaultMotionState* fallMotionState =
 		new btDefaultMotionState( btTransform(btQuaternion(0, 0, 0, 1), btVector3(mPosition.x, mPosition.y, mPosition.z)));
 	btScalar mass = 5;
     btVector3 fallInertia(0, 0, 0);
-    fallShape->calculateLocalInertia(mass, fallInertia);
+    hitBox->calculateLocalInertia(mass, fallInertia);
 
 	// construct the rigid body and add it to the world
-	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, fallShape, fallInertia);
+	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, hitBox, fallInertia);
     fallRigidBodyCI.m_restitution = 1.0f;
 	fallRigidBody = new btRigidBody(fallRigidBodyCI);
+	fallRigidBody->setUserPointer(mSceneNode);
 	mPhysManager->_world->addRigidBody(fallRigidBody);
 }
 
@@ -96,6 +97,7 @@ void GameObject::translate(Ogre::Vector3 delta)
 	mPosition += delta;
 
 	mSceneNode->setPosition(mPosition);
+
 }
 
 Ogre::Vector3 

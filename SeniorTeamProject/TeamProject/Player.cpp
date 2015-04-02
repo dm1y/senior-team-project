@@ -90,13 +90,34 @@ Player::Think(float time)
 	//mSceneNode->setOrientation(Qw, Qx, Qy, Qz);
 
 	Ogre::Vector3 pos = mPlayerObject->getPosition();
+	btVector3 Point = mPlayerObject->getFallRigidBody()->getCenterOfMassPosition();
+	btVector3 test = mPlayerObject->getFallRigidBody()->getAngularVelocity();
+	//btRigidBody *playerR = mPlayerObject->getFallRigidBody(); 
+    //node->setPosition(Ogre::Vector3((float)Point[0], (float)Point[1], (float)Point[2]));
+
+	btTransform trans;
+	mPlayerObject->getFallRigidBody()->getMotionState()->getWorldTransform(trans); 
+	//trans.setOrigin(); 
+	//trans.setOrigin(BtOgre::Convert::toBullet(absPos));
+	/*tr.setOrigin(BtOgre::Convert::toBullet(absPos));
+	tr.setRotation(BtOgre::Convert::toBullet(absOrient));
+	rigid->getMotionState()->setWorldTransform(tr);*/
 
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
 	{
 		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
 		{
-			mPlayerObject->translate(Ogre::Vector3(time * COIN_SPEED, 0, 0)); 
+			Ogre::Real x = trans.getOrigin().getX() * time * COIN_SPEED;
+				Ogre::Real y = trans.getOrigin().getY();
+				Ogre::Real z = trans.getOrigin().getZ();
+				mPlayerObject->getSceneNode()->setPosition(Ogre::Vector3(x, y, z));
+				trans.setOrigin(btVector3(trans.getOrigin().getX() * time * COIN_SPEED, trans.getOrigin().getY(), trans.getOrigin().getZ()));
+				mPlayerObject->getFallRigidBody()->getMotionState()->setWorldTransform(trans);
+				
+			//mPlayerObject->setPosition(Ogre::Vector3((float)test[0] - COIN_SPEED, (float)Point[1], (float)Point[2]));
+			//mPlayerObject->getFallRigidBody()->setAngularVelocity(btVector3(test.getX() * time, test.getY(), test.getZ()));
+			//mPlayerObject->translate(Ogre::Vector3(time * COIN_SPEED, 0, 0)); 
 			//mPlayerObject->setPosition(Ogre::Vector3(time * pos.x, 0, 0));
 //			mPlayerObject->translate(Ogre::Vector3(time * COIN_SPEED, 0, 0));
 		}
