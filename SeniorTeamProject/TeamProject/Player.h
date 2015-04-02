@@ -8,6 +8,7 @@
 #include "OgreOverlay.h"
 #include "OgreFontManager.h"
 #include "OgreTextAreaOverlayElement.h"
+#include "PhysicsManager.h"
 
 // Forward delcarations of Ogre classes.  Note the Ogre namespace!
 namespace Ogre {
@@ -24,7 +25,7 @@ class Player
 {
 public:
 
-	Player(World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input);
+	Player(Ogre::Vector3 position, PhysicsManager *physManager, World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input);
 
 	void addOgreEntity(Ogre::String mesh); 
 	void setScale(Ogre::Vector3 v);
@@ -44,8 +45,7 @@ public:
 
 	GameObject *getGameObject() { return mPlayerObject; }
 
-	void checkCollision();
-
+	void setPosition (Ogre::Vector3 p);
 
 protected:
 

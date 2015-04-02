@@ -64,9 +64,15 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
  
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
 
-	for(int i = 0; i < 60; i++) {
-		coins.push_back(new Coin(Ogre::Vector3(i * 2 % 3,100,20), sceneManager, physManager));
-	}
+	//for(int i = 0; i < 60; i++) {
+	//	coins.push_back(new Coin(Ogre::Vector3(i * 2 % 3,100,20), sceneManager, physManager));
+	//}
+
+	mPlayer = new Player(Ogre::Vector3(0, 100, 10), physManager, this, mKinect, mSceneManager, mInputHandler);
+	//mPlayer = new Player (this, mKinect, mSceneManager, mInputHandler);
+	mPlayer->addOgreEntity("tunacan.MESH.mesh");
+	//mPlayer->addOgreEntity("coin.mesh");
+	mPlayer->setScale(Ogre::Vector3(.5, .5, .5));
 }
 
 
@@ -74,10 +80,11 @@ void
 World::Think(float time)
 {
 	physManager->stepSimulation(time);
+	mPlayer->Think(time);
 
-	for (std::list<Coin*>::iterator it = coins.begin(); it != coins.end(); it++) {
-		it._Ptr->_Myval->update();
-	}
+	//for (std::list<Coin*>::iterator it = coins.begin(); it != coins.end(); it++) {
+	//	it._Ptr->_Myval->update();
+	//}
 }
 
 

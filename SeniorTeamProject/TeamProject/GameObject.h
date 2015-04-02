@@ -1,5 +1,7 @@
 #include "OgreString.h"
 #include "OgreVector3.h"
+#include "btBulletDynamicsCommon.h"
+#include "PhysicsManager.h"
 
 namespace Ogre
 {
@@ -7,7 +9,6 @@ namespace Ogre
     class SceneNode;
 }
 
-class OBB;
 class World;
 
 class GameObject
@@ -17,7 +18,7 @@ public:
 	enum ObjectType { PLAYER, NOTPLAYER };
 	ObjectType getType() { return objType; }
 
-	GameObject(World *world, Ogre::SceneManager *sceneManager, ObjectType gameObjType);
+	GameObject(Ogre::Vector3 position, PhysicsManager *physManager, World *world, Ogre::SceneManager *sceneManager, ObjectType gameObjType);
 
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 	void Think(float time);
@@ -40,6 +41,8 @@ public:
 	Ogre::Vector3 getPosition() { return mPosition; }
     Ogre::Quaternion getOrientation() { return mOrientation; }
     Ogre::Vector3 getScale() { return mScale;}
+	btRigidBody *getFallRigidBody() {return fallRigidBody; }
+	btCollisionShape *getHitBox() {return hitBox; }
 
 	void setMaterial(Ogre::String materialName);
 	void restoreOriginalMaterial();
@@ -52,6 +55,7 @@ public:
 	Ogre::Vector3 minPointLocalScaled();
 	Ogre::Vector3 maxPointLocalScaled();
 
+	void GameObject::setRigidBody() ;
 
 protected:
     Ogre::SceneNode *mSceneNode;
@@ -66,6 +70,10 @@ protected:
 	Ogre::Vector3 mMinPointLocal;
 	Ogre::Vector3 mMaxPointLocal;
 	ObjectType objType;
-	OBB *mCollision;
+	PhysicsManager *mPhysManager;
+
+	btRigidBody *fallRigidBody;
+	btCollisionShape *hitBox;
+	
 };
 

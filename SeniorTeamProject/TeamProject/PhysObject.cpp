@@ -28,7 +28,6 @@ PhysObject::PhysObject(Ogre::SceneManager *sceneManager, Ogre::String modelName,
 }
 
 void PhysObject::Think(float time) {
-
 	btTransform trans;
     fallRigidBody->getMotionState()->getWorldTransform(trans);	
 	Ogre::Real x = trans.getOrigin().getX();
