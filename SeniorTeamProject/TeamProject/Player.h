@@ -38,7 +38,8 @@ public:
 	bool getEnableKeyboard() { return mEnableKeyboard; }
 	void setEnableKeyboard(bool enable) { mEnableKeyboard = enable; }
 
-
+	void getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2);
+	std::vector<Ogre::Vector3> getSkeletonNodes();
 	// For testing purposes
 	Ogre::Overlay *setOverlay(Ogre::Overlay *o) { return overly = o;}
 

@@ -2,6 +2,8 @@
 #define __World_h_
 
 #include <list>
+#include "PhysicsManager.h"
+#include "Coin.h"
 
 // Forward delcarations of Ogre classes.  Note the Ogre namespace!
 namespace Ogre {
@@ -18,11 +20,12 @@ class InputHandler;
 class Player;
 class Kinect;
 
+
 class World
 {
 public:
 	
-    World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor);
+    World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera);
 
     // You'll want various methods to access & change your world here
     
@@ -32,7 +35,11 @@ public:
 
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 
-	list<GameObject*> getWorldObjects() { return gameObjects; } 
+	vector<GameObject*> getWorldObjects() { return gameObjects; } 
+
+	list<Coin*> getCoins() { return coins; }
+
+	PhysicsManager *physManager;
 
 protected:
 
@@ -46,11 +53,10 @@ protected:
 	Player *mPlayer;
 
 	GameObject *mGameObject;
-	GameObject *plain;
 
+	vector<GameObject*> gameObjects;
 
-	list<GameObject*> gameObjects;
-
+	list<Coin*> coins;
 };
 
 #endif

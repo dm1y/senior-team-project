@@ -37,6 +37,18 @@ public:
 	Ogre::Degree leftRightAngle() { return mLeftRightAngle; }
 	Ogre::Degree frontBackAngle() { return mFrontBackAngle; }
 
+	float fLeftRight() { return mLeftRightAngle.valueDegrees(); }
+	float fFrontBack() { return mFrontBackAngle.valueDegrees(); }
+
+	bool fStandSeat() { return standingOrSeated; }
+
+	Ogre::Vector3 getNodePositions() { return mSkelPositions[NUI_SKELETON_POSITION_COUNT]; }
+
+	Ogre::Vector3 trackRightHand() { return mSkelPositions[NUI_SKELETON_POSITION_HAND_RIGHT]; }
+	Ogre::Vector3 trackLeftHand() { return mSkelPositions[NUI_SKELETON_POSITION_HAND_LEFT]; }
+
+	std::vector<Ogre::Vector3> getSkeletonNodes();
+
     bool callibrating() { return mCallibrating; }
     void cancelCallibration();
 	void addSkelListener(KinectSkelMsgr *listener);
@@ -68,6 +80,7 @@ protected:
 	float  mTimeSinceLastLog;
 	Ogre::Vector2 baseVectorDelta;
 
+	bool standingOrSeated;
 
 	Ogre::Degree mLeftRightAngle;
 	Ogre::Degree mFrontBackAngle;

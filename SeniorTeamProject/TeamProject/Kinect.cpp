@@ -26,6 +26,17 @@ Kinect::Kinect(void)
 	mToso2Overlay->setScroll(0.65f, 0.8f);
 }
 
+std::vector<Ogre::Vector3>
+Kinect::getSkeletonNodes()
+{
+	std::vector<Ogre::Vector3> nodes;
+	for(Ogre::Vector3 sn : mSkelPositions)
+	{
+		nodes.push_back(sn);
+	}
+
+	return nodes;
+}
 
 void
 Kinect::addSkelListener(KinectSkelMsgr *listener)
@@ -58,7 +69,7 @@ Kinect::initSensor()
 	}
 
 	//DWORD nuiFlags = NUI_INITIALIZE_FLAG_USES_DEPTH_AND_PLAYER_INDEX | NUI_INITIALIZE_FLAG_USES_SKELETON |  NUI_INITIALIZE_FLAG_USES_COLOR;
-	DWORD nuiFlags =  NUI_INITIALIZE_FLAG_USES_SKELETON;
+	DWORD nuiFlags =  NUI_INITIALIZE_FLAG_USES_SKELETON | NUI_INITIALIZE_FLAG_USES_DEPTH;
 	hr = m_pNuiSensor->NuiInitialize( nuiFlags );
 
 
@@ -216,6 +227,7 @@ Kinect::updateKinectSkeleton()
 				bFoundSkeleton = true;
 			}
 		}
+		//if (NUI_SKELETON_TRACKED == )
 	}
 
 	// no skeletons!
@@ -248,8 +260,7 @@ Kinect::updateKinectSkeleton()
 		if ( SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED &&
 			SkeletonFrame.SkeletonData[i].eSkeletonPositionTrackingState[NUI_SKELETON_POSITION_SHOULDER_CENTER] != NUI_SKELETON_POSITION_NOT_TRACKED)
 		{
-			// Here's our skeleton, let's update it.  Multiple tracked skeletons could be a problem,
-			// fix that later
+
 
 			NUI_SKELETON_DATA * pSkel =  &SkeletonFrame.SkeletonData[i];
 
@@ -304,16 +315,14 @@ Kinect::updateKinectSkeleton()
 		}
 		else if ( true && SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_POSITION_ONLY )
 		{
-			// Position only, ignore for now.
 		}
 	}
-	mToso1Overlay->setRotate(Ogre::Radian(-mLeftRightAngle));
+	//mToso1Overlay->setRotate(Ogre::Radian(-mLeftRightAngle));
 
 	mToso1Overlay->setRotate(Ogre::Radian(-mLeftRightAngle));
 	mToso1Overlay->setScroll(0.85f, 0.8f);
 
 	mToso2Overlay->setRotate(Ogre::Radian(-mFrontBackAngle));
-
 	mToso2Overlay->setScroll(0.65f, 0.8f);
 #endif
 }

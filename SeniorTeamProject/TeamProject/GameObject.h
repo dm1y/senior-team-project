@@ -17,7 +17,7 @@ public:
 	enum ObjectType { PLAYER, NOTPLAYER };
 	ObjectType getType() { return objType; }
 
-	GameObject(World *world, Ogre::SceneManager *sceneManager, ObjectType gameObjType); 
+	GameObject(World *world, Ogre::SceneManager *sceneManager, ObjectType gameObjType);
 
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 	void Think(float time);
