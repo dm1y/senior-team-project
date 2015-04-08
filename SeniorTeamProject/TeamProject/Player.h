@@ -32,6 +32,7 @@ public:
 
 	void Think(float time);
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
+	//PhysicsManager *PhysManager() {return physManager;)
 
 	bool getEnableKinect() { return mEnableKinect; }
 	void setEnableKinect(bool enable) { mEnableKinect = enable; }
@@ -54,6 +55,7 @@ protected:
 	World *mWorld;
 	Kinect *mKinect;
 	GameObject *mPlayerObject;
+	PhysicsManager *mPhysManager;
 
 	// For testing purposes 
 	Ogre::Overlay *overly; 

@@ -14,8 +14,8 @@ GameObject::GameObject(Ogre::Vector3 position, PhysicsManager *physManager, Worl
 
 	mSceneNode->setPosition(position);
 
-	hitBox = new btCylinderShape(btVector3(5, 5, 5));
-
+	// TODO: Figure out dimensions of tuna can
+	hitBox = new btCylinderShape(btVector3(13, 13, 13));
 }
 
 
@@ -34,17 +34,20 @@ void GameObject::setScale(Ogre::Vector3 newScale)
 void GameObject::setRigidBody() 
 {
 	btDefaultMotionState* fallMotionState =
-		new btDefaultMotionState( btTransform(btQuaternion(0, 0, 0, 1), btVector3(mPosition.x, mPosition.y, mPosition.z)));
-	btScalar mass = 5;
+		new btDefaultMotionState( btTransform(btQuaternion(0, 0, 0, 1), 
+		btVector3(mPosition.x, mPosition.y, mPosition.z)));
+	btScalar mass = 10;
     btVector3 fallInertia(0, 0, 0);
     hitBox->calculateLocalInertia(mass, fallInertia);
 
 	// construct the rigid body and add it to the world
 	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, hitBox, fallInertia);
-    fallRigidBodyCI.m_restitution = 1.0f;
+    //fallRigidBodyCI.m_restitution = 1.0f;
 	fallRigidBody = new btRigidBody(fallRigidBodyCI);
 	fallRigidBody->setUserPointer(mSceneNode);
+	
 	mPhysManager->_world->addRigidBody(fallRigidBody);
+	
 }
 
 /* Attaches a mesh named <modelName> to the GameObject instance's
@@ -148,21 +151,4 @@ void GameObject::pitch(Ogre::Radian r)
 void GameObject::roll(Ogre::Radian r)
 {
     mSceneNode->roll(r);
-}
-
-void GameObject::Think(float time)
-{
-	btTransform trans;
-    fallRigidBody->getMotionState()->getWorldTransform(trans);	
-	Ogre::Real x = trans.getOrigin().getX();
-	Ogre::Real y = trans.getOrigin().getY();
-	Ogre::Real z = trans.getOrigin().getZ();
-
-	Ogre::Real Qx = trans.getRotation().getX();
-	Ogre::Real Qy = trans.getRotation().getY();
-	Ogre::Real Qz = trans.getRotation().getZ();
-	Ogre::Real Qw = trans.getRotation().getW();
-	mSceneNode->setPosition(Ogre::Vector3(x, y, z));
-	mSceneNode->setOrientation(Qw, Qx, Qy, Qz);
-
 }

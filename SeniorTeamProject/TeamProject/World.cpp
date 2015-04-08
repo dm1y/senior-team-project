@@ -79,7 +79,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 void 
 World::Think(float time)
 {
-	physManager->stepSimulation(time);
+	
 	mPlayer->Think(time);
 
 	//for (std::list<Coin*>::iterator it = coins.begin(); it != coins.end(); it++) {

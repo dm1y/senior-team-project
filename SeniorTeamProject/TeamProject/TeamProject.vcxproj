@@ -118,6 +118,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="Kinect.h" />
     <ClInclude Include="MainListener.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="MyMotionState.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Receivers.h" />
