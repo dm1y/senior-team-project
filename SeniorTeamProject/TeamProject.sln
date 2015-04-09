@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TeamProject", "TeamProject\TeamProject.vcxproj", "{BCB8C3C9-D5E6-4EC4-86CE-08FC0EC149B7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletCollision", "..\..\Desktop\bullet3-master\build3\vs2010\BulletCollision.vcxproj", "{6AA8D57A-D40B-8342-979C-6B0956AD20A6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletCollision", "..\..\..\..\Bullet\build3\vs2010\BulletCollision.vcxproj", "{6AA8D57A-D40B-8342-979C-6B0956AD20A6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletDynamics", "..\..\Desktop\bullet3-master\build3\vs2010\BulletDynamics.vcxproj", "{24756162-2A89-E44A-9C6F-001F802A472C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletDynamics", "..\..\..\..\Bullet\build3\vs2010\BulletDynamics.vcxproj", "{24756162-2A89-E44A-9C6F-001F802A472C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LinearMath", "..\..\Desktop\bullet3-master\build3\vs2010\LinearMath.vcxproj", "{3C0698DC-E11B-4D4E-BFFF-E3A35AB4CAD3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LinearMath", "..\..\..\..\Bullet\build3\vs2010\LinearMath.vcxproj", "{3C0698DC-E11B-4D4E-BFFF-E3A35AB4CAD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
