@@ -1,21 +1,22 @@
 #include "PhysicsManager.h"
 using namespace std;
 
+/* (TO: OLGA)
+ * (From: Jordan)
+ * I wrote this entire class, the code in the constructor and destructor is 
+ * standard code for configuring the bullet physics environment.
+ * 
+ * Everything else is all me. 
+ */
+
+
 PhysicsManager::PhysicsManager() {
-    //1
+	/* Setup the bullet Physics world. */
     _broadphase = new btDbvtBroadphase();
- 
-    //2
     _collisionConfiguration = new btDefaultCollisionConfiguration();
     _dispatcher = new btCollisionDispatcher(_collisionConfiguration);
- 
-    //3
     _solver = new btSequentialImpulseConstraintSolver();
- 
-    //4
     _world = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
- 
-    //5
     _world->setGravity(btVector3(0, -9.8, 0));
 }
 
@@ -40,6 +41,14 @@ void PhysicsManager::addPlane() {
 	_world->addRigidBody(groundRigidBody);
 }
 
+
 void PhysicsManager::stepSimulation(float time) {
 	_world->stepSimulation(time, 10);
+
+	/* update all physics objects */
+	for (std::list<IPhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) {
+		it._Ptr->_Myval->synchWithBullet();
+	}
+
+
 }

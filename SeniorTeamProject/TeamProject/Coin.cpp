@@ -3,16 +3,23 @@
 /* Initialize static hitbox data
  * The collision box is static since it is the same for all coins.
  */
+<<<<<<< HEAD
 btCollisionShape * Coin::coinHitBox = new btCylinderShape(btVector3(1, 1, 1));
+=======
+btCollisionShape * Coin::coinHitBox = new btCylinderShape(btVector3(1,1,1));
+>>>>>>> origin/Moscow
 
 Coin::Coin(Ogre::Vector3 position, Ogre::SceneManager *sceneManager, PhysicsManager *physManager) {
 	
 	// create the scene node
     mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-	mSceneNode->setPosition(position);
 
 	// attach the model entity
+<<<<<<< HEAD
 	Ogre::Entity *mEntity = sceneManager->createEntity("coin.mesh");
+=======
+	Ogre::Entity *mEntity = sceneManager->createEntity("Coin.MESH.mesh");
+>>>>>>> origin/Moscow
 	mEntity->setCastShadows(true);
 	mSceneNode->attachObject(mEntity);
 

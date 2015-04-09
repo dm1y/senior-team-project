@@ -5,6 +5,8 @@
 // but this one is requried for Ogre Strings.
 #include "OgrePrerequisites.h"
 #include "OgreWindowEventUtilities.h"
+#include "GameLibrary.h"
+
 
 namespace Ogre {
     class Root;

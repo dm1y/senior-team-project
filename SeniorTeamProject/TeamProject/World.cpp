@@ -1,5 +1,13 @@
-// My header file.  This should go first!
 #include "World.h"
+
+
+/* (TO: OLGA)
+ * (From: Jordan)
+ *
+ * The world class was coded by all of us, I wrote the parts of it that
+ * use DynamicObject, GameLibrary, StaticScenery, and PhysicsManager.
+ */
+
 
 // Ogre header files
 #include "Ogre.h"
@@ -10,7 +18,12 @@
 #include "OgreOverlay.h"
 #include "OgreFontManager.h"
 #include "OgreTextAreaOverlayElement.h"
+<<<<<<< HEAD
 #include "StaticScenery.h"
+=======
+#include <stdlib.h> 
+
+>>>>>>> origin/Moscow
 
 // IOS (Input system) header files
 
@@ -18,12 +31,11 @@
 
 // Other input files for my project
 #include "Camera.h"
-#include "GameObject.h"
 #include "InputHandler.h"
-#include "Player.h"
 #include "Kinect.h"
 #include <list>
 
+<<<<<<< HEAD
 World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera)
 {
@@ -37,8 +49,24 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	
 	mCamera->mRenderCamera->lookAt(testRoom->mSceneNode->getPosition());
 
+=======
 
+using namespace rapidjson;
 
+World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib)   : 
+	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib)
+{
+	sceneManager->setAmbientLight(Ogre::ColourValue(0, 0, 0));
+	sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+>>>>>>> origin/Moscow
+
+	Ogre::Light* directionalLight = sceneManager->createLight("directionalLight");
+    directionalLight->setType(Ogre::Light::LT_DIRECTIONAL);
+    directionalLight->setDiffuseColour(Ogre::ColourValue(1, 1, 1));
+    directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
+	directionalLight->setDirection(0,-1,1);
+
+<<<<<<< HEAD
 	// Global illumination for now.  Adding individual light sources will make you scene look more realistic
 	// mSceneManager->setAmbientLight(Ogre::ColourValue(1,1,1));
 	
@@ -73,12 +101,24 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	mPlayer->addOgreEntity("tunacan.MESH.mesh");
 	//mPlayer->addOgreEntity("coin.mesh");
 	mPlayer->setScale(Ogre::Vector3(.5, .5, .5));
+=======
+	physManager = new PhysicsManager();
+	
+	// create static scenery
+
+	mCamera->mRenderCamera->setPosition(Ogre::Vector3(0,20,-10));
+
+	StaticScenery *iceIsland = new StaticScenery(Ogre::Vector3(0,0,0), "iceIsland.MESH.mesh", mSceneManager, physManager);
+
+	mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
+>>>>>>> origin/Moscow
 }
 
 
 void 
 World::Think(float time)
 {
+<<<<<<< HEAD
 	
 	mPlayer->Think(time);
 
@@ -87,6 +127,16 @@ World::Think(float time)
 	//for (std::list<Coin*>::iterator it = coins.begin(); it != coins.end(); it++) {
 	//	it._Ptr->_Myval->update();
 	//}
+=======
+	if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
+		DynamicObject *d = gameLibrary->getDynamicObject("Box");
+		d->setPosition(mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -2, 2));
+		d->addToOgreScene(mSceneManager);
+		d->addToBullet(physManager);
+	}
+	
+	physManager->stepSimulation(time);
+>>>>>>> origin/Moscow
 }
 
 

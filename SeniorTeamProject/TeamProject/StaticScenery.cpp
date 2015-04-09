@@ -1,5 +1,17 @@
 #include "StaticScenery.h"
 
+<<<<<<< HEAD
+=======
+/* (TO: OLGA)
+ * (From: Jordan)
+ *
+ * This class is written entirely by me except for ogreToBulletMesh,
+ *
+ * I modified this code to work in our game:
+ * http://tutorialsdl.googlecode.com/svn/trunk/Lab3/Lab3/OgreToBtMeshConverter.cpp
+ */
+
+>>>>>>> origin/Moscow
 /* Static scenery represents a drawable mesh that is collidable
  * but does not move, such as level geometry.
  */
