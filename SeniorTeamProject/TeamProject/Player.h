@@ -61,7 +61,8 @@ protected:
 	Ogre::Overlay *overly; 
 	bool overlyBool; 
 
-	// For kinect - Trying to follow format of RunnerTransfer for this 
+	// For kinect 
+
 	bool mEnableKinect;
 	bool mEnableKeyboard;
 	bool mAutoCallibrate;

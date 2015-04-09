@@ -7,12 +7,6 @@ namespace Ogre
     class SceneNode;
 }
 
-/* Code below is from a tutorial. 
-   Still unsure if we can use it to make motion states easier 
-   (might make it easier for player movement as well as object movement in 
-   general if we decide have additional moving objects). 
-   Still tweaking it to have it compile since there are build errors as is. 
-*/
 class MyMotionState : public btMotionState
 {
 protected:

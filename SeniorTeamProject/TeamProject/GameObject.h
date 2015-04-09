@@ -15,53 +15,47 @@ class GameObject
 {
 public:
 
-	// From RunnerTransfer 
 	enum ObjectType { PLAYER, NOTPLAYER };
 	ObjectType getType() { return objType; }
 
-	// Basic necessities 
 	GameObject(Ogre::Vector3 position, PhysicsManager *physManager, World *world, Ogre::SceneManager *sceneManager, ObjectType gameObjType);
-	Ogre::SceneManager *SceneManager() { return mSceneManager; }
-	Ogre::SceneNode *getSceneNode() { return mSceneNode; }
-	void Think(float time);
 
-	// From RunnerTransfer 
+	Ogre::SceneManager *SceneManager() { return mSceneManager; }
+	void Think(float time);
     void loadModel(Ogre::String modelName);
 
-	// From RunnerTransfer -- not sure if we need this anymore though 
 	void yaw(Ogre::Degree d);
     void pitch(Ogre::Degree d);
     void roll(Ogre::Degree d);
 
-	// From RunnerTransfer -- not sure if we need this anymore though
     void yaw(Ogre::Radian r);
     void pitch(Ogre::Radian r);
     void roll(Ogre::Radian r);
 	void translate(Ogre::Vector3 vector); 
 
-	// From RunnerTransfer 
 	void setScale(Ogre::Vector3 newScale);
 	void setPosition(Ogre::Vector3 newPosition);
 	void setOrientation(Ogre::Quaternion newOrientation);
-	void setAlpha(float alpha); // not sure if this is needed so might remove 
+	void setAlpha(float alpha);
 
-	// For Bullet 
 	Ogre::Vector3 getPosition() { return mPosition; }
     Ogre::Quaternion getOrientation() { return mOrientation; }
     Ogre::Vector3 getScale() { return mScale;}
-	btRigidBody *getRigidBody() {return rigidBody; }
+	btRigidBody *getFallRigidBody() {return fallRigidBody; }
 	btCollisionShape *getHitBox() {return hitBox; }
-	void GameObject::setRigidBody() ;
 
-	// From RunnerTransfer 
 	void setMaterial(Ogre::String materialName);
 	void restoreOriginalMaterial();
+
+	Ogre::SceneNode *getSceneNode() { return mSceneNode; }
 	
-	// No longer used -- old collision/physics code 
 	bool collides(GameObject *other, Ogre::Vector3 &MTD);
     bool collides(const GameObject &other, Ogre::Vector3 &MTD);
+
 	Ogre::Vector3 minPointLocalScaled();
 	Ogre::Vector3 maxPointLocalScaled();
+
+	void GameObject::setRigidBody() ;
 
 protected:
     Ogre::SceneNode *mSceneNode;
@@ -76,10 +70,9 @@ protected:
 	Ogre::Vector3 mMinPointLocal;
 	Ogre::Vector3 mMaxPointLocal;
 	ObjectType objType;
-	
-	// For Bullet 
 	PhysicsManager *mPhysManager;
-	btRigidBody *rigidBody;
+
+	btRigidBody *fallRigidBody;
 	btCollisionShape *hitBox;
 	
 };

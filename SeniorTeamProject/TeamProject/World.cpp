@@ -122,8 +122,6 @@ World::Think(float time)
 	
 	mPlayer->Think(time);
 
-	//physManager->stepSimulation(time);
-
 	//for (std::list<Coin*>::iterator it = coins.begin(); it != coins.end(); it++) {
 	//	it._Ptr->_Myval->update();
 	//}
