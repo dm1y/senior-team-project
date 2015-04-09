@@ -169,13 +169,13 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Bullet\build3\vs2010\BulletCollision.vcxproj">
+    <ProjectReference Include="$(BULLET_ROOT)\build3\vs2010\BulletCollision.vcxproj">
       <Project>{6aa8d57a-d40b-8342-979c-6b0956ad20a6}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Bullet\build3\vs2010\BulletDynamics.vcxproj">
+    <ProjectReference Include="$(BULLET_ROOT)\build3\vs2010\BulletDynamics.vcxproj">
       <Project>{24756162-2a89-e44a-9c6f-001f802a472c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Bullet\build3\vs2010\LinearMath.vcxproj">
+    <ProjectReference Include="$(BULLET_ROOT)\build3\vs2010\LinearMath.vcxproj">
       <Project>{3c0698dc-e11b-4d4e-bfff-e3a35ab4cad3}</Project>
     </ProjectReference>
   </ItemGroup>
