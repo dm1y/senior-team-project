@@ -14,3 +14,7 @@ SeniorTeamProject/TeamProject.sdf
 SeniorTeamProject/TeamProject/Debug/vc110.idb
 *.pdb
 SeniorTeamProject/TeamProject.v11.suo
+*.log
+SeniorTeamProject/TeamProject/Ogre.log
+*.log
+SeniorTeamProject/TeamProject/Debug/TeamProject.log
