@@ -13,3 +13,5 @@
          InputHandler.cpp
          DynamicObject.cpp
          GameLibrary.cpp
+         Coin.cpp
+         Camera.cpp
