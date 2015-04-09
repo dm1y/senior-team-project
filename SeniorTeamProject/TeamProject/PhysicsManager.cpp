@@ -50,5 +50,4 @@ void PhysicsManager::stepSimulation(float time) {
 		it._Ptr->_Myval->synchWithBullet();
 	}
 
-
 }
