@@ -1,0 +1,12 @@
+{
+	"type" : "stage"
+	"attributes" : {}
+	"data" : 
+	[
+		{"TeaPot" : [{"position" : [0,0,0]}, {"rotation" : [1,0,0,0]}]},
+		{"Box" : [{"position" : [0,5,0]}]},
+		{"Box" : [{"position" : [0,6,0]}]},
+		{"Box" : [{"position" : [0,7,0]}]},
+		{"Box" : [{"position" : [0,8,0]}]},
+	]
+}
