@@ -6,7 +6,6 @@
  * This is all code written by me.
  */
 
-
 /* This class represents objects in the world that: 
  *		1. move
  *		2. are collidable

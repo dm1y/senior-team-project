@@ -72,7 +72,6 @@
  * d->addToOgreScene(mSceneManager);
  * d->addToBullet(physManager);
  */
-
 DynamicObject * GameLibrary::getDynamicObject(string name) {
 
 	// polymorphic maps in c++ scare me, so for now
@@ -161,5 +160,4 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			x->clone();
 		}
 	}
-
 }
