@@ -7,76 +7,78 @@
 #include "OgreMaterial.h"
 #include "World.h"
 
+// Initial Constructor 
 GameObject::GameObject(Ogre::Vector3 position, PhysicsManager *physManager, World *world, Ogre::SceneManager *sceneManager, ObjectType gameObjType) :
 	mPosition(position), mPhysManager(physManager), mWorld(world), mSceneManager(sceneManager), objType(gameObjType)
 {
+	// Creates scene node 
     mSceneNode = SceneManager()->getRootSceneNode()->createChildSceneNode();
 
+	// Set initial position of scene node 
 	mSceneNode->setPosition(position);
 
-	// TODO: Figure out dimensions of tuna can
-	hitBox = new btCylinderShape(btVector3(13, 13, 13));
+	// TODO: Figure out dimensions of tuna can without hardcoding.  
+	hitBox = new btCylinderShape(btVector3(15, 15, 15));
 }
 
-
+// From RunnerTransfer but pretty basic/intuitive 
 void GameObject::setScale(Ogre::Vector3 newScale)
 {
 	mScale = newScale;
 	mSceneNode->setScale(newScale);
-
-	//mCollision->setScale(newScale);
-    //mOrientation = Ogre::Quaternion::IDENTITY;
-    //mPosition = Ogre::Vector3::ZERO;
-
-//	mCollision->setScale(newScale);
 }
 
+// Used Jordan's Coin class as guide to incorporate it into GameObject
 void GameObject::setRigidBody() 
 {
-	btDefaultMotionState* fallMotionState =
+	btDefaultMotionState* defMotionState =
 		new btDefaultMotionState( btTransform(btQuaternion(0, 0, 0, 1), 
 		btVector3(mPosition.x, mPosition.y, mPosition.z)));
-	btScalar mass = 10;
-    btVector3 fallInertia(0, 0, 0);
-    hitBox->calculateLocalInertia(mass, fallInertia);
+	btScalar mass = 10; 
+    btVector3 inertia(0, 0, 0); // set up inertia 
+    hitBox->calculateLocalInertia(mass, inertia);
 
 	// construct the rigid body and add it to the world
-	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, hitBox, fallInertia);
-    //fallRigidBodyCI.m_restitution = 1.0f;
-	fallRigidBody = new btRigidBody(fallRigidBodyCI);
-	fallRigidBody->setUserPointer(mSceneNode);
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, defMotionState, hitBox, inertia);
+    rigidBodyCI.m_restitution = 3.0f; // "bounce-ness" after colliding  
+	rigidBody = new btRigidBody(rigidBodyCI);
+
+	rigidBody->setUserPointer(mSceneNode); // Might be unnecessary, but sets pointer of rigid body to the scene node for easier access 
 	
-	mPhysManager->_world->addRigidBody(fallRigidBody);
+	mPhysManager->_world->addRigidBody(rigidBody);
 	
 }
 
 /* Attaches a mesh named <modelName> to the GameObject instance's
- * scene node.
+ * scene node. Initial code from Runner Transfer. 
+   Basic necessity in loading models though.
  */
 void GameObject::loadModel(Ogre::String modelName)
 {
     mEntity = SceneManager()->createEntity(modelName);
 	mEntity->setCastShadows(true);
 	mSceneNode->attachObject(mEntity);
+	setRigidBody();
+
+	// Not really necessary 
 	mMaterialName = mEntity->getSubEntity(0)->getMaterialName();
-	//mCollision = new OBB(mEntity->getBoundingBox());
 	mMaxPointLocal = mEntity->getBoundingBox().getMaximum();
 	mMinPointLocal =  mEntity->getBoundingBox().getMinimum();
-	setRigidBody();
 }
 
-
+// From RunnerTransfer
 void GameObject::setMaterial(Ogre::String materialName)
 {
 	mEntity->setMaterialName(materialName);
 }
 
+// From RunnerTransfer
 void GameObject::restoreOriginalMaterial()
 {
 	mEntity->setMaterialName(mMaterialName);
 }
 
-
+// From RunnerTransfer but pretty basic/intuitive 
 void GameObject::setPosition(Ogre::Vector3 newPosition)
 {
 	mSceneNode->setPosition(newPosition);
@@ -85,6 +87,7 @@ void GameObject::setPosition(Ogre::Vector3 newPosition)
 
 }
 
+// From RunnerTransfer but pretty basic/intuitive 
 void GameObject::setOrientation(Ogre::Quaternion newOrientation)
 {
     mSceneNode->setOrientation(newOrientation);
@@ -93,6 +96,7 @@ void GameObject::setOrientation(Ogre::Quaternion newOrientation)
     mOrientation = newOrientation;
 }
 
+// From RunnerTransfer but pretty basic/intuitive. Also modified. Probably no longer needed.
 void GameObject::translate(Ogre::Vector3 delta)
 {
 	//mCollision->translate(delta);
@@ -103,6 +107,7 @@ void GameObject::translate(Ogre::Vector3 delta)
 
 }
 
+// From RunnerTransfer but pretty basic/intuitive -- functions might not be needed
 Ogre::Vector3 
 	GameObject::minPointLocalScaled()
 {
@@ -115,6 +120,7 @@ Ogre::Vector3
 
 }
 
+// From RunnerTransfer but pretty basic/intuitive  -- probably no longer needed
 void GameObject::yaw(Ogre::Degree d)
 {
     mSceneNode->yaw(d);
@@ -122,32 +128,34 @@ void GameObject::yaw(Ogre::Degree d)
     //mCollision->setOrientation(mSceneNode->getOrientation());
 }
 
+// From RunnerTransfer but pretty basic/intuitive  -- probably no longer needed
 void GameObject::pitch(Ogre::Degree d)
 {
     mSceneNode->pitch(d);
 //    mCollision->setOrientation(mSceneNode->getOrientation());
 }
 
-
+// From RunnerTransfer but pretty basic/intuitive  -- probably no longer needed
 void GameObject::roll(Ogre::Degree d)
 {
     mSceneNode->roll(d);
     //mCollision->setOrientation(mSceneNode->getOrientation());
 }
 
+// From RunnerTransfer but pretty basic/intuitive  -- probably no longer needed
 void GameObject::yaw(Ogre::Radian r)
 {
     mSceneNode->yaw(r);
-
-
 }
 
+// From RunnerTransfer but pretty basic/intuitive  -- probably no longer needed
 void GameObject::pitch(Ogre::Radian r)
 {
     mSceneNode->pitch(r);
 
 }
 
+// From RunnerTransfer but pretty basic/intuitive  -- probably no longer needed
 void GameObject::roll(Ogre::Radian r)
 {
     mSceneNode->roll(r);
