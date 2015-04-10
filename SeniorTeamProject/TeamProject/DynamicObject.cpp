@@ -71,6 +71,7 @@ void DynamicObject::setPosition(Ogre::Vector3 newPos) {
 void DynamicObject::setScale(Ogre::Vector3 v) {
 	// sets scale of node to new scale 
 	mSceneNode->setScale(v);
+	// 
 }
 
 void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {

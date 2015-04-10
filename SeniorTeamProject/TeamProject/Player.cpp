@@ -82,67 +82,65 @@ Player::Think(float time)
 	}*/
 #pragma endregion End of Kinect code/Not used right now   
 	
+#pragma region Controls 
+	btTransform ts;
+
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
 	{
+		// Left 
+		// TODO: somehow cap rotation 
 		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
 		{
-			/* Applies force to tuna can so it shifts to the left when you press the left key. 
-			Only works if you press 'space' with it for some reason 
-			Probably has something to do in stepSimulation but still looking into this.
-			Waiting for Jordan's new "stepSimulation" method that he renamed as update to 
-			see if problem will be resolved */
-			btTransform ts;
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
-			mPlayerObject->fallRigidBody->applyForce(btVector3(20, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(20, 0, 0));
-			//mPlayerObject->setPosition(mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -2, 2));
-			//mPlayerObject->addToOgreScene(mSceneManager);
-			//mPlayerObject->addToBullet(mPhysManager);
-			//mPlayerObject->update();
-		 //   mPlayerObject->getRigidBody()->getMotionState()->getWorldTransform(ts);	
-			//mPlayerObject->getRigidBody()->applyForce(btVector3(20, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ())); 
-			//mPlayerObject->getRigidBody()->setLinearVelocity(btVector3(20, 0, 0));
-			//mPhysManager->stepSimulation(time);
+			mPlayerObject->fallRigidBody->applyForce(btVector3(1, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
 		}
+
+		// Right 
+		// TODO: cap rotation 
 		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
 		{
-			/* Applies force to tuna can so it shifts to the right when you press the right key. 
-			Only works if you press 'space' with it for some reason 
-			Probably has something to do in stepSimulation but still looking into this.
-			Waiting for Jordan's new "stepSimulation" method that he renamed as update to 
-			see if problem will be resolved */
-			btTransform ts;
-		 //   mPlayerObject->getRigidBody()->getMotionState()->getWorldTransform(ts);	
-			//mPlayerObject->getRigidBody()->applyForce(btVector3(- 20, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ())); 
-			//mPlayerObject->getRigidBody()->setLinearVelocity(btVector3(- 20, 0, 0));
-			//mPhysManager->stepSimulation(time);
+			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
+			mPlayerObject->fallRigidBody->applyForce(btVector3(-1, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));
 		}
+
+		// Up - WIP
 		 else if (mInputHandler->IsKeyDown(OIS::KC_UP))
 		 {
-			/* Applies force to tuna can so it shifts upwards when you press the up key (kind of 
-			simulating jump but need to fix stepSimulation to get actual flow instead of the current slow-mo). 
-			Only works if you press 'space' with it for some reason 
-			Probably has something to do in stepSimulation but still looking into this.
-			Waiting for Jordan's new "stepSimulation" method that he renamed as update to 
-			see if problem will be resolved */
-			btTransform ts;
-		 //   mPlayerObject->getRigidBody()->getMotionState()->getWorldTransform(ts);	
-			////Ogre::Vector3 pos = mPlayerObject->getPosition(); 
-			//mPlayerObject->getRigidBody()->applyForce(btVector3(0, -20, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ())); 
-			//mPlayerObject->getRigidBody()->setLinearVelocity(btVector3(0, 10, 0));
-			//mPhysManager->stepSimulation(time);
-			 //mPlayerObject->translate(Ogre::Vector3(0, time*COIN_SPEED, 0));
-			 //mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * -20 * time);
+			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
+			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, -1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
 		 }
 
+		// Down - still a wip 
 		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
 		{
-			// Old code, haven't modified yet
-//			mPlayerObject->translate(Ogre::Vector3(0, -time*COIN_SPEED, 0));
+			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
+			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, 1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
 			//mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20 * time);
 		}
-		
+
+		// "Jump" - semi works but still a wip 
+		else if (mInputHandler->IsKeyDown(OIS::KC_RSHIFT))
+		{
+			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
+			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 5, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(4, 4, 0));
+			//mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20 * time);
+		}
+
+		// "Crouch" - still a wip 
+		else if (mInputHandler->IsKeyDown(OIS::KC_L))
+		{
+			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
+			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, -1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
+			//mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20 * time);
+		}
+#pragma endregion Input controls for keyboard 
 	}
 }
 

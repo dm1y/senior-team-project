@@ -50,12 +50,13 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	
 	// create static scenery
 
-	mCamera->mRenderCamera->setPosition(Ogre::Vector3(0,20,-10));
+	mCamera->mRenderCamera->setPosition(Ogre::Vector3(0,50,-10));
 
 	StaticScenery *iceIsland = new StaticScenery(Ogre::Vector3(0,0,0), "iceIsland.MESH.mesh", mSceneManager, physManager);
 
 	DynamicObject *p = gameLibrary->getDynamicObject("Tuna");
-	mPlayer = new Player(p, Ogre::Vector3(0,20,-10), physManager, this, mKinect, mSceneManager, mInputHandler);
+	mPlayer = new Player(p, Ogre::Vector3(0, 33,-10), physManager, this, mKinect, mSceneManager, mInputHandler);
+	mPlayer->setScale(Ogre::Vector3(.3, .3, .3));
 	mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
 }
 
