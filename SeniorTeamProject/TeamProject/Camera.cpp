@@ -18,45 +18,48 @@ mRenderCamera(renderCamera), mInputHandler(input)
 void
 GameCamera::Think(float time)
 {
-
 	// Any code needed here to move the camera about per frame
 	//  (use mRenderCamera to get the actual render camera, of course!)
 		
-	if (mInputHandler->IsKeyDown(OIS::KC_UP))
-	{
-		 Ogre::Vector3 camPos = mRenderCamera->getPosition();
-		 mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y, camPos.z + 0.1)); 
-	}
-	else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
-	{
-		Ogre::Vector3 camPos = mRenderCamera->getPosition();
-		mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y, camPos.z - 0.1));  
-	}
-
-	else if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
-	{
-		Ogre::Vector3 camPos = mRenderCamera->getPosition();
-		mRenderCamera->setPosition(Ogre::Vector3(camPos.x + 0.1, camPos.y, camPos.z));  
-	}
-
-	else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
-	{
-		Ogre::Vector3 camPos = mRenderCamera->getPosition();
-		mRenderCamera->setPosition(Ogre::Vector3(camPos.x - 0.1, camPos.y, camPos.z)); 
-	}
-
+	// Moves the camera up 
 	if (mInputHandler->IsKeyDown(OIS::KC_W))
 	{
 		 Ogre::Vector3 camPos = mRenderCamera->getPosition();
-		 mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y + 0.1, camPos.z)); 
-	} else if (mInputHandler->IsKeyDown(OIS::KC_S))
-	{
-		 Ogre::Vector3 camPos = mRenderCamera->getPosition();
-		 mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y - 0.1, camPos.z)); 
+		 mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y, camPos.z + 1)); 
 	}
 
-	if(mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
+	// Moves the camera down 
+	else if (mInputHandler->IsKeyDown(OIS::KC_S))
+	{
+		Ogre::Vector3 camPos = mRenderCamera->getPosition();
+		mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y, camPos.z - 1));  
+	}
 
+	// Moves the camera left 
+	else if (mInputHandler->IsKeyDown(OIS::KC_A))
+	{
+		Ogre::Vector3 camPos = mRenderCamera->getPosition();
+		mRenderCamera->setPosition(Ogre::Vector3(camPos.x + 1, camPos.y, camPos.z));  
+	}
+	
+	// Moves the camera right 
+	else if (mInputHandler->IsKeyDown(OIS::KC_D))
+	{
+		Ogre::Vector3 camPos = mRenderCamera->getPosition();
+		mRenderCamera->setPosition(Ogre::Vector3(camPos.x - 1, camPos.y, camPos.z)); 
+	}
+
+	// Zooms camera out 
+	if (mInputHandler->IsKeyDown(OIS::KC_Q))
+	{
+		 Ogre::Vector3 camPos = mRenderCamera->getPosition();
+		 mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y + 1, camPos.z)); 
+
+	// Zooms camera in 
+	} else if (mInputHandler->IsKeyDown(OIS::KC_E))
+	{
+		 Ogre::Vector3 camPos = mRenderCamera->getPosition();
+		 mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y - 1, camPos.z)); 
 	}
 
 }

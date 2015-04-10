@@ -146,6 +146,7 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			// position can be changed later.
 			DynamicObject *newD = new DynamicObject(meshName, colShape, Ogre::Vector3(0,0,0));
 
+
 			// put it into the library
 			dynamicObjects.emplace(name, newD);
 

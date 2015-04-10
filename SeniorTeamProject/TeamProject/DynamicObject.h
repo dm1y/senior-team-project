@@ -14,7 +14,13 @@ public:
 	void synchWithBullet();
 	void addToOgreScene(Ogre::SceneManager *sceneManager);
 	void addToBullet(PhysicsManager *physmanager);
+
 	void setPosition(Ogre::Vector3 newPos);
+	void setScale(Ogre::Vector3 v);
+	
+	//btRigidBody *getRigidBody() {return fallRigidBody; }
+	btCollisionShape *getHitBox();
+
 	DynamicObject * clone();
 };
 

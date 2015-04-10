@@ -67,6 +67,11 @@ void DynamicObject::setPosition(Ogre::Vector3 newPos) {
 	fallRigidBody->setCenterOfMassTransform(trans);
 }
 
+void DynamicObject::setScale(Ogre::Vector3 v) {
+	// sets scale of node to new scale 
+	mSceneNode->setScale(v);
+}
+
 void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 	// create the scene node
     mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();

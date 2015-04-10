@@ -121,6 +121,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="Kinect.h" />
     <ClInclude Include="MainListener.h" />
     <ClInclude Include="PhysicsManager.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="rapidjson\allocators.h" />
     <ClInclude Include="rapidjson\document.h" />
     <ClInclude Include="rapidjson\encodedstream.h" />
@@ -164,6 +165,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainListener.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="StaticScenery.cpp" />
     <ClCompile Include="TeamProject.cpp" />
     <ClCompile Include="World.cpp" />
