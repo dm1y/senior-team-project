@@ -30,6 +30,7 @@ DynamicObject::DynamicObject(Ogre::String meshName, btCollisionShape *collisionS
 	
 	this->position = position;
 	this->meshName = meshName;
+	this->hitBox = collisionShape; 
 
 	// setup rigid body for physics
 	btDefaultMotionState* fallMotionState =

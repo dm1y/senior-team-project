@@ -12,7 +12,8 @@ class IPhysObject {
 private:
 
 public:
-	btRigidBody * fallRigidBody;
+	btRigidBody *fallRigidBody;
+	btCollisionShape *hitBox; 
 	virtual void synchWithBullet() = 0;
 };
 #endif

@@ -1,0 +1,8 @@
+{
+	"type" : "DynamicObject",
+	"meshName" : "tunacan.MESH.mesh",
+	"mass" : 1,
+	"collisionShape" : "btCylinderShape",
+	"collisionShapeSize" : [13,13,13],
+	"restitution" : 1.0
+}

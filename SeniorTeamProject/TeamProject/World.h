@@ -20,7 +20,7 @@ class GameCamera;
 class InputHandler;
 class Player;
 class Kinect;
-
+class Player;
 
 class World
 {

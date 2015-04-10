@@ -16,9 +16,9 @@
 #include "PhysicsManager.h"
 #include "Kinect.h"
 
-Player::Player(Ogre::String name, btCollisionShape *collisionShape, Ogre::Vector3 position, 
-			   PhysicsManager *physManager, World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input) : 
-	meshName(name), mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input)
+Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *physManager, 
+			   World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input) : 
+	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input)
 {
 	mPhysManager = physManager;
 
@@ -29,7 +29,10 @@ Player::Player(Ogre::String name, btCollisionShape *collisionShape, Ogre::Vector
 	//overlyBool = false; 
 
 	// Create player node using GameObject class 
-	mPlayerObject = new DynamicObject(name, collisionShape, position);
+	mPlayerObject = dynamic;
+	mPlayerObject->setPosition(position);
+	mPlayerObject->addToOgreScene(mSceneManager);
+	mPlayerObject->addToBullet(mPhysManager);
 }
 
 // Adds player object to the scene
@@ -89,7 +92,14 @@ Player::Think(float time)
 			Probably has something to do in stepSimulation but still looking into this.
 			Waiting for Jordan's new "stepSimulation" method that he renamed as update to 
 			see if problem will be resolved */
-			//btTransform ts;
+			btTransform ts;
+			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
+			mPlayerObject->fallRigidBody->applyForce(btVector3(20, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(20, 0, 0));
+			//mPlayerObject->setPosition(mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -2, 2));
+			//mPlayerObject->addToOgreScene(mSceneManager);
+			//mPlayerObject->addToBullet(mPhysManager);
+			//mPlayerObject->update();
 		 //   mPlayerObject->getRigidBody()->getMotionState()->getWorldTransform(ts);	
 			//mPlayerObject->getRigidBody()->applyForce(btVector3(20, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ())); 
 			//mPlayerObject->getRigidBody()->setLinearVelocity(btVector3(20, 0, 0));

@@ -18,8 +18,8 @@ public:
 	void setPosition(Ogre::Vector3 newPos);
 	void setScale(Ogre::Vector3 v);
 	
-	//btRigidBody *getRigidBody() {return fallRigidBody; }
-	btCollisionShape *getHitBox();
+	btRigidBody *getRigidBody() {return fallRigidBody; }
+	btCollisionShape *getHitBox() {return hitBox; }
 
 	DynamicObject * clone();
 };

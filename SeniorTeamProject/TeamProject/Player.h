@@ -24,8 +24,8 @@ class Player
 {
 public:
 
-	Player(Ogre::String name, btCollisionShape *collisionShape, Ogre::Vector3 position, 
-		PhysicsManager *physManager, World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input);
+	Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *physManager, World *world, 
+		Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input);
 
 	void addToScene(); 
 	void setScale(Ogre::Vector3 v);

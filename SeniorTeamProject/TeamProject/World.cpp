@@ -29,8 +29,8 @@
 #include "Camera.h"
 #include "InputHandler.h"
 #include "Kinect.h"
+#include "Player.h"
 #include <list>
-
 
 using namespace rapidjson;
 
@@ -54,6 +54,8 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	StaticScenery *iceIsland = new StaticScenery(Ogre::Vector3(0,0,0), "iceIsland.MESH.mesh", mSceneManager, physManager);
 
+	DynamicObject *p = gameLibrary->getDynamicObject("Tuna");
+	mPlayer = new Player(p, Ogre::Vector3(0,20,-10), physManager, this, mKinect, mSceneManager, mInputHandler);
 	mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
 }
 
@@ -67,6 +69,8 @@ World::Think(float time)
 		d->addToOgreScene(mSceneManager);
 		d->addToBullet(physManager);
 	}
+
+	mPlayer->Think(time);
 	
 	physManager->stepSimulation(time);
 }
