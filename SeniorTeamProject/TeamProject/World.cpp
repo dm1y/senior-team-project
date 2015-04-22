@@ -55,15 +55,22 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	StaticScenery *iceIsland = new StaticScenery(Ogre::Vector3(0,0,0), "iceIsland.MESH.mesh", mSceneManager, physManager);
 
 	DynamicObject *p = gameLibrary->getDynamicObject("Tuna");
-	mPlayer = new Player(p, Ogre::Vector3(0, 33,-10), physManager, this, mKinect, mSceneManager, mInputHandler);
+	mPlayer = new Player(p, Ogre::Vector3(0, 33,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setScale(Ogre::Vector3(.3, .3, .3));
+//	printf("Position: %d", mPlayer->getSightNode ()->getPosition());
+	//mCamera->updatePosition (Ogre::Vector3 (0, 200, 0), mPlayer->getSightNode ()->getPosition());
+
 	mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
+
 }
 
 
 void 
 World::Think(float time)
 {
+	//mCamera->update (Ogre::Vector3 (0, 200, 0), mPlayer->getWorldPosition());
+	//mCamera->update (mPlayer->getCameraNode ()->_getDerivedPosition(), mPlayer->getSightNode ()->_getDerivedPosition());
+
 	if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
 		DynamicObject *d = gameLibrary->getDynamicObject("Box");
 		d->setPosition(mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -2, 2));
@@ -74,7 +81,7 @@ World::Think(float time)
 	mPlayer->Think(time);
 	
 	physManager->stepSimulation(time);
-	mCamera->mRenderCamera->move(mPlayer->getDynamicObject()->position);
+	//mCamera->mRenderCamera->move(mPlayer->getDynamicObject()->position);
 }
 
 

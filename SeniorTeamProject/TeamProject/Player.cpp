@@ -15,16 +15,16 @@
 //#include "OgreTextAreaOverlayElement.h"
 #include "PhysicsManager.h"
 #include "Kinect.h"
+#include "Camera.h"
 
 Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *physManager, 
-			   World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input) : 
-	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input)
+			   World *world, Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input, GameCamera *camera) : 
+	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input), mCamera(camera)
 {
 	mPhysManager = physManager;
 
 	// For Kinect later on 
 	mAutoCallibrate = true;
-
 
 	// For testing purposes 
 	//overlyBool = false; 
@@ -38,12 +38,18 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->getRigidBody()->isKinematicObject();
 	//mPlayerObject->getRigidBody()->setCollisionShape(btCapsuleShape(5,1));
 	mPlayerObject->synchWithBullet();
+
+	
 }
 
 // Adds player object to the scene
 void Player::addToScene()
 {
 	mPlayerObject->addToOgreScene(mSceneManager);
+
+	// Children nodes for camera in 3rd person perspective 
+	sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (0, 0, 100));
+	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (0, 50, -100));
 }
 
 // Sets the scale of player to resize 
@@ -96,14 +102,9 @@ Player::Think(float time)
 		// Left 
 		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
 		{
-			//btVector3 p; 
-			//p = btVector3(mPlayerObject->position.x, mPlayerObject->position.y, mPlayerObject->position.z);
-			//mPlayerObject->fallRigidBody->applyCentralForce(btVector3(1, 0, 0));
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->applyForce(btVector3(1, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
 			mPlayerObject->fallRigidBody->applyForce(btVector3(1, 0, 0), mPlayerObject->fallRigidBody->getCenterOfMassPosition());
-			//mPlayerObject->fallRigidBody->applyForce(btVector3(1, 0, 0), p);
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
 			
 			
@@ -116,9 +117,7 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			mPlayerObject->fallRigidBody->applyForce(btVector3(-1, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));
-			//mPlayerObject->fallRigidBody->isActive();
-			
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
 		}
 
 		// Up 
@@ -128,7 +127,6 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, -1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
-			//mPlayerObject->fallRigidBody->isActive();
 			
 		}
 
@@ -139,8 +137,6 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, 1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, -5));
-			//mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20 * time);
-			//mPlayerObject->fallRigidBody->isActive();
 			
 		}
 
@@ -149,10 +145,14 @@ Player::Think(float time)
 		{
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 1, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 5, 0));
-			//mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20 * time);
-			//mPlayerObject->fallRigidBody->isActive();
+			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 3, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 10, 0));
+			mPlayerObject->fallRigidBody->applyGravity();
+			// Clamp the movements  -- WIP 
+			if (mPlayerObject->fallRigidBody->getLinearVelocity().getY() >= 30) 
+			{
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 0));
+			}
 			
 		}
 
@@ -165,10 +165,7 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->applyForce(btVector3(0, -1, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, -5, 0));
 			
-			//mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20 * time);
-			//mPlayerObject->fallRigidBody->isActive();
 		}
-
 		
 		else if (mInputHandler->WasKeyDown(OIS::KC_LEFT) || mInputHandler->WasKeyDown(OIS::KC_RIGHT) || 
 			mInputHandler->WasKeyDown(OIS::KC_UP) || mInputHandler->WasKeyDown(OIS::KC_DOWN)) {
@@ -179,6 +176,7 @@ Player::Think(float time)
 			
 		}
 		mPlayerObject->synchWithBullet();
+		//mCamera->updatePosition(mPlayerObject->position);
 
 #pragma endregion Input controls for keyboard 
 	}

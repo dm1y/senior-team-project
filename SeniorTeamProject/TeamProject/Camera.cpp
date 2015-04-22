@@ -9,15 +9,50 @@
 // Other input files for my project
 #include "InputHandler.h"
 
-GameCamera::GameCamera(Ogre::Camera *renderCamera, InputHandler *input) :
-mRenderCamera(renderCamera), mInputHandler(input)
+GameCamera::GameCamera(Ogre::Camera *renderCamera, InputHandler *input, Ogre::SceneManager *sceneManager) :
+mRenderCamera(renderCamera), mInputHandler(input), mSceneManager (sceneManager)
 {
-	mRenderCamera->setNearClipDistance(2);
+	mRenderCamera->setNearClipDistance(1);
+	setup();
+}
+
+void GameCamera::updatePosition(Ogre::Vector3 camP, Ogre::Vector3 tarP) {
+	//mRenderCamera->setPosition(Ogre::Vector3(p.x, p.y + 30, p.z));
+	//mRenderCamera->lookAt(p);
+    mCamNode->setPosition (camP);
+    mTargetNode->setPosition (tarP);
+}
+
+// Sets up autotracking for player 
+void GameCamera::setup() 
+{
+	 mCamNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera");
+     mTargetNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera_target");
+	 mCamNode->setAutoTracking (true, mTargetNode); 
+	 mCamNode->setFixedYawAxis (true);
+	 mRenderCamera->setPosition(Ogre::Vector3(0,0,-100));
+	 //mCamNode->setPosition(mRenderCamera->getPosition());
+	 mCamNode->attachObject(mRenderCamera);
+
+}
+
+void GameCamera::update(Ogre::Vector3 cameraPosition, Ogre::Vector3 targetPosition)
+{
+	// Handles the movement 
+	Ogre::Vector3 displacement; 
+
+	displacement = cameraPosition - mCamNode->getPosition() * 0.01f; 
+	mCamNode->translate(displacement);
+
+	displacement = targetPosition - mTargetNode->getPosition () * 0.01f; 
+	mCamNode->translate(displacement);
 }
 
 void
 GameCamera::Think(float time)
 {
+
+
 	// Any code needed here to move the camera about per frame
 	//  (use mRenderCamera to get the actual render camera, of course!)
 		

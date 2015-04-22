@@ -8,6 +8,7 @@
 //#include "OgreFontManager.h"
 //#include "OgreTextAreaOverlayElement.h"
 #include "PhysicsManager.h"
+#include "DynamicObject.h"
 
 // Forward declarations of Ogre classes.  Note the Ogre namespace!
 namespace Ogre {
@@ -19,13 +20,14 @@ class World;
 class Kinect;
 class DynamicObject;
 class InputHandler;
+class GameCamera;
 
 class Player 
 {
 public:
 
 	Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *physManager, World *world, 
-		Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input);
+		Kinect *k, Ogre::SceneManager *sceneManager, InputHandler *input, GameCamera *camera);
 
 	void addToScene(); 
 	void setScale(Ogre::Vector3 v);
@@ -45,15 +47,23 @@ public:
 
 	void setPosition (Ogre::Vector3 p);
 
+	Ogre::SceneNode *getSightNode () { return sightNode; }
+    Ogre::SceneNode *getCameraNode () { return camNode; }
+	Ogre::Vector3 getWorldPosition () { return mPlayerObject->mSceneNode->_getDerivedPosition (); }
+
 protected:
 
 	Ogre::SceneManager *mSceneManager;
+	Ogre::SceneNode *sightNode;
+	Ogre::SceneNode *camNode;
+
 	InputHandler *mInputHandler;
 	World *mWorld;
 	Kinect *mKinect;
 	DynamicObject *mPlayerObject;
 	PhysicsManager *mPhysManager;
 	Ogre::String meshName; 
+	GameCamera *mCamera;
 
 	// For testing purposes 
 //	Ogre::Overlay *overly; 

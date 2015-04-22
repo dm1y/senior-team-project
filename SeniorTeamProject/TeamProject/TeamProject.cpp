@@ -82,7 +82,8 @@ TeamProject::createScene()
 	//   access to the player), you can add the pointers later.  Here's an example of both ways
 	//   of doing it, giving the world access to the camera and the input handler.
 	
-	mGameCamera = new GameCamera(mCamera, mInputHandler);
+	mGameCamera = new GameCamera(mCamera, mInputHandler, mSceneMgr);
+	
 	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary());
     
 
@@ -123,7 +124,7 @@ TeamProject::setup(void)
 
     // Create the SceneManager, in this case a generic one
     mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "SMInstance");
-    createCamera();
+	createCamera();    
     createViewports();
 
     // Set default mipmap level (NB some APIs ignore this)
