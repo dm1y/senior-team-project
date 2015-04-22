@@ -74,6 +74,7 @@ World::Think(float time)
 	mPlayer->Think(time);
 	
 	physManager->stepSimulation(time);
+	mCamera->mRenderCamera->move(mPlayer->getDynamicObject()->position);
 }
 
 

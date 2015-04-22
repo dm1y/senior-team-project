@@ -113,6 +113,7 @@ copy resources.cfg "$(OutDir)"</Command>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Coin.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="GameLibrary.h" />
     <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="IOgreObject.h" />
@@ -158,6 +159,7 @@ copy resources.cfg "$(OutDir)"</Command>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="GameLibrary.cpp" />
     <ClCompile Include="DynamicObject.cpp" />
     <ClCompile Include="InputHandler.cpp" />

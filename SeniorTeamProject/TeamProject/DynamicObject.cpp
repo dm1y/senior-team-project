@@ -82,6 +82,7 @@ void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 	// attach the model entity
 	Ogre::Entity *mEntity = sceneManager->createEntity(meshName);
 	mEntity->setCastShadows(true);
+	//mEntity->anim
 	mSceneNode->attachObject(mEntity);
 }
 

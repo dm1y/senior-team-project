@@ -129,6 +129,7 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			} else if(collisionShape.compare("btCylinderShape") == 0) {
 				colShape = new btCylinderShape(colDim);
 			} else if(collisionShape.compare("btCapsuleShape") == 0) {
+				//colShape = new btCapsuleShape(colDim);
 				// TODO: implement capsuleshape
 			} else if(collisionShape.compare("btConeShape") == 0) {
 				// TODO: implement btConeShape

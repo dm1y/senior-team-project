@@ -25,14 +25,19 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	// For Kinect later on 
 	mAutoCallibrate = true;
 
+
 	// For testing purposes 
 	//overlyBool = false; 
-
+//	btCollisionObject s = new btCapsuleShape();
+	
 	// Create player node using GameObject class 
 	mPlayerObject = dynamic;
 	mPlayerObject->setPosition(position);
 	mPlayerObject->addToOgreScene(mSceneManager);
 	mPlayerObject->addToBullet(mPhysManager);
+	mPlayerObject->getRigidBody()->isKinematicObject();
+	//mPlayerObject->getRigidBody()->setCollisionShape(btCapsuleShape(5,1));
+	mPlayerObject->synchWithBullet();
 }
 
 // Adds player object to the scene
@@ -89,57 +94,92 @@ Player::Think(float time)
 	if (mEnableKeyboard) 
 	{
 		// Left 
-		// TODO: somehow cap rotation 
 		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
 		{
-			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
-			mPlayerObject->fallRigidBody->applyForce(btVector3(1, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			//btVector3 p; 
+			//p = btVector3(mPlayerObject->position.x, mPlayerObject->position.y, mPlayerObject->position.z);
+			//mPlayerObject->fallRigidBody->applyCentralForce(btVector3(1, 0, 0));
+			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			//mPlayerObject->fallRigidBody->applyForce(btVector3(1, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->applyForce(btVector3(1, 0, 0), mPlayerObject->fallRigidBody->getCenterOfMassPosition());
+			//mPlayerObject->fallRigidBody->applyForce(btVector3(1, 0, 0), p);
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
+			
+			
 		}
 
 		// Right 
-		// TODO: cap rotation 
 		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
 		{
+			mPlayerObject->fallRigidBody->applyCentralForce(btVector3(-1, 0, 0));
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			mPlayerObject->fallRigidBody->applyForce(btVector3(-1, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));
+			//mPlayerObject->fallRigidBody->isActive();
+			
 		}
 
-		// Up - WIP
+		// Up 
 		 else if (mInputHandler->IsKeyDown(OIS::KC_UP))
 		 {
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, -1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
-		 }
+			//mPlayerObject->fallRigidBody->isActive();
+			
+		}
 
-		// Down - still a wip 
+		// Down 
 		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
 		{
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, 1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, -5));
 			//mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20 * time);
+			//mPlayerObject->fallRigidBody->isActive();
+			
 		}
 
-		// "Jump" - semi works but still a wip 
+		// "Jump" 
 		else if (mInputHandler->IsKeyDown(OIS::KC_RSHIFT))
 		{
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
-			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 5, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(4, 4, 0));
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 1, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 5, 0));
 			//mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20 * time);
+			//mPlayerObject->fallRigidBody->isActive();
+			
 		}
 
-		// "Crouch" - still a wip 
+		// "Crouch"
 		else if (mInputHandler->IsKeyDown(OIS::KC_L))
 		{
+
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
-			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, -1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->applyForce(btVector3(0, -1, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, -5, 0));
+			
 			//mPlayerObject->getRigidBody()->applyCentralImpulse(mPlayerObject->getRigidBody()->getWorldTransform().getBasis().getColumn(2) * 20 * time);
+			//mPlayerObject->fallRigidBody->isActive();
 		}
+
+		
+		else if (mInputHandler->WasKeyDown(OIS::KC_LEFT) || mInputHandler->WasKeyDown(OIS::KC_RIGHT) || 
+			mInputHandler->WasKeyDown(OIS::KC_UP) || mInputHandler->WasKeyDown(OIS::KC_DOWN)) {
+			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 0));
+			
+		}
+		mPlayerObject->synchWithBullet();
+
 #pragma endregion Input controls for keyboard 
 	}
 }

@@ -33,7 +33,6 @@ public:
 	void Think(float time);
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 
-
 	bool getEnableKinect() { return mEnableKinect; }
 	void setEnableKinect(bool enable) { mEnableKinect = enable; }
 	bool getEnableKeyboard() { return mEnableKeyboard; }
