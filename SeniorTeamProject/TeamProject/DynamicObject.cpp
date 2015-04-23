@@ -86,6 +86,20 @@ void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 	mSceneNode->attachObject(mEntity);
 }
 
+void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager, Ogre::String s) {
+	// create the scene node
+    mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode(s);
+	mSceneNode->setPosition(position);
+
+	// attach the model entity
+	Ogre::Entity *mEntity = sceneManager->createEntity(s, meshName);
+	mEntity->setCastShadows(true);
+	//mEntity->anim
+	mSceneNode->attachObject(mEntity);
+}
+
+
+
 void DynamicObject::addToBullet(PhysicsManager *physmanager) {
 	physmanager->_world->addRigidBody(fallRigidBody);
 	physmanager->physObjects.push_back(this);

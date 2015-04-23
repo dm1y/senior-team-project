@@ -33,9 +33,16 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	// Create player node using GameObject class 
 	mPlayerObject = dynamic;
 	mPlayerObject->setPosition(position);
-	mPlayerObject->addToOgreScene(mSceneManager);
+	mPlayerObject->addToOgreScene(mSceneManager, "player");
+
+	// Children nodes for camera in 3rd person perspective 
+	sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (position.x, position.y, position.z + 100));
+	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (position.x, position.y + 50, position.z - 100));
+
+	// Sets up Bullet 
 	mPlayerObject->addToBullet(mPhysManager);
 	mPlayerObject->getRigidBody()->isKinematicObject();
+	//mPlayerObject->getRigidBody()->setCollisionShape();
 	//mPlayerObject->getRigidBody()->setCollisionShape(btCapsuleShape(5,1));
 	mPlayerObject->synchWithBullet();
 

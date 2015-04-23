@@ -13,6 +13,7 @@ public:
 	void update();
 	void synchWithBullet();
 	void addToOgreScene(Ogre::SceneManager *sceneManager);
+	void addToOgreScene(Ogre::SceneManager *sceneManager, Ogre::String s);
 	void addToBullet(PhysicsManager *physmanager);
 
 	void setPosition(Ogre::Vector3 newPos);
