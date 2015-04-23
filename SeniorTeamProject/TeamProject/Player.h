@@ -65,6 +65,10 @@ protected:
 	Ogre::String meshName; 
 	GameCamera *mCamera;
 
+	bool isJumping;
+	bool onGround;
+	int angle, h; 
+
 	// For testing purposes 
 //	Ogre::Overlay *overly; 
 //	bool overlyBool; 

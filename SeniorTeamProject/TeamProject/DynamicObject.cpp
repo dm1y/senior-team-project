@@ -31,7 +31,7 @@ DynamicObject::DynamicObject(Ogre::String meshName, btCollisionShape *collisionS
 	this->position = position;
 	this->meshName = meshName;
 	this->hitBox = collisionShape; 
-
+	
 	// setup rigid body for physics
 	btDefaultMotionState* fallMotionState =
 		new btDefaultMotionState( btTransform(btQuaternion(0, 0, 0, 1), btVector3(position.x, position.y, position.z)));

@@ -9,10 +9,12 @@
 //#include <list>
 #include <ois/ois.h>
 
+
 //#include "OgreOverlayManager.h"
 //#include "OgreOverlay.h"
 //#include "OgreFontManager.h"
 //#include "OgreTextAreaOverlayElement.h"
+
 #include "PhysicsManager.h"
 #include "Kinect.h"
 #include "Camera.h"
@@ -26,6 +28,12 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	// For Kinect later on 
 	mAutoCallibrate = true;
 
+	// Player physics
+	isJumping = false; 
+	onGround = true;
+	angle = 0;
+	h = 0; 
+
 	// For testing purposes 
 	//overlyBool = false; 
 //	btCollisionObject s = new btCapsuleShape();
@@ -36,8 +44,8 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->addToOgreScene(mSceneManager, "player");
 
 	// Children nodes for camera in 3rd person perspective 
-	sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (position.x, position.y, position.z + 100));
-	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (position.x, position.y + 50, position.z - 100));
+	sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (0, 0,  100));
+	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (0, 50, -100));
 
 	// Sets up Bullet 
 	mPlayerObject->addToBullet(mPhysManager);
@@ -47,7 +55,6 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	//mPlayerObject->getRigidBody()->setCollisionShape(btCapsuleShape(5,1));
 	mPlayerObject->synchWithBullet();
 
-	
 }
 
 // Adds player object to the scene
@@ -101,6 +108,16 @@ Player::Think(float time)
 	}*/
 #pragma endregion End of Kinect code/Not used right now   
 	
+	//if (mPlayerObject->fallRigidBody->checkCollideWith(NULL))
+	//{
+	//	mPlayerObject->setPosition(Ogre::Vector3(0, 10,-10));
+	//}
+
+	if (mPlayerObject->position == Ogre::Vector3 (0, 15,-10)) {
+		mPlayerObject->setPosition(Ogre::Vector3 (0, 15,-10));
+	}
+
+	//TODO use ray tracing/testing to detect ground collision 
 #pragma region Controls 
 	btTransform ts;
 
@@ -108,69 +125,87 @@ Player::Think(float time)
 	if (mEnableKeyboard) 
 	{
 		// Left 
-		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
+		if (mInputHandler->IsKeyDown(OIS::KC_LEFT) && onGround)
 		{
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
+			//if (!isJumping)
+				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+
+			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->setFriction(5);
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
 		}
 
 		// Right 
-		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
+		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) && onGround)
 		{
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
+			//if (!isJumping)
+				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+
+			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->setFriction(5);
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-1, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
 		}
 
 		// Up 
-		 else if (mInputHandler->IsKeyDown(OIS::KC_UP))
+		else if (mInputHandler->IsKeyDown(OIS::KC_UP) && onGround)
 		 {
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
+			//if (!isJumping)
+				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			
+			mPlayerObject->fallRigidBody->setFriction(1);
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0,0,-1));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
 			
 		}
 
 		// Down 
-		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
+		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) && onGround)
 		{
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
+			//if (!isJumping)
+				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+
+			mPlayerObject->fallRigidBody->setFriction(1);
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 1));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, -5));
 			
 		}
 
 		// "Jump" 
-		else if (mInputHandler->IsKeyDown(OIS::KC_RSHIFT))
+		else if (mInputHandler->IsKeyDown(OIS::KC_RSHIFT) && !isJumping)
 		{
+			//isJumping = true;
+			h +=10;
+
+			if (h < 20) {
+ 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			//mPlayerObject->fallRigidBody->setFriction(5);
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 10, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 10, 0));
 			mPlayerObject->fallRigidBody->applyGravity();
-
-			// Clamp the movements  -- WIP 
-			if (mPlayerObject->fallRigidBody->getLinearVelocity().getY() >= 30) 
-			{
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 0));
+			} else if (h > 30) {
+				h = 0; 
 			}
+
 			
 		}
 
 		// "Crouch"
-		else if (mInputHandler->IsKeyDown(OIS::KC_L))
+		else if (mInputHandler->IsKeyDown(OIS::KC_L) && !isJumping)
 		{
-			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			//mPlayerObject->fallRigidBody->setFriction(5);
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, -1, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, -5, 0));
 		}
+
+		else if (isJumping)
+		{
+			//isJumping = false;
+		}
+
 
 		mPlayerObject->synchWithBullet();
 		//mCamera->updatePosition(mPlayerObject->position);

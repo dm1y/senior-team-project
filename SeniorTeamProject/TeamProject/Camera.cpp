@@ -39,15 +39,16 @@ void GameCamera::setup()
 void GameCamera::update(Ogre::Vector3 cameraPosition, Ogre::Vector3 targetPosition)
 {
 	// Handles the movement 
-	Ogre::Vector3 displacement; 
+	Ogre::Vector3 displacement;
+	Ogre::Vector3 displacement2;
 
 	displacement = cameraPosition - mCamNode->getPosition() * 0.5f; 
 	mCamNode->translate(displacement);
 
-	//displacement = targetPosition - mTargetNode->getPosition () * 0.5f; 
-	//mCamNode->translate(displacement);
+	displacement2 = targetPosition - mTargetNode->getPosition () * 0.5f; 
+	mTargetNode->translate(displacement2);
 
-	mCamNode->setPosition(Ogre::Vector3(displacement.x, displacement.y, displacement.z));
+	//mCamNode->setPosition(displacement);
 }
 
 void
@@ -93,10 +94,20 @@ GameCamera::Think(float time)
 		 mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y + 1, camPos.z)); 
 
 	// Zooms camera in 
-	} else if (mInputHandler->IsKeyDown(OIS::KC_E))
+	} 
+	else if (mInputHandler->IsKeyDown(OIS::KC_E))
 	{
 		 Ogre::Vector3 camPos = mRenderCamera->getPosition();
 		 mRenderCamera->setPosition(Ogre::Vector3(camPos.x, camPos.y - 1, camPos.z)); 
+	}  
+	
+	if (mInputHandler->IsKeyDown(OIS::KC_Z))
+	{
+		mRenderCamera->yaw(Ogre::Radian(0.01f));
+
+	} else if (mInputHandler->IsKeyDown(OIS::KC_C))
+	{
+		mRenderCamera->yaw(Ogre::Radian(-0.01f));
 	}
 
 }
