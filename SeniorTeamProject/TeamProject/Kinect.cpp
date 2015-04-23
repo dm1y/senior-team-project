@@ -24,8 +24,21 @@ Kinect::Kinect(void)
 
 	mToso1Overlay->setScroll(0.85f, 0.8f);
 	mToso2Overlay->setScroll(0.65f, 0.8f);
+
+	standingOrSeated = true; //Starts Standing
 }
 
+std::vector<Ogre::Vector3>
+Kinect::getSkeletonNodes()
+{
+	std::vector<Ogre::Vector3> nodes;
+	for(Ogre::Vector3 sn : mSkelPositions)
+	{
+		nodes.push_back(sn);
+	}
+
+	return nodes;
+}
 
 void
 Kinect::addSkelListener(KinectSkelMsgr *listener)
@@ -58,7 +71,7 @@ Kinect::initSensor()
 	}
 
 	//DWORD nuiFlags = NUI_INITIALIZE_FLAG_USES_DEPTH_AND_PLAYER_INDEX | NUI_INITIALIZE_FLAG_USES_SKELETON |  NUI_INITIALIZE_FLAG_USES_COLOR;
-	DWORD nuiFlags =  NUI_INITIALIZE_FLAG_USES_SKELETON;
+	DWORD nuiFlags =  NUI_INITIALIZE_FLAG_USES_SKELETON | NUI_INITIALIZE_FLAG_USES_DEPTH;
 	hr = m_pNuiSensor->NuiInitialize( nuiFlags );
 
 
@@ -71,7 +84,10 @@ Kinect::initSensor()
 	{
 		m_hNextSkeletonEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
 
-		hr = m_pNuiSensor->NuiSkeletonTrackingEnable( m_hNextSkeletonEvent, NUI_SKELETON_TRACKING_FLAG_ENABLE_SEATED_SUPPORT );
+		if (standingOrSeated) //Standing T Sitting F
+			hr = m_pNuiSensor->NuiSkeletonTrackingEnable( m_hNextSkeletonEvent, 0);
+		else if (!standingOrSeated)
+			hr = m_pNuiSensor->NuiSkeletonTrackingEnable( m_hNextSkeletonEvent, NUI_SKELETON_TRACKING_FLAG_ENABLE_SEATED_SUPPORT);
 		if( FAILED( hr ) )
 		{
 			return hr;
@@ -216,6 +232,7 @@ Kinect::updateKinectSkeleton()
 				bFoundSkeleton = true;
 			}
 		}
+		//if (NUI_SKELETON_TRACKED == )
 	}
 
 	// no skeletons!
@@ -248,12 +265,12 @@ Kinect::updateKinectSkeleton()
 		if ( SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED &&
 			SkeletonFrame.SkeletonData[i].eSkeletonPositionTrackingState[NUI_SKELETON_POSITION_SHOULDER_CENTER] != NUI_SKELETON_POSITION_NOT_TRACKED)
 		{
-			// Here's our skeleton, let's update it.  Multiple tracked skeletons could be a problem,
-			// fix that later
+
 
 			NUI_SKELETON_DATA * pSkel =  &SkeletonFrame.SkeletonData[i];
 
 			// TODO:  Check for     pSkel->eSkeletonPositionTrackingState[ JOINT ];
+			Vector4 spine = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_SPINE];
 			Vector4 shoulderPos = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_SHOULDER_CENTER];
 			Vector4 headPos = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_HEAD];
 			Vector4 leftShoulder =  pSkel->SkeletonPositions[NUI_SKELETON_POSITION_SHOULDER_LEFT];
@@ -264,9 +281,16 @@ Kinect::updateKinectSkeleton()
 			Vector4 rightWrist =  pSkel->SkeletonPositions[NUI_SKELETON_POSITION_WRIST_RIGHT];
 			Vector4 leftHand =  pSkel->SkeletonPositions[NUI_SKELETON_POSITION_HAND_LEFT];
 			Vector4 rightHand =  pSkel->SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT];
+			Vector4 leftHip = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_HIP_LEFT];
+			Vector4 rightHip = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_HIP_RIGHT];
+			Vector4 leftKnee = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_KNEE_LEFT];
+			Vector4 rightKnee = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_KNEE_RIGHT];
+			Vector4 leftAnkle = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_ANKLE_LEFT];
+			Vector4 rightAnkle = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_ANKLE_RIGHT];
+			Vector4 leftFoot = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_FOOT_LEFT];
+			Vector4 rightFoot = pSkel->SkeletonPositions[NUI_SKELETON_POSITION_FOOT_RIGHT];
 
-
-			for (int i = 0 ; i < NUI_SKELETON_POSITION_COUNT; i++)
+			for(int i = 0 ; i < NUI_SKELETON_POSITION_COUNT; i++)
 			{
 				mSkelPositions[i] = Ogre::Vector3(pSkel->SkeletonPositions[i].x,pSkel->SkeletonPositions[i].y,pSkel->SkeletonPositions[i].z);
 			}
@@ -304,16 +328,14 @@ Kinect::updateKinectSkeleton()
 		}
 		else if ( true && SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_POSITION_ONLY )
 		{
-			// Position only, ignore for now.
 		}
 	}
-	mToso1Overlay->setRotate(Ogre::Radian(-mLeftRightAngle));
+	//mToso1Overlay->setRotate(Ogre::Radian(-mLeftRightAngle));
 
 	mToso1Overlay->setRotate(Ogre::Radian(-mLeftRightAngle));
 	mToso1Overlay->setScroll(0.85f, 0.8f);
 
 	mToso2Overlay->setRotate(Ogre::Radian(-mFrontBackAngle));
-
 	mToso2Overlay->setScroll(0.65f, 0.8f);
 #endif
 }

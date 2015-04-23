@@ -38,7 +38,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib)
 {
 	sceneManager->setAmbientLight(Ogre::ColourValue(0, 0, 0));
-	sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+	//sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
 	Ogre::Light* directionalLight = sceneManager->createLight("directionalLight");
     directionalLight->setType(Ogre::Light::LT_DIRECTIONAL);
@@ -54,9 +54,9 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	StaticScenery *iceIsland = new StaticScenery(Ogre::Vector3(0,0,0), "iceIsland.MESH.mesh", mSceneManager, physManager);
 
-	DynamicObject *p = gameLibrary->getDynamicObject("Tuna");
-	mPlayer = new Player(p, Ogre::Vector3(0, 15,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
-	mPlayer->setScale(Ogre::Vector3(.3, .3, .3));
+	DynamicObject *p = gameLibrary->getDynamicObject("Jordan");
+	mPlayer = new Player(p, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
+	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 
 	//mCamera->updatePosition (Ogre::Vector3 (0, 200, 0), mPlayer->getSightNode ()->getPosition());
 

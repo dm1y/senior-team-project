@@ -1,0 +1,8 @@
+{
+	"type" : "DynamicObject",
+	"meshName" : "cubeJordan.mesh",
+	"mass" : 10,
+	"collisionShape" : "btCylinderShape",
+	"collisionShapeSize" : [10,10,10],
+	"restitution" : 0.0
+}
