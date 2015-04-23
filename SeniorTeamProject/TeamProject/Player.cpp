@@ -42,6 +42,7 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	// Sets up Bullet 
 	mPlayerObject->addToBullet(mPhysManager);
 	mPlayerObject->getRigidBody()->isKinematicObject();
+	mPlayerObject->getRigidBody()->setActivationState(DISABLE_DEACTIVATION);
 	//mPlayerObject->getRigidBody()->setCollisionShape();
 	//mPlayerObject->getRigidBody()->setCollisionShape(btCapsuleShape(5,1));
 	mPlayerObject->synchWithBullet();
@@ -109,30 +110,27 @@ Player::Think(float time)
 		// Left 
 		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
 		{
-			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyForce(btVector3(1, 0, 0), mPlayerObject->fallRigidBody->getCenterOfMassPosition());
+			//mPlayerObject->fallRigidBody->setFriction(5);
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
-			
-			
 		}
 
 		// Right 
 		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
 		{
-			mPlayerObject->fallRigidBody->applyCentralForce(btVector3(-1, 0, 0));
-			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyForce(btVector3(-1, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			//mPlayerObject->fallRigidBody->setFriction(5);
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-1, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
 		}
 
 		// Up 
 		 else if (mInputHandler->IsKeyDown(OIS::KC_UP))
 		 {
-			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, -1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			//mPlayerObject->fallRigidBody->setFriction(5);
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0,0,-1));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
 			
 		}
@@ -140,9 +138,9 @@ Player::Think(float time)
 		// Down 
 		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
 		{
-			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, 1), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			//mPlayerObject->fallRigidBody->setFriction(5);
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 1));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, -5));
 			
 		}
@@ -150,11 +148,12 @@ Player::Think(float time)
 		// "Jump" 
 		else if (mInputHandler->IsKeyDown(OIS::KC_RSHIFT))
 		{
-			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 3, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			//mPlayerObject->fallRigidBody->setFriction(5);
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 10, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 10, 0));
 			mPlayerObject->fallRigidBody->applyGravity();
+
 			// Clamp the movements  -- WIP 
 			if (mPlayerObject->fallRigidBody->getLinearVelocity().getY() >= 30) 
 			{
@@ -166,22 +165,13 @@ Player::Think(float time)
 		// "Crouch"
 		else if (mInputHandler->IsKeyDown(OIS::KC_L))
 		{
-
 			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts); 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyForce(btVector3(0, -1, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
+			//mPlayerObject->fallRigidBody->setFriction(5);
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, -1, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, -5, 0));
-			
 		}
-		
-		else if (mInputHandler->WasKeyDown(OIS::KC_LEFT) || mInputHandler->WasKeyDown(OIS::KC_RIGHT) || 
-			mInputHandler->WasKeyDown(OIS::KC_UP) || mInputHandler->WasKeyDown(OIS::KC_DOWN)) {
-			mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyForce(btVector3(0, 0, 0), btVector3(ts.getOrigin().getX(), ts.getOrigin().getY(), ts.getOrigin().getZ()));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 0));
-			
-		}
+
 		mPlayerObject->synchWithBullet();
 		//mCamera->updatePosition(mPlayerObject->position);
 
