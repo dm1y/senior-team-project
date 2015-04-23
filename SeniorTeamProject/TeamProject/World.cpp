@@ -65,7 +65,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
 	
 	for(int i = 0; i < 20; i++) {
-		coins.push_back(new Coin(Ogre::Vector3(i * 2 % 3,100,20), sceneManager, physManager));
+		//coins.push_back(new Coin(Ogre::Vector3(i * 2 % 3,100,20), sceneManager, physManager));
 
 		GameObject* gggggo = new GameObject(this, sceneManager, GameObject::NOTPLAYER);
 		gggggo->loadModel("catcoin.MESH.mesh");
@@ -77,10 +77,48 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
 	Ogre::Overlay *overly = om.getByName("Sample");
 
+	//TODO::MAKE MORE GENERAL
+	mPlayer1 = new Player(this, mKinect, mSceneManager, mInputHandler);
+	mPlayer1->addOgreEntity("cubeBeards.mesh");
+	mPlayer1->setScale(Ogre::Vector3(.25, .25, .25));
+	mPlayer1->setOverlay(overly);
+
+	mPlayer2 = new Player(this, mKinect, mSceneManager, mInputHandler);
+	mPlayer2->addOgreEntity("cubeBottoms.mesh");
+	mPlayer2->setScale(Ogre::Vector3(.25, .25, .25));
+	mPlayer2->setOverlay(overly);
+
+	mPlayer3 = new Player(this, mKinect, mSceneManager, mInputHandler);
+	mPlayer3->addOgreEntity("cubeHair.mesh");
+	mPlayer3->setScale(Ogre::Vector3(.25, .25, .25));
+	mPlayer3->setOverlay(overly);
+
+	mPlayer4 = new Player(this, mKinect, mSceneManager, mInputHandler);
+	mPlayer4->addOgreEntity("cubeMoustaches.mesh");
+	mPlayer4->setScale(Ogre::Vector3(.25, .25, .25));
+	mPlayer4->setOverlay(overly);
+
+	mPlayer5 = new Player(this, mKinect, mSceneManager, mInputHandler);
+	mPlayer5->addOgreEntity("cubeShoes.mesh");
+	mPlayer5->setScale(Ogre::Vector3(.25, .25, .25));
+	mPlayer5->setOverlay(overly);
+
+	mPlayer6 = new Player(this, mKinect, mSceneManager, mInputHandler);
+	mPlayer6->addOgreEntity("cubeTops.mesh");
+	mPlayer6->setScale(Ogre::Vector3(.25, .25, .25));
+	mPlayer6->setOverlay(overly);
+
 	mPlayer = new Player(this, mKinect, mSceneManager, mInputHandler);
-	mPlayer->addOgreEntity("cubeJORDAN.mesh");
+	mPlayer->addOgreEntity("cubeBody.mesh");
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 	mPlayer->setOverlay(overly);
+
+	mPlayer7 = new Player(this, mKinect, mSceneManager, mInputHandler);
+	mPlayer7->addOgreEntity("cubeJordan.mesh");
+	mPlayer7->setScale(Ogre::Vector3(.25, .25, .25));
+	mPlayer7->setOverlay(overly);
+	mPlayer7->getGameObject()->setPosition(Ogre::Vector3(0, 30, 30));
+	mPlayer7->getGameObject()->setOrientation(Ogre::Quaternion::IDENTITY);
 }
 
 
@@ -89,17 +127,21 @@ World::Think(float time)
 {
 	physManager->stepSimulation(time);
 
-	mPlayer->Think(time);
+	mPlayer7->Think(time);
+
 	
-	for (GameObject* go : gameObjects)
+	if (mInputHandler->IsKeyDown(OIS::KC_TAB))
 	{
-		go->Think(time);
+		mPlayer->getGameObject()->Think(time);
+		mPlayer1->getGameObject()->Think(time);
+		mPlayer2->getGameObject()->Think(time);
+		mPlayer3->getGameObject()->Think(time);
+		mPlayer4->getGameObject()->Think(time);
+		mPlayer5->getGameObject()->Think(time);
+		mPlayer6->getGameObject()->Think(time);
 	}
 	
 	for (std::list<Coin*>::iterator it = coins.begin(); it != coins.end(); it++) {
 		it._Ptr->_Myval->update();
 	}
-	
 }
-
-

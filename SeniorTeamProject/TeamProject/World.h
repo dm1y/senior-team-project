@@ -41,6 +41,14 @@ public:
 
 	PhysicsManager *physManager;
 
+	Player *mPlayer1;
+	Player *mPlayer2;
+	Player *mPlayer3;
+	Player *mPlayer4;
+	Player *mPlayer5;
+	Player *mPlayer6;
+	Player *mPlayer7;
+
 protected:
 
 	Ogre::SceneManager *mSceneManager;
@@ -51,6 +59,8 @@ protected:
 	Kinect *mKinect;
 
 	Player *mPlayer;
+
+
 
 	GameObject *mGameObject;
 

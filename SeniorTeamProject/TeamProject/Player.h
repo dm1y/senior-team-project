@@ -45,6 +45,13 @@ public:
 
 	GameObject *getGameObject() { return mPlayerObject; }
 
+	void detectSway(float time);
+	void detectTurn(float time);
+	void drawSkeleton();
+	void createLine(std::string bone, int joint1, int joint2);
+	void drawLine(std::string bone, int joint1, int joint2);
+	void clearLine(std::string bone);
+
 	void checkCollision();
 
 
@@ -62,6 +69,9 @@ protected:
 
 	// For kinect 
 
+	bool lineVisible;
+	bool initSkel;
+	
 	bool mEnableKinect;
 	bool mEnableKeyboard;
 	bool mAutoCallibrate;

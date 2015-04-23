@@ -40,6 +40,7 @@ public:
 	float fLeftRight() { return mLeftRightAngle.valueDegrees(); }
 	float fFrontBack() { return mFrontBackAngle.valueDegrees(); }
 
+	bool standingOrSeated;
 	bool fStandSeat() { return standingOrSeated; }
 
 	Ogre::Vector3 getNodePositions() { return mSkelPositions[NUI_SKELETON_POSITION_COUNT]; }
@@ -79,8 +80,6 @@ protected:
 	bool   updateDelay; 
 	float  mTimeSinceLastLog;
 	Ogre::Vector2 baseVectorDelta;
-
-	bool standingOrSeated;
 
 	Ogre::Degree mLeftRightAngle;
 	Ogre::Degree mFrontBackAngle;

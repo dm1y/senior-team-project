@@ -1,2 +1,0 @@
-guinness.cs.usfca.edu
-8080
