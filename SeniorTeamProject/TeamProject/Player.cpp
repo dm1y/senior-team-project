@@ -42,7 +42,7 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	// Create player node using GameObject class 
 	mPlayerObject = dynamic;
 	mPlayerObject->setPosition(position);
-	mPlayerObject->addToOgreScene(mSceneManager, "player");
+	mPlayerObject->addToOgreScene(mSceneManager);
 
 	// Children nodes for camera in 3rd person perspective 
 	sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (0, 0,  100));

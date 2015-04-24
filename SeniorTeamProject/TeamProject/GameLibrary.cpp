@@ -163,8 +163,8 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 		} else {
 			// no file was found
 			// TODO: HANDLE GRACEFULLY!
-			//DynamicObject * x;
-			//x->clone();
+			DynamicObject * x;
+			x->clone();
 		}
 	}
 }

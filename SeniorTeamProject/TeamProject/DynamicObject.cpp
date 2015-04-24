@@ -120,6 +120,6 @@ void DynamicObject::update() {
 	synchWithBullet();
 }
 
-//DynamicObject * DynamicObject::clone() {
-//	return new DynamicObject(this->meshName, this->fallRigidBody->getCollisionShape(), this->position);
-//}
+DynamicObject * DynamicObject::clone() {
+	return new DynamicObject(meshNames, this->fallRigidBody->getCollisionShape(), this->position);
+}
