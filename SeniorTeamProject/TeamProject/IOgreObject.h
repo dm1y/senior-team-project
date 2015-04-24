@@ -4,6 +4,7 @@
 #include "OgreVector3.h"
 #include "OgreEntity.h"
 #include <string>
+#include <list>
 
 /* (TO: OLGA)
  * (From: Jordan)
@@ -15,7 +16,7 @@ class IOgreObject {
 private:
 
 public:
-	std::string meshName;
+	std::list<std::string> meshNames;
 	Ogre::Vector3 position;
 	Ogre::SceneNode *mSceneNode;
 	virtual void addToOgreScene(Ogre::SceneManager *sceneManager) = 0;

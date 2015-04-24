@@ -10,6 +10,8 @@
 #include "PhysicsManager.h"
 #include "DynamicObject.h"
 
+#include "BulletCollision/CollisionDispatch/btGhostObject.h"
+
 // Forward declarations of Ogre classes.  Note the Ogre namespace!
 namespace Ogre {
     class SceneNode;
@@ -31,6 +33,7 @@ public:
 
 	void addToScene(); 
 	void setScale(Ogre::Vector3 v);
+	void makeGhostObject();
 
 	void Think(float time);
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
@@ -69,6 +72,8 @@ protected:
 	bool onGround;
 	int angle, h; 
 
+	/* Testing character with ghost object */
+	btPairCachingGhostObject *m_ghostObject;
 	// For testing purposes 
 //	Ogre::Overlay *overly; 
 //	bool overlyBool; 

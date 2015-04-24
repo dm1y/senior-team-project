@@ -26,10 +26,11 @@
  * StaticScenery instead.
  */
 
-DynamicObject::DynamicObject(Ogre::String meshName, btCollisionShape *collisionShape, Ogre::Vector3 position) {
+DynamicObject::DynamicObject(std::list<Ogre::String> meshName, btCollisionShape *collisionShape, Ogre::Vector3 position) {
 	
 	this->position = position;
-	this->meshName = meshName;
+	//this->meshName = meshName;
+	meshNames = meshName;
 	this->hitBox = collisionShape; 
 	
 	// setup rigid body for physics
@@ -80,23 +81,33 @@ void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 	mSceneNode->setPosition(position);
 
 	// attach the model entity
-	Ogre::Entity *mEntity = sceneManager->createEntity(meshName);
-	//mEntity->setCastShadows(true);
-	//mEntity->anim
-	mSceneNode->attachObject(mEntity);
+	for (Ogre::String name : meshNames) {
+		mEntity = sceneManager->createEntity(name);
+		//mEntity->setCastShadows(true);
+		mSceneNode->attachObject(mEntity);
+	}
 }
 
-void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager, Ogre::String s) {
-	// create the scene node
-    mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode(s);
-	mSceneNode->setPosition(position);
-
-	// attach the model entity
-	Ogre::Entity *mEntity = sceneManager->createEntity(s, meshName);
+void DynamicObject::addEntity(Ogre::SceneManager *sceneManager, Ogre::String meshName) 
+{
+	mEntity = sceneManager->createEntity(meshName);
 	//mEntity->setCastShadows(true);
-	//mEntity->anim
 	mSceneNode->attachObject(mEntity);
-}
+}; 
+
+
+
+//void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager, Ogre::String s) {
+//	// create the scene node
+//    mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode(s);
+//	mSceneNode->setPosition(position);
+//
+//	// attach the model entity
+//	Ogre::Entity *mEntity = sceneManager->createEntity(s, meshName);
+//	//mEntity->setCastShadows(true);
+//	//mEntity->anim
+//	mSceneNode->attachObject(mEntity);
+//}
 
 
 
@@ -109,6 +120,6 @@ void DynamicObject::update() {
 	synchWithBullet();
 }
 
-DynamicObject * DynamicObject::clone() {
-	return new DynamicObject(this->meshName, this->fallRigidBody->getCollisionShape(), this->position);
-}
+//DynamicObject * DynamicObject::clone() {
+//	return new DynamicObject(this->meshName, this->fallRigidBody->getCollisionShape(), this->position);
+//}

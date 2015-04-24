@@ -3,13 +3,15 @@
 #include "IPhysObject.h"
 #include "IOgreObject.h"
 #include "PhysicsManager.h"
+#include <list>
+
 
 
 class DynamicObject: public IPhysObject, public IOgreObject {
 private:
 
 public:
-	DynamicObject(Ogre::String meshName, btCollisionShape *collisionShape, Ogre::Vector3 position);
+	DynamicObject(std::list<Ogre::String> meshName, btCollisionShape *collisionShape, Ogre::Vector3 position);
 	void update();
 	void synchWithBullet();
 	void addToOgreScene(Ogre::SceneManager *sceneManager);
@@ -21,8 +23,14 @@ public:
 	
 	btRigidBody *getRigidBody() {return fallRigidBody; }
 	btCollisionShape *getHitBox() {return hitBox; }
+	Ogre::Entity *getEntity() {return mEntity;}
+	void addEntity(Ogre::SceneManager *sceneManager, Ogre::String meshName); 
+
 
 	DynamicObject * clone();
+
+protected:
+	Ogre::Entity *mEntity; 
 };
 
 #endif
