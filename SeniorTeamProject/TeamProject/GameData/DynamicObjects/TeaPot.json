@@ -1,6 +1,6 @@
 {
 	"type" : "DynamicObject",
-	"meshName" : "TeaPot.MESH.mesh",
+	"meshNames" : ["TeaPot.MESH.mesh"],
 	"mass" : 1,
 	"collisionShape" : "btBoxShape",
 	"collisionShapeSize" : [0.5,0.5,0.5],

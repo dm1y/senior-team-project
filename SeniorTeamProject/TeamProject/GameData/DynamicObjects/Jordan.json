@@ -1,6 +1,6 @@
 {
 	"type" : "DynamicObject",
-	"meshName" : "cubeJordan.mesh",
+	"meshNames" : ["cubeJordan.mesh"],
 	"mass" : 10,
 	"collisionShape" : "btCylinderShape",
 	"collisionShapeSize" : [10,10,10],

@@ -82,14 +82,13 @@ TeamProject::createScene()
 	//   access to the player), you can add the pointers later.  Here's an example of both ways
 	//   of doing it, giving the world access to the camera and the input handler.
 	
-	mGameCamera = new GameCamera(mCamera, mInputHandler, mSceneMgr);
-	
-	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary());
-    
+	mGameCamera = new GameCamera(mCamera, mInputHandler, mSceneMgr);   
 
 	mKinect = new Kinect();
 	mKinect->initSensor();
 	mKinect->StartSession();
+
+	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary());
 }
 
 bool 

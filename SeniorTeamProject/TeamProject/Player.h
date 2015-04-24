@@ -38,8 +38,19 @@ public:
 	void Think(float time);
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 
+	bool initSkel;
 	bool getEnableKinect() { return mEnableKinect; }
 	void setEnableKinect(bool enable) { mEnableKinect = enable; }
+	void detectSway(float time);
+	void detectTurn(float time);
+	void drawSkeleton();
+	void createLine(std::string bone, int joint1, int joint2);
+	void drawLine(std::string bone, int joint1, int joint2);
+	void clearLine(std::string bone);
+	void getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2);
+	std::vector<Ogre::Vector3> getSkeletonNodes();
+
+
 	bool getEnableKeyboard() { return mEnableKeyboard; }
 	void setEnableKeyboard(bool enable) { mEnableKeyboard = enable; }
 

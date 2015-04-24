@@ -26,6 +26,8 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	
 	// For Kinect later on 
 	mAutoCallibrate = true;
+	mEnableKinect = false;
+	initSkel = false;
 
 	// Player physics
 	isJumping = false; 
@@ -96,6 +98,9 @@ Player::Think(float time)
 {
 
 #pragma region Kinect
+
+	drawSkeleton();
+
 	//if (overlyBool)
 	//	overly->show();
 	// testing kinect 
@@ -283,3 +288,158 @@ Player::Think(float time)
 	}
 }
 
+
+void
+Player::detectSway(float time)
+{
+	const float RADIANS_PER_SECOND = 0.5;
+	const float COIN_SPEED = 30;
+
+	Ogre::Degree leftRightAngle = Ogre::Degree(0);
+	Ogre::Degree frontBackAngle = Ogre::Degree(0);
+
+	getSkeletonAngles(leftRightAngle, frontBackAngle);
+	
+	/*
+	if (leftRightAngle.valueDegrees() < 0)
+		mPlayerObject->translate(Ogre::Vector3(time * COIN_SPEED / 2, 0, 0));
+
+	if (leftRightAngle.valueDegrees() > 0)
+		mPlayerObject->translate(Ogre::Vector3(-time * COIN_SPEED / 2, 0, 0));
+
+	if (frontBackAngle.valueDegrees() < 0)
+		mPlayerObject->translate(Ogre::Vector3(0, 0, time * COIN_SPEED / 2));
+
+	if (frontBackAngle.valueDegrees() > 0)
+		mPlayerObject->translate(Ogre::Vector3(0, 0, -time * COIN_SPEED / 2));
+	*/
+}
+
+void
+Player::detectTurn(float time)
+{
+	const float RADIANS_PER_SECOND = 0.5;
+	const float COIN_SPEED = 30;
+
+
+	vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+
+	/*
+	//RIGHT TURN
+	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z)
+		mPlayerObject->translate(Ogre::Vector3(-time * COIN_SPEED / 2, 0, 0));
+	
+	//LEFT TURN
+	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z)
+		mPlayerObject->translate(Ogre::Vector3(time * COIN_SPEED / 2, 0, 0));
+
+	//ARMS IN FRONT
+	if (skeletonNodes[NUI_SKELETON_POSITION_HAND_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SPINE].z &&
+		skeletonNodes[NUI_SKELETON_POSITION_HAND_RIGHT].z < skeletonNodes[NUI_SKELETON_POSITION_SPINE].z)
+		mPlayerObject->translate(Ogre::Vector3(0, 0, time * COIN_SPEED / 2));
+	
+	//ARMS IN BACK
+	if (skeletonNodes[NUI_SKELETON_POSITION_HAND_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SPINE].z &&
+		skeletonNodes[NUI_SKELETON_POSITION_HAND_RIGHT].z > skeletonNodes[NUI_SKELETON_POSITION_SPINE].z)
+		mPlayerObject->translate(Ogre::Vector3(0, 0, -time * COIN_SPEED / 2));
+	*/
+}
+
+void
+Player::getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2)
+{
+	angle = mKinect->leftRightAngle();
+	angle2 = mKinect->frontBackAngle();
+}
+
+std::vector<Ogre::Vector3>
+Player::getSkeletonNodes() 
+{
+	vector<Ogre::Vector3> nodes;
+	nodes = mKinect->getSkeletonNodes();
+	return nodes;
+}
+
+void
+Player::drawSkeleton()
+{
+	//TORSO
+	drawLine("head2ShoulderCenter", NUI_SKELETON_POSITION_HEAD, NUI_SKELETON_POSITION_SHOULDER_CENTER);
+	drawLine("shoulderCenter2ShoulderLeft", NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_LEFT);
+    drawLine("shoulderCenter2ShoulderRight", NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_RIGHT);
+    drawLine("shoulderCenter2Spine", NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SPINE);
+    drawLine("spine2HipCenter", NUI_SKELETON_POSITION_SPINE, NUI_SKELETON_POSITION_HIP_CENTER);
+
+	
+    drawLine("hipCenter2HipLeft", NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_LEFT);
+    drawLine("hipCenter2HipRight", NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_RIGHT);
+
+    //LEFT ARM
+    drawLine("shoulderLeft2ElbowLeft", NUI_SKELETON_POSITION_SHOULDER_LEFT, NUI_SKELETON_POSITION_ELBOW_LEFT);
+    drawLine("elbowLeft2WristLeft", NUI_SKELETON_POSITION_ELBOW_LEFT, NUI_SKELETON_POSITION_WRIST_LEFT);
+    drawLine("wristLeft2HandLeft", NUI_SKELETON_POSITION_WRIST_LEFT, NUI_SKELETON_POSITION_HAND_LEFT);
+
+    //RIGHT ARM
+    drawLine("shoulderRight2ElbowRight", NUI_SKELETON_POSITION_SHOULDER_RIGHT, NUI_SKELETON_POSITION_ELBOW_RIGHT);
+    drawLine("elbowRight2WristRight", NUI_SKELETON_POSITION_ELBOW_RIGHT, NUI_SKELETON_POSITION_WRIST_RIGHT);
+    drawLine("wristRight2HandRight", NUI_SKELETON_POSITION_WRIST_RIGHT, NUI_SKELETON_POSITION_HAND_RIGHT);
+
+    //LEFT LEG
+    drawLine("hipLeft2KneeLeft", NUI_SKELETON_POSITION_HIP_LEFT, NUI_SKELETON_POSITION_KNEE_LEFT);
+    drawLine("kneeLeft2AnkleLeft", NUI_SKELETON_POSITION_KNEE_LEFT, NUI_SKELETON_POSITION_ANKLE_LEFT);
+    drawLine("ankleLeft2FootLeft", NUI_SKELETON_POSITION_ANKLE_LEFT, NUI_SKELETON_POSITION_FOOT_LEFT);
+
+    //RIGHT LEG
+    drawLine("hipRight2KneeRight", NUI_SKELETON_POSITION_HIP_RIGHT, NUI_SKELETON_POSITION_KNEE_RIGHT);
+    drawLine("kneeRight2AnkleRight", NUI_SKELETON_POSITION_KNEE_RIGHT, NUI_SKELETON_POSITION_ANKLE_RIGHT);
+    drawLine("ankleRight2FootRight", NUI_SKELETON_POSITION_ANKLE_RIGHT, NUI_SKELETON_POSITION_FOOT_RIGHT);
+
+	initSkel = true;
+}
+
+void
+Player::createLine(std::string bone, int joint1, int joint2)
+{
+	Ogre::ManualObject* myManualObject =  mSceneManager->createManualObject(bone); 
+	myManualObject->setDynamic(true);
+	Ogre::SceneNode* myManualObjectNode = mSceneManager->getRootSceneNode()->createChildSceneNode(bone + "_node"); 
+ 
+	Ogre::MaterialPtr myManualObjectMaterial = Ogre::MaterialManager::getSingleton().create(bone + "Material","General"); 
+	myManualObjectMaterial->setReceiveShadows(false); 
+	myManualObjectMaterial->getTechnique(0)->setLightingEnabled(true);
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(0,0,1,0); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(0,0,1); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(0,0,1);
+
+	myManualObjectNode->attachObject(myManualObject);
+
+}
+
+void
+Player::drawLine(std::string bone, int joint1, int joint2)
+{
+	if (!initSkel)
+		createLine(bone, joint1, joint2);
+	else if (initSkel)
+	{
+		vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+		Ogre::ManualObject* myManualObject = mSceneManager->getManualObject(bone);
+		
+		myManualObject->clear();
+
+		Ogre::Vector3 bone1 = 20 * skeletonNodes[joint1] + Ogre::Vector3(-50, 30, 20);
+		Ogre::Vector3 bone2 = 20 * skeletonNodes[joint2] + Ogre::Vector3(-50, 30, 20);
+						
+		myManualObject->begin(bone + "Material", Ogre::RenderOperation::OT_LINE_LIST);
+		myManualObject->position(bone1.x, bone1.y, bone1.z); 
+		myManualObject->position(bone2.x, bone2.y, bone2.z); 
+		myManualObject->end();
+	}
+}
+
+void
+Player::clearLine(std::string bone)
+{
+	mSceneManager->destroyManualObject(bone);
+	mSceneManager->getRootSceneNode()->removeAndDestroyChild(bone + "_node");
+}

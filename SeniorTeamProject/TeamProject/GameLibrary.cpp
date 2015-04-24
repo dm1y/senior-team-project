@@ -109,7 +109,12 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 
 			// File was opened successfully and parsed into JSON,
 			// now we create the instance
-			string meshName = document["meshName"].GetString();
+
+			std::list<std::string> meshNames;
+
+			for (int i=0; i < document["meshNames"].Size(); i++)
+				meshNames.push_back(document["meshNames"][i].GetString());
+
 			int mass = document["mass"].GetInt();
 			string collisionShape = document["collisionShape"].GetString();
 			double colDimX = document["collisionShapeSize"][0].GetDouble();
@@ -145,7 +150,7 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 
 			// CREATE DYNAMICOBJECT OBJECT with default position at 0,0,0
 			// position can be changed later.
-			DynamicObject *newD = new DynamicObject(meshName, colShape, Ogre::Vector3(0,0,0));
+			DynamicObject *newD = new DynamicObject(meshNames, colShape, Ogre::Vector3(0,0,0));
 
 
 			// put it into the library
@@ -158,8 +163,8 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 		} else {
 			// no file was found
 			// TODO: HANDLE GRACEFULLY!
-			DynamicObject * x;
-			x->clone();
+			//DynamicObject * x;
+			//x->clone();
 		}
 	}
 }
