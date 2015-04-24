@@ -407,9 +407,9 @@ Player::createLine(std::string bone, int joint1, int joint2)
 	Ogre::MaterialPtr myManualObjectMaterial = Ogre::MaterialManager::getSingleton().create(bone + "Material","General"); 
 	myManualObjectMaterial->setReceiveShadows(false); 
 	myManualObjectMaterial->getTechnique(0)->setLightingEnabled(true);
-	myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(0,0,1,0); 
-	myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(0,0,1); 
-	myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(0,0,1);
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(1,0,0,0); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(1,0,0); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(1,0,0);
 
 	myManualObjectNode->attachObject(myManualObject);
 
