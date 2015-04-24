@@ -114,18 +114,37 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 
 			for (int i=0; i < document["meshNames"].Size(); i++)
 				meshNames.push_back(document["meshNames"][i].GetString());
-
-			int mass = document["mass"].GetInt();
-			string collisionShape = document["collisionShape"].GetString();
-			double colDimX = document["collisionShapeSize"][0].GetDouble();
-			double colDimY = document["collisionShapeSize"][1].GetDouble();
-			double colDimZ = document["collisionShapeSize"][2].GetDouble();
-			btVector3 colDim = btVector3(colDimX, colDimY, colDimZ); 
-
 			double restitution = document["restitution"].GetDouble();
+			int mass = document["mass"].GetInt();
+			
+			string collisionShape = document["collisionShape"].GetString();
+
 
 			btCollisionShape *colShape;
 
+			if(collisionShape.compare("btCapsuleShape") == 0) {
+
+				// set colShape to btCapsuleShape here!
+				double colDimX = document["collisionShapeSize"][0].GetDouble();
+				double colDimY = document["collisionShapeSize"][1].GetDouble();
+				colShape = new btCapsuleShape(colDimX, colDimY);
+
+
+			} else {
+
+				// assume every other collision shape takes 3 paramters,
+				// we can add in additional conditions for handling other shapes
+				// as needed.
+
+				// for now since most collision shapes take 3 params we parse all of them in this
+				// else block.
+				double colDimX = document["collisionShapeSize"][0].GetDouble();
+				double colDimY = document["collisionShapeSize"][1].GetDouble();
+				double colDimZ = document["collisionShapeSize"][2].GetDouble();
+				btVector3 colDim = btVector3(colDimX, colDimY, colDimZ); 
+
+
+						
 			// figure out collision shape and parse its dimensions
 			if(collisionShape.compare("btSphereShape") == 0) {
 				// TODO: implement btSphereShape
@@ -133,9 +152,6 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 				colShape = new btBoxShape(colDim);
 			} else if(collisionShape.compare("btCylinderShape") == 0) {
 				colShape = new btCylinderShape(colDim);
-			} else if(collisionShape.compare("btCapsuleShape") == 0) {
-				//colShape = new btCapsuleShape(colDim);
-				// TODO: implement capsuleshape
 			} else if(collisionShape.compare("btConeShape") == 0) {
 				// TODO: implement btConeShape
 			} else if(collisionShape.compare("btMultiSphereShape") == 0) {
@@ -147,6 +163,15 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			} else if(collisionShape.compare("btCompoundShape") == 0) {
 				// TODO: implement btCompoundShape
 			}
+
+			}
+
+
+			
+
+			
+
+
 
 			// CREATE DYNAMICOBJECT OBJECT with default position at 0,0,0
 			// position can be changed later.
