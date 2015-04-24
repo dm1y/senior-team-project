@@ -31,7 +31,6 @@ void GameCamera::setup()
 	 mCamNode->setAutoTracking (true, mTargetNode); 
 	 mCamNode->setFixedYawAxis (true);
 	 mRenderCamera->setPosition(Ogre::Vector3(0,0,0));
-	 //mCamNode->setPosition(mRenderCamera->getPosition());
 	 mCamNode->attachObject(mRenderCamera);
 
 }
@@ -47,6 +46,7 @@ void GameCamera::update(Ogre::Vector3 cameraPosition, Ogre::Vector3 targetPositi
 
 	displacement2 = targetPosition - mTargetNode->getPosition () * 0.5f; 
 	mTargetNode->translate(displacement2);
+
 
 	//mCamNode->setPosition(displacement);
 }

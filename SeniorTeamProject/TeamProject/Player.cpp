@@ -34,10 +34,6 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	onGround = true;
 	angle = 0;
 	h = 0; 
-
-	// For testing purposes 
-	//overlyBool = false; 
-//	btCollisionObject s = new btCapsuleShape();
 	
 	// Create player node using GameObject class 
 	mPlayerObject = dynamic;
@@ -54,6 +50,8 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->getRigidBody()->setAngularFactor(btVector3(0.0f,0.01f,0.0f));
 	mPlayerObject->getRigidBody()->setDamping(0.0f, 0.95f);
 	mPlayerObject->getRigidBody()->setFriction(.95f);
+	mPlayerObject->getRigidBody()->setGravity(btVector3(0, -30, 0));
+	//mPlayerObject->getRigidBody()->applyGravity();
 	mPlayerObject->synchWithBullet();
 }
 
@@ -78,39 +76,8 @@ Player::Think(float time)
 
 	drawSkeleton();
 
-	//if (overlyBool)
-	//	overly->show();
-	// testing kinect 
-	//if (mInputHandler->IsKeyDown(OIS::KC_SPACE))
-	///{
-	//	mEnableKeyboard = false;
-	//	mEnableKinect = true; 
-	//}
-	if (mAutoCallibrate) {
-//		mKinect->callibrate(4.0f, [this]() { });
-//		mEnableKinect = true;
-	}
-	// If kinect is enabled 
-	//if (mEnableKinect) 
-	//{
-		// add code here for movement via kinect sensor 
-		//mPlayerObject->translate(mKinect->leftRightAngle(), 0, 0); 
-		//playerNode->translate(mKinect->leftRightAngle(), 0, 0);
-		//angle2 = mKinect->frontBackAngle() * 0.8f *  mKinectSensitivityFB;
-	/*	overlyBool = true; 
-	}*/
 #pragma endregion End of Kinect code/Not used right now   
 	
-	//if (mPlayerObject->fallRigidBody->checkCollideWith(NULL))
-	//{
-	//	mPlayerObject->setPosition(Ogre::Vector3(0, 10,-10));
-	//}
-
-	if (mPlayerObject->position == Ogre::Vector3 (0, 15,-10)) {
-		mPlayerObject->setPosition(Ogre::Vector3 (0, 15,-10));
-	}
-
-	//TODO use ray tracing/testing to detect ground collision 
 #pragma region Controls 
 	btTransform ts;
 
@@ -122,10 +89,7 @@ Player::Think(float time)
 		{
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
-
-			
+			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));			
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(10, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
 		}
@@ -135,9 +99,7 @@ Player::Think(float time)
 		{
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-
 			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-10, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
 		}
@@ -146,30 +108,18 @@ Player::Think(float time)
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
-
-			
-			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1, 0, 0));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
 		} 
 		else if (mInputHandler->IsKeyDown(OIS::KC_N) && onGround)
 		{
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
-
-			
-			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1, 0, 0));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
 		}
+
 		if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) && onGround)
 		{
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-1, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
 		}
@@ -177,8 +127,8 @@ Player::Think(float time)
 		{
 			//if (!isJumping)
 			btVector3 angul = (mPlayerObject->fallRigidBody->getAngularVelocity());
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(mPlayerObject->fallRigidBody->getAngularVelocity().getX(), 0, mPlayerObject->fallRigidBody->getAngularVelocity().getZ()));
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1, 0, 1));
+			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(mPlayerObject->fallRigidBody->getAngularVelocity().getX(), 0, mPlayerObject->fallRigidBody->getAngularVelocity().getZ()));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(angul.getX() * 2, 0, angul.getZ() * 5));
 			//mPlayerObject->fallRigidBody->setFriction(5);
 
 			
@@ -199,15 +149,27 @@ Player::Think(float time)
 		// Up 
 		else if (mInputHandler->IsKeyDown(OIS::KC_UP) && onGround)
 		 {
+			/*mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
+			Ogre::Real x = ts.getOrigin().getX();
+			Ogre::Real y = ts.getOrigin().getY();
+			Ogre::Real z = ts.getOrigin().getZ();
+
+			Ogre::Real Qx = ts.getRotation().getX();
+			Ogre::Real Qy = ts.getRotation().getY();
+			Ogre::Real Qz = ts.getRotation().getZ();
+			Ogre::Real Qw = ts.getRotation().getW();*/
+
+			//mPlayerObject->fallRigidBody->applyCentralImpulse();
+
 			//if (!isJumping)
-			//mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			
 			//mPlayerObject->fallRigidBody->setFriction(1);
 			
 			//mPlayerObject->fallRigidBody->applyCentralImpulse(mPlayerObject->fallRigidBody->getAngularVelocity());
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0,0,-10));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1,0,-1));
 			//mPlayerObject->fallRigidBody->setLinearVelocity(mPlayerObject->fallRigidBody->getAngularVelocity());
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 10));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0, 10));
 			
 		}
 
@@ -215,7 +177,7 @@ Player::Think(float time)
 		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) && onGround)
 		{
 			//if (!isJumping)
-				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 
 			//mPlayerObject->fallRigidBody->setFriction(1);
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 10));
