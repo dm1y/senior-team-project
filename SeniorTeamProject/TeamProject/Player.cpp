@@ -51,33 +51,10 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	// Sets up Bullet 
 	mPlayerObject->addToBullet(mPhysManager); 
 	mPlayerObject->getRigidBody()->setActivationState(DISABLE_DEACTIVATION); 
-	mPlayerObject->getRigidBody()->setAngularFactor(btVector3(0.0f,1.0f,0.0f));
+	mPlayerObject->getRigidBody()->setAngularFactor(btVector3(0.0f,0.01f,0.0f));
+	mPlayerObject->getRigidBody()->setDamping(0.0f, 0.95f);
+	mPlayerObject->getRigidBody()->setFriction(.95f);
 	mPlayerObject->synchWithBullet();
-}
-void Player::makeGhostObject() 
-{
-	btTransform startTransform;
-	startTransform.setIdentity ();
-	startTransform.setOrigin (btVector3(0.0, 4.0, 0.0));
-
-	//GhostObject Setup 
-	m_ghostObject = new btPairCachingGhostObject();
-	m_ghostObject->setWorldTransform(startTransform);
-	btScalar characterHeight=1.75;
-	btScalar characterWidth =1.75;
-	btConvexShape* capsule = new btCapsuleShape(characterWidth,characterHeight);
-	m_ghostObject->setCollisionShape (capsule);
-	m_ghostObject->setCollisionFlags (btCollisionObject::CF_CHARACTER_OBJECT);
-	btScalar stepHeight = btScalar(0.35);
-}
-// Adds player object to the scene
-void Player::addToScene()
-{
-	mPlayerObject->addToOgreScene(mSceneManager);
-
-	// Children nodes for camera in 3rd person perspective 
-	sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (0, 0, 100));
-	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (0, 50, -100));
 }
 
 // Sets the scale of player to resize 
@@ -149,7 +126,7 @@ Player::Think(float time)
 			//mPlayerObject->fallRigidBody->setFriction(5);
 
 			
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1, 0, 0));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(10, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
 		}
 
@@ -161,7 +138,7 @@ Player::Think(float time)
 
 			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
 			//mPlayerObject->fallRigidBody->setFriction(5);
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-1, 0, 0));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-10, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
 		}
 		if (mInputHandler->IsKeyDown(OIS::KC_M) && onGround)
@@ -228,9 +205,9 @@ Player::Think(float time)
 			//mPlayerObject->fallRigidBody->setFriction(1);
 			
 			//mPlayerObject->fallRigidBody->applyCentralImpulse(mPlayerObject->fallRigidBody->getAngularVelocity());
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0,0,-1));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0,0,-10));
 			//mPlayerObject->fallRigidBody->setLinearVelocity(mPlayerObject->fallRigidBody->getAngularVelocity());
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 5));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, 10));
 			
 		}
 
@@ -241,27 +218,19 @@ Player::Think(float time)
 				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 
 			//mPlayerObject->fallRigidBody->setFriction(1);
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 1));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, -5));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 10));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, -10));
 			
 		}
 
 		// "Jump" 
 		else if (mInputHandler->IsKeyDown(OIS::KC_RSHIFT) && !isJumping)
 		{
-			//isJumping = true;
-			h +=10;
 
-			if (h < 20) {
- 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			//mPlayerObject->fallRigidBody->setFriction(5);
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 10, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 10, 0));
-			mPlayerObject->fallRigidBody->applyGravity();
-			} else if (h > 30) {
-				h = 0; 
-			}
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 30, 0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 30, 0));
 
 			
 		}
