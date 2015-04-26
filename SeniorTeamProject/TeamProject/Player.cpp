@@ -103,6 +103,8 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-10, 0, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
 		}
+
+		// Does the rotation 
 		if (mInputHandler->IsKeyDown(OIS::KC_M) && onGround)
 		{
 			//if (!isJumping)
@@ -116,13 +118,7 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
 		}
 
-		if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) && onGround)
-		{
-			//if (!isJumping)
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-1, 0, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
-		}
+
 		if (mInputHandler->IsKeyDown(OIS::KC_O) && onGround)
 		{
 			//if (!isJumping)
