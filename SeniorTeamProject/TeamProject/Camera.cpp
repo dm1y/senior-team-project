@@ -19,33 +19,32 @@ mRenderCamera(renderCamera), mInputHandler(input), mSceneManager (sceneManager)
 void GameCamera::updatePosition(Ogre::Vector3 camP, Ogre::Vector3 tarP) {
 	//mRenderCamera->setPosition(Ogre::Vector3(p.x, p.y + 30, p.z));
 	//mRenderCamera->lookAt(p);
-    mCamNode->setPosition (camP);
-    mTargetNode->setPosition (tarP);
+   // mCamNode->setPosition (camP);
+    //mTargetNode->setPosition (tarP);
 }
 
 // Sets up autotracking for player 
 void GameCamera::setup() 
 {
-	 mCamNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera");
-     mTargetNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera_target");
-	 mCamNode->setAutoTracking (true, mTargetNode); 
-	 mCamNode->setFixedYawAxis (true);
-	 mRenderCamera->setPosition(Ogre::Vector3(0,0,0));
-	 mCamNode->attachObject(mRenderCamera);
+	 //mCamNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera");
+	 //mTargetNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera_target");
+	 //mCamNode->setAutoTracking (true, mTargetNode); 
+	 //mCamNode->setFixedYawAxis (true);
+	 mRenderCamera->setPosition(Ogre::Vector3(0,100,-200));
+	 //mCamNode->attachObject(mRenderCamera);
 
 }
 
 void GameCamera::update(Ogre::Vector3 cameraPosition, Ogre::Vector3 targetPosition)
 {
 	// Handles the movement 
-	Ogre::Vector3 displacement;
-	Ogre::Vector3 displacement2;
+	//Ogre::Vector3 displacement;
+	//Ogre::Vector3 displacement2;
 
-	displacement = cameraPosition - mCamNode->getPosition() * 0.5f; 
-	mCamNode->translate(displacement);
+	//mCamNode->translate(cameraPosition);
 
-	displacement2 = targetPosition - mTargetNode->getPosition () * 0.5f; 
-	mTargetNode->translate(displacement2);
+	//displacement2 = targetPosition - mTargetNode->getPosition () * 0.5f; 
+	//mTargetNode->translate(displacement2);
 
 
 	//mCamNode->setPosition(displacement);

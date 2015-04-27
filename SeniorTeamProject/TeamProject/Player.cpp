@@ -49,8 +49,12 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
     mPlayerObject->fallRigidBody->getWorldTransform ().setBasis(orn);
 
 	// Children nodes for camera in 3rd person perspective 
-	sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (0, 0,  100));
-	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (0, 50, -100));
+	//sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (0, 0,  100));
+	//camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (0, 50, -100));
+	//camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (0, 400, -650));
+	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam");
+	camNode->attachObject(mCamera->mRenderCamera);
+	
 
 	// camNode->attachObject(mCamera->mRenderCamera); // This is for first person perspective 
 

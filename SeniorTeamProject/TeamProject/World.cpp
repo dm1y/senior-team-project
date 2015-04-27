@@ -68,8 +68,9 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 void 
 World::Think(float time)
 {
-	//mCamera->update (Ogre::Vector3 (0, 200, 0), mPlayer->getCameraNode() -> getPosition());
-	mCamera->update (mPlayer->getCameraNode ()->getPosition(), mPlayer->getSightNode ()->getPosition());
+	//mCamera->update (mPlayer->getCameraNode() -> getPosition(), mPlayer->getDynamicObject()->mSceneNode->getPosition());
+	
+	//mCamera->update (mPlayer->getCameraNode ()->getPosition(), mPlayer->getDynamicObject()->mSceneNode->getPosition ());
 
 	if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
 		DynamicObject *d = gameLibrary->getDynamicObject("Box");
@@ -79,7 +80,7 @@ World::Think(float time)
 	}
 
 	mPlayer->Think(time);
-	mCamera->mRenderCamera->lookAt(mPlayer->getWorldPosition());
+	//mCamera->mRenderCamera->lookAt(mPlayer->getWorldPosition());
 	physManager->stepSimulation(time);
 	//mCamera->mRenderCamera->move(mPlayer->getDynamicObject()->position);
 }
