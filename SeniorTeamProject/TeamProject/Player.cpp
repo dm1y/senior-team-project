@@ -93,21 +93,27 @@ Player::Think(float time)
 		// Left 
 		if (mInputHandler->IsKeyDown(OIS::KC_PGDOWN))
 		{
+			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
+				mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
+
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(40, 
-				mPhysManager->_world->getGravity().getY() + 70, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(40,
-				mPhysManager->_world->getGravity().getY() + 70, 0));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40,
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
 		}
 
 		// Right 
 		else if (mInputHandler->IsKeyDown(OIS::KC_PGUP))
 		{
+			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
+				mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
+
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-40, 
-				mPhysManager->_world->getGravity().getY() + 70, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-40, 
-				mPhysManager->_world->getGravity().getY() + 70, 0));			
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -40, 
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40,
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));	
 		}
 
 		// Does the rotation counter-clockwise
