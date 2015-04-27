@@ -95,184 +95,206 @@ Player::Think(float time)
 #pragma endregion End of Kinect code/Not used right now   
 	
 #pragma region Controls 
+
 	btTransform ts;
 	mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
 
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
 	{
+
+#pragma region Old Left and Right Controls 
 		// Left 
+		//if (mInputHandler->IsKeyDown(OIS::KC_LEFT) && onGround)
+		//{
+
+		//	//if (!isJumping)
+		//	mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+		//	//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));			
+		//	mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(10, 0, 0));
+		//	mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10 , 0, 0));
+		//}
+
+		//// Right 
+		//else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) && onGround)
+		//{
+		//	//if (!isJumping)
+		//	mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+		//	//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
+		//	mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-10, 0, 0));
+		//	mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
+		//}
+#pragma endregion 
+
+		// Does the rotation 
 		if (mInputHandler->IsKeyDown(OIS::KC_LEFT) && onGround)
 		{
 
+#pragma region Testing Purposes 
+			//btQuaternion or = mPlayerObject->fallRigidBody->getOrientation();
+			//std::string x = std::to_string(or.getX());
+			//std::string y = std::to_string(or.getY());
+			//std::string z = std::to_string(or.getZ());
+			//std::string w = std::to_string(or.getW());
 
+			//OutputDebugString("M pressed [[ Orientation ]]:  \n x");
+			//OutputDebugString(x.c_str());
+			//OutputDebugString("\n y ");
+			//OutputDebugString(y.c_str());
+			//OutputDebugString("\n z ");
+			//OutputDebugString(z.c_str());
+			//OutputDebugString("\n w ");
+			//OutputDebugString(w.c_str());
+			//OutputDebugString("\n Rotation \n");
+
+			//btQuaternion ro = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
+			//std::string W = std::to_string(ro.getW());
+			//std::string X = std::to_string(ro.getX());
+			//std::string Y = std::to_string(ro.getY());
+			//std::string Z = std::to_string(ro.getZ());
+
+			//OutputDebugString("Rotation  \n w");
+			//OutputDebugString(W.c_str());
+			//OutputDebugString("\n x ");
+			//OutputDebugString(X.c_str());
+			//OutputDebugString("\n y ");
+			//OutputDebugString(Y.c_str());
+			//OutputDebugString("\n z ");
+			//OutputDebugString(Z.c_str());
+			//OutputDebugString("\n Before END \n");
 			//if (!isJumping)
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));			
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(10, 0, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10 , 0, 0));
-		}
+#pragma endregion Prints out to Console 
 
-		// Right 
-		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) && onGround)
-		{
-			//if (!isJumping)
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-10, 0, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
-		}
-
-		// Does the rotation 
-		if (mInputHandler->IsKeyDown(OIS::KC_M) && onGround)
-		{
-			btQuaternion or = mPlayerObject->fallRigidBody->getOrientation();
-			std::string x = std::to_string(or.getX());
-			std::string y = std::to_string(or.getY());
-			std::string z = std::to_string(or.getZ());
-			std::string w = std::to_string(or.getW());
-
-			OutputDebugString("M pressed [[ Orientation ]]:  \n x");
-			OutputDebugString(x.c_str());
-			OutputDebugString("\n y ");
-			OutputDebugString(y.c_str());
-			OutputDebugString("\n z ");
-			OutputDebugString(z.c_str());
-			OutputDebugString("\n w ");
-			OutputDebugString(w.c_str());
-			OutputDebugString("\n Rotation \n");
-
-			btQuaternion ro = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
-			std::string W = std::to_string(ro.getW());
-			std::string X = std::to_string(ro.getX());
-			std::string Y = std::to_string(ro.getY());
-			std::string Z = std::to_string(ro.getZ());
-
-			OutputDebugString("Rotation  \n w");
-			OutputDebugString(W.c_str());
-			OutputDebugString("\n x ");
-			OutputDebugString(X.c_str());
-			OutputDebugString("\n y ");
-			OutputDebugString(Y.c_str());
-			OutputDebugString("\n z ");
-			OutputDebugString(Z.c_str());
-			OutputDebugString("\n Before END \n");
-			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
 			
-			btQuaternion rot = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
-			std::string fW = std::to_string(rot.getW());
-			std::string fX = std::to_string(rot.getX());
-			std::string fY = std::to_string(rot.getY());
-			std::string fZ = std::to_string(rot.getZ());
+#pragma region Testing Purposes 
+			//btQuaternion rot = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
+			//std::string fW = std::to_string(rot.getW());
+			//std::string fX = std::to_string(rot.getX());
+			//std::string fY = std::to_string(rot.getY());
+			//std::string fZ = std::to_string(rot.getZ());
 
-			btQuaternion orz = mPlayerObject->fallRigidBody->getOrientation();
-			std::string xz = std::to_string(orz.getX());
-			std::string yz = std::to_string(orz.getY());
-			std::string zz = std::to_string(orz.getZ());
-			std::string ww = std::to_string(orz.getZ());
+			//btQuaternion orz = mPlayerObject->fallRigidBody->getOrientation();
+			//std::string xz = std::to_string(orz.getX());
+			//std::string yz = std::to_string(orz.getY());
+			//std::string zz = std::to_string(orz.getZ());
+			//std::string ww = std::to_string(orz.getZ());
 
-			OutputDebugString("After [[ Orientation]] \n x");
-			OutputDebugString(xz.c_str());
-			OutputDebugString("\n y ");
-			OutputDebugString(yz.c_str());
-			OutputDebugString("\n z ");
-			OutputDebugString(zz.c_str());
-			OutputDebugString("\n w ");
-			OutputDebugString(ww.c_str());
-			OutputDebugString("\n Next \n");
-			OutputDebugString("After [[ Rotation ]] \n w");
-			OutputDebugString(fW.c_str());
-			OutputDebugString("\n x ");
-			OutputDebugString(fX.c_str());
-			OutputDebugString("\n y ");
-			OutputDebugString(fY.c_str());
-			OutputDebugString("\n z ");
-			OutputDebugString(fZ.c_str());
-			OutputDebugString("\n END \n");
+			//OutputDebugString("After [[ Orientation]] \n x");
+			//OutputDebugString(xz.c_str());
+			//OutputDebugString("\n y ");
+			//OutputDebugString(yz.c_str());
+			//OutputDebugString("\n z ");
+			//OutputDebugString(zz.c_str());
+			//OutputDebugString("\n w ");
+			//OutputDebugString(ww.c_str());
+			//OutputDebugString("\n Next \n");
+			//OutputDebugString("After [[ Rotation ]] \n w");
+			//OutputDebugString(fW.c_str());
+			//OutputDebugString("\n x ");
+			//OutputDebugString(fX.c_str());
+			//OutputDebugString("\n y ");
+			//OutputDebugString(fY.c_str());
+			//OutputDebugString("\n z ");
+			//OutputDebugString(fZ.c_str());
+			//OutputDebugString("\n END \n");
+#pragma endregion Prints out to Console 
+
 		} 
-		else if (mInputHandler->IsKeyDown(OIS::KC_N) && onGround)
+		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) && onGround)
 		{
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
 		}
 
-
-		if (mInputHandler->IsKeyDown(OIS::KC_O) && onGround)
+		// Moves Forward 
+		if (mInputHandler->IsKeyDown(OIS::KC_UP) && onGround)
 		{
-			btScalar anglee = ts.getRotation().getAngle();
-			btScalar xRot = btCos(anglee);
-			btScalar yRot = btSin(anglee);
-			btScalar zRot = btAtan2(xRot, yRot);
-			btScalar newXRot = btAtan2(-1 * yRot, zRot);
-			btScalar newYRot = btAtan2(-1 * zRot, xRot);
+			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 10, 0, currCameraPos.getZ()) * 10);
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 20, 0, currCameraPos.getZ() * 20)); 
+
+#pragma region Other method 
+			//btScalar anglee = ts.getRotation().getAngle();
+			//btScalar xRot = btCos(anglee);
+			//btScalar yRot = btSin(anglee);
+			//btScalar zRot = btAtan2(xRot, yRot);
+			//btScalar newXRot = btAtan2(-1 * yRot, zRot);
+			//btScalar newYRot = btAtan2(-1 * zRot, xRot);
 
 			//if (!isJumping)
 			//btVector3 angul = (mPlayerObject->fallRigidBody->getAngularVelocity());
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(5, 0, 5));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(newXRot * 10, 0, zRot * 10)); 
+			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(5, 0, 5));
+			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(newXRot * 10, 0, zRot * 10)); 
 			/*mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(btCos((ts.getRotation().getAngle()) * 10), 
 				0,btSin((ts.getRotation().getAngle())) * 10));*/
 
-
 			//mPlayerObject->fallRigidBody->setFriction(5);
 
-			
 			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1, 0, 0));
 			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
+#pragma endregion Redo once camera is replaced
+
 		}
 
-		// Right 
-		else if (mInputHandler->IsKeyDown(OIS::KC_K) && onGround)
-		{
-			//if (!isJumping)
-
-			mPlayerObject->fallRigidBody->setLinearVelocity(mPlayerObject->fallRigidBody->getAngularVelocity() * -5);
-			//mPlayerObject->fallRigidBody->setFriction(5);
-			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-1, 0, 0));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
-		}
-		// Up 
-		else if (mInputHandler->IsKeyDown(OIS::KC_UP) && onGround)
-		 {
-			/*mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
-			Ogre::Real x = ts.getOrigin().getX();
-			Ogre::Real y = ts.getOrigin().getY();
-			Ogre::Real z = ts.getOrigin().getZ();
-
-			Ogre::Real Qx = ts.getRotation().getX();
-			Ogre::Real Qy = ts.getRotation().getY();
-			Ogre::Real Qz = ts.getRotation().getZ();
-			Ogre::Real Qw = ts.getRotation().getW();*/
-
-			//mPlayerObject->fallRigidBody->applyCentralImpulse();
-
-			//if (!isJumping)
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			
-			//mPlayerObject->fallRigidBody->setFriction(1);
-			
-			//mPlayerObject->fallRigidBody->applyCentralImpulse(mPlayerObject->fallRigidBody->getAngularVelocity());
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1,0,-1));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(mPlayerObject->fallRigidBody->getAngularVelocity());
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0, 10));
-			
-		}
-
-		// Down 
+		// Moves Backward 
 		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) && onGround)
 		{
 			//if (!isJumping)
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 
-			//mPlayerObject->fallRigidBody->setFriction(1);
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 10));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, -10));
-			
+			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -10, 0, currCameraPos.getZ()) * -10);
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -20, 0, currCameraPos.getZ() * -20)); 
+
 		}
 
+#pragma region Old movement code 
+		//// Up 
+		//else if (mInputHandler->IsKeyDown(OIS::KC_UP) && onGround)
+		// {
+		//	/*mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
+		//	Ogre::Real x = ts.getOrigin().getX();
+		//	Ogre::Real y = ts.getOrigin().getY();
+		//	Ogre::Real z = ts.getOrigin().getZ();
+
+		//	Ogre::Real Qx = ts.getRotation().getX();
+		//	Ogre::Real Qy = ts.getRotation().getY();
+		//	Ogre::Real Qz = ts.getRotation().getZ();
+		//	Ogre::Real Qw = ts.getRotation().getW();*/
+
+		//	//mPlayerObject->fallRigidBody->applyCentralImpulse();
+
+		//	//if (!isJumping)
+		//	mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+		//	
+		//	//mPlayerObject->fallRigidBody->setFriction(1);
+		//	
+		//	//mPlayerObject->fallRigidBody->applyCentralImpulse(mPlayerObject->fallRigidBody->getAngularVelocity());
+		//	mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1,0,-1));
+		//	//mPlayerObject->fallRigidBody->setLinearVelocity(mPlayerObject->fallRigidBody->getAngularVelocity());
+		//	mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0, 10));
+		//	
+		//}
+
+		//// Down 
+		//else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) && onGround)
+		//{
+		//	//if (!isJumping)
+		//	mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+
+		//	//mPlayerObject->fallRigidBody->setFriction(1);
+		//	mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 10));
+		//	mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, -10));
+		//	
+		//}
+#pragma endregion 
+		
 		// "Jump" 
 		else if (mInputHandler->IsKeyDown(OIS::KC_RSHIFT) && !isJumping)
 		{
