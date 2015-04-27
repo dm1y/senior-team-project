@@ -72,12 +72,12 @@ World::Think(float time)
 	
 	//mCamera->update (mPlayer->getCameraNode ()->getPosition(), mPlayer->getDynamicObject()->mSceneNode->getPosition ());
 
-	if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
-		DynamicObject *d = gameLibrary->getDynamicObject("Box");
-		d->setPosition(mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -2, 2));
-		d->addToOgreScene(mSceneManager);
-		d->addToBullet(physManager);
-	}
+	//if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
+	//	DynamicObject *d = gameLibrary->getDynamicObject("Box");
+	//	d->setPosition(mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -2, 2));
+	//	d->addToOgreScene(mSceneManager);
+	//	d->addToBullet(physManager);
+	//}
 
 	mPlayer->Think(time);
 	//mCamera->mRenderCamera->lookAt(mPlayer->getWorldPosition());

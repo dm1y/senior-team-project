@@ -17,7 +17,7 @@ PhysicsManager::PhysicsManager() {
     _dispatcher = new btCollisionDispatcher(_collisionConfiguration);
     _solver = new btSequentialImpulseConstraintSolver();
     _world = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
-    _world->setGravity(btVector3(0, -9.8, 0));
+    _world->setGravity(btVector3(0, -100, 0));
 }
 
 PhysicsManager::~PhysicsManager() {

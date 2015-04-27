@@ -41,12 +41,6 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->setPosition(position);
 	mPlayerObject->addToOgreScene(mSceneManager);
 
-	// Test 
-    dt = 1.0/420.f;
-
-	btMatrix3x3 orn = mPlayerObject->fallRigidBody->getWorldTransform().getBasis();
-    orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),0.01));
-    mPlayerObject->fallRigidBody->getWorldTransform ().setBasis(orn);
 
 	// Children nodes for camera in 3rd person perspective 
 	//sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (0, 0,  100));
@@ -55,18 +49,12 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam");
 	camNode->attachObject(mCamera->mRenderCamera);
 	
-
-	// camNode->attachObject(mCamera->mRenderCamera); // This is for first person perspective 
-
 	// Sets up Bullet 
 
 	mPlayerObject->getRigidBody()->setActivationState(DISABLE_DEACTIVATION); 
 	mPlayerObject->getRigidBody()->setAngularFactor(btVector3(0.0f,0.01f,0.0f));
-	mPlayerObject->getRigidBody()->setDamping(0.0f, 0.95f);
-	mPlayerObject->getRigidBody()->setFriction(.95f);
-	mPlayerObject->getRigidBody()->setGravity(btVector3(0, -30, 0));
-	mPlayerObject->getRigidBody()->isKinematicObject();
-	//mPlayerObject->getRigidBody()->applyGravity();
+	mPlayerObject->getRigidBody()->setDamping(0.8f, .95f);
+	mPlayerObject->getRigidBody()->setFriction(0.5f);
 	mPlayerObject->addToBullet(mPhysManager); 
 	mPlayerObject->synchWithBullet();
 }
@@ -127,7 +115,7 @@ Player::Think(float time)
 #pragma endregion 
 
 		// Does the rotation 
-		if (mInputHandler->IsKeyDown(OIS::KC_LEFT) && onGround)
+		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
 		{
 
 #pragma region Testing Purposes 
@@ -166,7 +154,7 @@ Player::Think(float time)
 #pragma endregion Prints out to Console 
 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,mPhysManager->_world->getGravity().getY() + 70,0));
 			
 #pragma region Testing Purposes 
 			//btQuaternion rot = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
@@ -202,21 +190,25 @@ Player::Think(float time)
 #pragma endregion Prints out to Console 
 
 		} 
-		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) && onGround)
+		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
 		{
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
+			
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,mPhysManager->_world->getGravity().getY() + 70,0));
 		}
 
 		// Moves Forward 
-		if (mInputHandler->IsKeyDown(OIS::KC_UP) && onGround)
+		if (mInputHandler->IsKeyDown(OIS::KC_UP))
 		{
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
 				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
 
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 10, 0, currCameraPos.getZ()) * 10);
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 20, 0, currCameraPos.getZ() * 20)); 
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
+			
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40)); 
 
 #pragma region Other method 
 			//btScalar anglee = ts.getRotation().getAngle();
@@ -242,15 +234,18 @@ Player::Think(float time)
 		}
 
 		// Moves Backward 
-		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) && onGround)
+		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
 		{
 			//if (!isJumping)
 
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
 				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
 
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -10, 0, currCameraPos.getZ()) * -10);
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -20, 0, currCameraPos.getZ() * -20)); 
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -1, 
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()) * -1);
+			
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40, 
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40)); 
 
 		}
 
@@ -296,15 +291,12 @@ Player::Think(float time)
 #pragma endregion 
 		
 		// "Jump" 
-		else if (mInputHandler->IsKeyDown(OIS::KC_RSHIFT) && !isJumping)
+		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE) && !isJumping)
 		{
-
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 30, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 30, 0));
-
-			
+			//mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 40, 0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 90, 0));
+			//isJumping = true; 
 		}
 
 		// "Crouch"
@@ -321,6 +313,12 @@ Player::Think(float time)
 			//isJumping = false;
 		}
 
+		else if (mInputHandler->WasKeyDown(OIS::KC_DOWN) || mInputHandler->WasKeyDown(OIS::KC_UP) || 
+			mInputHandler->WasKeyDown(OIS::KC_LEFT) || mInputHandler->WasKeyDown(OIS::KC_RIGHT))
+		{
+			//mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
+		}
 
 		mPlayerObject->synchWithBullet();
 		//mCamera->updatePosition(mPlayerObject->position);
