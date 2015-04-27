@@ -60,7 +60,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	//mCamera->updatePosition (Ogre::Vector3 (0, 200, 0), mPlayer->getSightNode ()->getPosition());
 
-	//mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
+	mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
 
 }
 

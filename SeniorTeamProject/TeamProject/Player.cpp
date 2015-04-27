@@ -8,6 +8,7 @@
 #include "InputHandler.h"
 //#include <list>
 #include <ois/ois.h>
+#include <math.h>
 
 //#include "OgreOverlayManager.h"
 //#include "OgreOverlay.h"
@@ -40,18 +41,29 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->setPosition(position);
 	mPlayerObject->addToOgreScene(mSceneManager);
 
+	// Test 
+    dt = 1.0/420.f;
+
+	btMatrix3x3 orn = mPlayerObject->fallRigidBody->getWorldTransform().getBasis();
+    orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),0.01));
+    mPlayerObject->fallRigidBody->getWorldTransform ().setBasis(orn);
+
 	// Children nodes for camera in 3rd person perspective 
 	sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (0, 0,  100));
 	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (0, 50, -100));
 
+	// camNode->attachObject(mCamera->mRenderCamera); // This is for first person perspective 
+
 	// Sets up Bullet 
-	mPlayerObject->addToBullet(mPhysManager); 
+
 	mPlayerObject->getRigidBody()->setActivationState(DISABLE_DEACTIVATION); 
 	mPlayerObject->getRigidBody()->setAngularFactor(btVector3(0.0f,0.01f,0.0f));
 	mPlayerObject->getRigidBody()->setDamping(0.0f, 0.95f);
 	mPlayerObject->getRigidBody()->setFriction(.95f);
 	mPlayerObject->getRigidBody()->setGravity(btVector3(0, -30, 0));
+	mPlayerObject->getRigidBody()->isKinematicObject();
 	//mPlayerObject->getRigidBody()->applyGravity();
+	mPlayerObject->addToBullet(mPhysManager); 
 	mPlayerObject->synchWithBullet();
 }
 
@@ -80,6 +92,7 @@ Player::Think(float time)
 	
 #pragma region Controls 
 	btTransform ts;
+	mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
 
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
@@ -87,11 +100,13 @@ Player::Think(float time)
 		// Left 
 		if (mInputHandler->IsKeyDown(OIS::KC_LEFT) && onGround)
 		{
+
+
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));			
 			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(10, 0, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10 , 0, 0));
 		}
 
 		// Right 
@@ -107,9 +122,71 @@ Player::Think(float time)
 		// Does the rotation 
 		if (mInputHandler->IsKeyDown(OIS::KC_M) && onGround)
 		{
+			btQuaternion or = mPlayerObject->fallRigidBody->getOrientation();
+			std::string x = std::to_string(or.getX());
+			std::string y = std::to_string(or.getY());
+			std::string z = std::to_string(or.getZ());
+			std::string w = std::to_string(or.getW());
+
+			OutputDebugString("M pressed [[ Orientation ]]:  \n x");
+			OutputDebugString(x.c_str());
+			OutputDebugString("\n y ");
+			OutputDebugString(y.c_str());
+			OutputDebugString("\n z ");
+			OutputDebugString(z.c_str());
+			OutputDebugString("\n w ");
+			OutputDebugString(w.c_str());
+			OutputDebugString("\n Rotation \n");
+
+			btQuaternion ro = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
+			std::string W = std::to_string(ro.getW());
+			std::string X = std::to_string(ro.getX());
+			std::string Y = std::to_string(ro.getY());
+			std::string Z = std::to_string(ro.getZ());
+
+			OutputDebugString("Rotation  \n w");
+			OutputDebugString(W.c_str());
+			OutputDebugString("\n x ");
+			OutputDebugString(X.c_str());
+			OutputDebugString("\n y ");
+			OutputDebugString(Y.c_str());
+			OutputDebugString("\n z ");
+			OutputDebugString(Z.c_str());
+			OutputDebugString("\n Before END \n");
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
+			
+			btQuaternion rot = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
+			std::string fW = std::to_string(rot.getW());
+			std::string fX = std::to_string(rot.getX());
+			std::string fY = std::to_string(rot.getY());
+			std::string fZ = std::to_string(rot.getZ());
+
+			btQuaternion orz = mPlayerObject->fallRigidBody->getOrientation();
+			std::string xz = std::to_string(orz.getX());
+			std::string yz = std::to_string(orz.getY());
+			std::string zz = std::to_string(orz.getZ());
+			std::string ww = std::to_string(orz.getZ());
+
+			OutputDebugString("After [[ Orientation]] \n x");
+			OutputDebugString(xz.c_str());
+			OutputDebugString("\n y ");
+			OutputDebugString(yz.c_str());
+			OutputDebugString("\n z ");
+			OutputDebugString(zz.c_str());
+			OutputDebugString("\n w ");
+			OutputDebugString(ww.c_str());
+			OutputDebugString("\n Next \n");
+			OutputDebugString("After [[ Rotation ]] \n w");
+			OutputDebugString(fW.c_str());
+			OutputDebugString("\n x ");
+			OutputDebugString(fX.c_str());
+			OutputDebugString("\n y ");
+			OutputDebugString(fY.c_str());
+			OutputDebugString("\n z ");
+			OutputDebugString(fZ.c_str());
+			OutputDebugString("\n END \n");
 		} 
 		else if (mInputHandler->IsKeyDown(OIS::KC_N) && onGround)
 		{
@@ -121,10 +198,21 @@ Player::Think(float time)
 
 		if (mInputHandler->IsKeyDown(OIS::KC_O) && onGround)
 		{
+			btScalar anglee = ts.getRotation().getAngle();
+			btScalar xRot = btCos(anglee);
+			btScalar yRot = btSin(anglee);
+			btScalar zRot = btAtan2(xRot, yRot);
+			btScalar newXRot = btAtan2(-1 * yRot, zRot);
+			btScalar newYRot = btAtan2(-1 * zRot, xRot);
+
 			//if (!isJumping)
-			btVector3 angul = (mPlayerObject->fallRigidBody->getAngularVelocity());
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(mPlayerObject->fallRigidBody->getAngularVelocity().getX(), 0, mPlayerObject->fallRigidBody->getAngularVelocity().getZ()));
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(angul.getX() * 2, 0, angul.getZ() * 5));
+			//btVector3 angul = (mPlayerObject->fallRigidBody->getAngularVelocity());
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(5, 0, 5));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(newXRot * 10, 0, zRot * 10)); 
+			/*mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(btCos((ts.getRotation().getAngle()) * 10), 
+				0,btSin((ts.getRotation().getAngle())) * 10));*/
+
+
 			//mPlayerObject->fallRigidBody->setFriction(5);
 
 			

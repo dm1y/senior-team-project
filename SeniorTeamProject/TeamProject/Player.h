@@ -82,6 +82,7 @@ protected:
 	bool isJumping;
 	bool onGround;
 	int angle, h; 
+	float dt;
 
 	/* Testing character with ghost object */
 	btPairCachingGhostObject *m_ghostObject;
