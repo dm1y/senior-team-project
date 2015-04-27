@@ -90,31 +90,27 @@ Player::Think(float time)
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
 	{
-
-#pragma region Old Left and Right Controls 
 		// Left 
-		//if (mInputHandler->IsKeyDown(OIS::KC_LEFT) && onGround)
-		//{
+		if (mInputHandler->IsKeyDown(OIS::KC_PGDOWN))
+		{
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(40, 
+				mPhysManager->_world->getGravity().getY() + 70, 0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(40,
+				mPhysManager->_world->getGravity().getY() + 70, 0));
+		}
 
-		//	//if (!isJumping)
-		//	mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-		//	//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));			
-		//	mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(10, 0, 0));
-		//	mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10 , 0, 0));
-		//}
+		// Right 
+		else if (mInputHandler->IsKeyDown(OIS::KC_PGUP))
+		{
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-40, 
+				mPhysManager->_world->getGravity().getY() + 70, 0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-40, 
+				mPhysManager->_world->getGravity().getY() + 70, 0));			
+		}
 
-		//// Right 
-		//else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) && onGround)
-		//{
-		//	//if (!isJumping)
-		//	mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-		//	//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
-		//	mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(-10, 0, 0));
-		//	mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(-10, 0, 0));			
-		//}
-#pragma endregion 
-
-		// Does the rotation 
+		// Does the rotation counter-clockwise
 		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
 		{
 
@@ -154,7 +150,8 @@ Player::Think(float time)
 #pragma endregion Prints out to Console 
 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,mPhysManager->_world->getGravity().getY() + 70,0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
+				mPhysManager->_world->getGravity().getY() + 70,0));
 			
 #pragma region Testing Purposes 
 			//btQuaternion rot = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
@@ -190,12 +187,14 @@ Player::Think(float time)
 #pragma endregion Prints out to Console 
 
 		} 
+		// Does rotation clockwise 
 		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
 		{
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
 			
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,mPhysManager->_world->getGravity().getY() + 70,0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
+				mPhysManager->_world->getGravity().getY() + 70,0));
 		}
 
 		// Moves Forward 
@@ -230,7 +229,6 @@ Player::Think(float time)
 			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1, 0, 0));
 			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
 #pragma endregion Redo once camera is replaced
-
 		}
 
 		// Moves Backward 
@@ -290,38 +288,29 @@ Player::Think(float time)
 		//}
 #pragma endregion 
 		
-		// "Jump" 
+		// "Jump" ... still a WIP (need to cap so player doesn't jump repeatedly) 
 		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE) && !isJumping)
 		{
-			//mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 40, 0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 90, 0));
 			//isJumping = true; 
 		}
 
-		// "Crouch"
-		else if (mInputHandler->IsKeyDown(OIS::KC_L) && !isJumping)
+		// "Crouch" -- TODO: Half the capsule size for collisions 
+		else if (mInputHandler->IsKeyDown(OIS::KC_L))
 		{
+			// Half capsule thing 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setFriction(5);
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, -1, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, -5, 0));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, mPhysManager->_world->getGravity().getY() + 70, 0));
 		}
 
 		else if (isJumping)
 		{
+			// TODO: Implement some kind of collision detector to check if there's a ground below player 
 			//isJumping = false;
 		}
 
-		else if (mInputHandler->WasKeyDown(OIS::KC_DOWN) || mInputHandler->WasKeyDown(OIS::KC_UP) || 
-			mInputHandler->WasKeyDown(OIS::KC_LEFT) || mInputHandler->WasKeyDown(OIS::KC_RIGHT))
-		{
-			//mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0,0));
-		}
-
 		mPlayerObject->synchWithBullet();
-		//mCamera->updatePosition(mPlayerObject->position);
 
 #pragma endregion Input controls for keyboard 
 	}
