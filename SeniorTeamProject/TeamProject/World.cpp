@@ -54,7 +54,8 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	StaticScenery *iceIsland = new StaticScenery(Ogre::Vector3(0,0,0), "iceIsland.MESH.mesh", mSceneManager, physManager);
 
-	DynamicObject *p = gameLibrary->getDynamicObject("Jordan");
+	//DynamicObject *p = gameLibrary->getDynamicObject("Jordan");
+	DynamicObject *p = gameLibrary->getDynamicObject("Jesus");
 	mPlayer = new Player(p, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 

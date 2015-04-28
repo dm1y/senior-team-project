@@ -33,6 +33,7 @@ public:
 
 	void addToScene(); 
 	void setScale(Ogre::Vector3 v);
+	void setOrientation(Ogre::Quaternion newOrientation);
 	void makeGhostObject();
 
 	void Think(float time);
@@ -48,6 +49,7 @@ public:
 	void drawLine(std::string bone, int joint1, int joint2);
 	void clearLine(std::string bone);
 	void getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2);
+	void playAnimation(std::string anim, float time);
 	std::vector<Ogre::Vector3> getSkeletonNodes();
 
 

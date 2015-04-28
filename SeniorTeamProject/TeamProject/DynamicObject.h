@@ -18,6 +18,7 @@ public:
 	void addToOgreScene(Ogre::SceneManager *sceneManager, Ogre::String s);
 	void addToBullet(PhysicsManager *physmanager);
 
+	void setOrientation(Ogre::Quaternion newOrientation);
 	void setPosition(Ogre::Vector3 newPos);
 	void setScale(Ogre::Vector3 v);
 	

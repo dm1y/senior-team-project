@@ -1,5 +1,30 @@
-﻿Build started 4/23/2015 5:44:54 PM.
-
-Build succeeded.
-
-Time Elapsed 00:00:00.03
+﻿  World.cpp
+  TeamProject.cpp
+  StaticScenery.cpp
+  Player.cpp
+  PhysicsManager.cpp
+  MainListener.cpp
+  main.cpp
+  Kinect.cpp
+  InputHandler.cpp
+  DynamicObject.cpp
+  GameLibrary.cpp
+c:\users\simon\downloads\shamoov\newest branch master\seniorteamproject\teamproject\gamelibrary.cpp(115): warning C4018: '<' : signed/unsigned mismatch
+  Controller.cpp
+  Coin.cpp
+  Camera.cpp
+  Generating Code...
+c:\users\simon\downloads\shamoov\newest branch master\seniorteamproject\teamproject\gamelibrary.cpp(195): warning C4715: 'GameLibrary::getDynamicObject' : not all control paths return a value
+c:\users\simon\downloads\shamoov\newest branch master\seniorteamproject\teamproject\gamelibrary.cpp(192): warning C4700: uninitialized local variable 'x' used
+  TeamProject.vcxproj -> C:\Users\Simon\Downloads\SHAMOOV\NEWEST BRANCH MASTER\SeniorTeamProject\Debug\TeamProject.exe
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.
+          1 file(s) copied.

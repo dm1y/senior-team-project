@@ -1,0 +1,10 @@
+{
+	"type" : "DynamicObject",
+	"meshNames" : ["cubeBody.mesh", "cubeBeards.mesh", "cubeBottoms.mesh",
+	               "cubeHair.mesh", "cubeMoustaches.mesh", "cubeShoes.mesh",
+	               "cubeTops.mesh"],
+	"mass" : 20,
+	"collisionShape" : "btCapsuleShape",
+	"collisionShapeSize" : [2,1],
+	"restitution" : 0.0
+}

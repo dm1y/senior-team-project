@@ -71,6 +71,11 @@ void Player::setPosition (Ogre::Vector3 p)
 	mPlayerObject->setPosition(p);
 }
 
+void Player::setOrientation (Ogre::Quaternion newOrientation)
+{
+	mPlayerObject->setOrientation(newOrientation);
+}
+
 // Basically the update method for the Player class. 
 void 
 Player::Think(float time)
@@ -79,6 +84,9 @@ Player::Think(float time)
 #pragma region Kinect
 
 	drawSkeleton();
+
+	if (mInputHandler->IsKeyDown(OIS::KC_T))
+		playAnimation("default_skl", time);
 
 #pragma endregion End of Kinect code/Not used right now   
 	
@@ -476,4 +484,20 @@ Player::clearLine(std::string bone)
 {
 	mSceneManager->destroyManualObject(bone);
 	mSceneManager->getRootSceneNode()->removeAndDestroyChild(bone + "_node");
+}
+
+void 
+Player::playAnimation(std::string anim, float time)
+{
+	Ogre::SceneManager::MovableObjectIterator iterator = SceneManager()->getMovableObjectIterator("Entity");
+	while(iterator.hasMoreElements())
+	{
+		Ogre::Entity* e = static_cast<Ogre::Entity*>(iterator.getNext());
+		
+		if (e->hasSkeleton())
+		{
+			Ogre::AnimationState *animation = e->getAnimationState(anim);
+			animation->addTime(time);
+		}
+	}
 }

@@ -75,6 +75,11 @@ void DynamicObject::setScale(Ogre::Vector3 v) {
 	// 
 }
 
+void DynamicObject::setOrientation(Ogre::Quaternion newOrientation)
+{
+    mSceneNode->setOrientation(newOrientation);
+}
+
 void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 	// create the scene node
     mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
@@ -85,6 +90,14 @@ void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 		mEntity = sceneManager->createEntity(name);
 		//mEntity->setCastShadows(true);
 		mSceneNode->attachObject(mEntity);
+
+		if (mEntity->hasSkeleton())
+		{
+			mEntity->getAnimationState("default_skl")->setEnabled(true);
+			mEntity->getAnimationState("default_skl")->setLoop(true);
+			mEntity->getAnimationState("default_skl")->setWeight(1.0);
+			mEntity->getAnimationState("default_skl")->setLength(1.0);
+		}
 	}
 }
 
