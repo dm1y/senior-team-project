@@ -60,20 +60,20 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 
 // Fix for Simon in regards to animation mesh's orientation 
 // TODO: Refactor names to something more suitable 
-void Player::testingShit(DynamicObject *p)
+void Player::setAnimation(DynamicObject *p)
 {
 	// makes a child node of parent node 
-	Ogre::SceneNode *chewbaca = mPlayerObject->mSceneNode->createChildSceneNode("child");
-	chewbaca->flipVisibility(true); // makes this entire thing visible since parent node is invisible
+	Ogre::SceneNode *childNode = mPlayerObject->mSceneNode->createChildSceneNode("child");
+	childNode->flipVisibility(true); // makes this entire thing visible since parent node is invisible
 
 	for (Ogre::String name : p->meshNames) {
 		Ogre::Entity *newEnt = mSceneManager->createEntity(name);
 		//mEntity->setCastShadows(true);
-		chewbaca->attachObject(newEnt);
+		childNode->attachObject(newEnt);
 		//chewbaca->resetOrientation();
 		//chewbaca->getInheritOrientation();
-		chewbaca->setOrientation(Ogre::Quaternion(0, 0, 1, -1)); // does the rotation 
-		chewbaca->roll(Ogre::Radian(Ogre::Math::PI)); // fixes it so player's back faces us 
+		childNode->setOrientation(Ogre::Quaternion(0, 0, 1, -1)); // does the rotation 
+		childNode->roll(Ogre::Radian(Ogre::Math::PI)); // fixes it so player's back faces us 
 		//chewbaca->setDirection(mCamera->mRenderCamera->getRealDirection());
 
 		if (newEnt->hasSkeleton())
@@ -325,7 +325,7 @@ Player::Think(float time)
 		//}
 #pragma endregion 
 		
-		// "Jump" ... still a WIP (need to cap so player doesn't jump repeatedly) 
+		// Jump
 		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE))
 		{
 			if (canJump)

@@ -55,7 +55,7 @@ public:
 
 	bool getEnableKeyboard() { return mEnableKeyboard; }
 	void setEnableKeyboard(bool enable) { mEnableKeyboard = enable; }
-	void testingShit(DynamicObject *p);
+	void setAnimation(DynamicObject *p);
 
 	// For testing purposes
 //	Ogre::Overlay *setOverlay(Ogre::Overlay *o) { return overly = o;}

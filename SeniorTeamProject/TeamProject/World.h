@@ -49,6 +49,7 @@ protected:
 
 	GameCamera *mCamera;
 	Kinect *mKinect;
+	DynamicObject *d;
 
 	Player *mPlayer;
 };

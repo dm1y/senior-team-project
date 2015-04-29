@@ -3,6 +3,6 @@
 	"meshNames" : ["cubeJordan.mesh"],
 	"mass" : 20,
 	"collisionShape" : "btCapsuleShape",
-	"collisionShapeSize" : [2,1],
+	"collisionShapeSize" : [1,1],
 	"restitution" : 0.0
 }

@@ -55,12 +55,22 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	StaticScenery *iceIsland = new StaticScenery(Ogre::Vector3(0,0,0), "iceIsland.MESH.mesh", mSceneManager, physManager);
 
 	//DynamicObject *p = gameLibrary->getDynamicObject("Jordan");
+
+	// Player setup 
 	DynamicObject *p = gameLibrary->getDynamicObject("Jesus");
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
 	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
-	mPlayer->testingShit(p);
+	mPlayer->setAnimation(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 	//mCamera->updatePosition (Ogre::Vector3 (0, 200, 0), mPlayer->getSightNode ()->getPosition());
+
+
+	// Teapot object setup 
+	d = gameLibrary->getDynamicObject("TeaPot");
+	d->setPosition(Ogre::Vector3(0, 80, -50));
+	d->addToOgreScene(mSceneManager);
+	d->addToBullet(physManager);
+	d->setScale(Ogre::Vector3(10,10,10));
 
 	mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
 
@@ -70,6 +80,14 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 void 
 World::Think(float time)
 {
+	/*mPlayer->getDynamicObject()->fallRigidBody->getBroadphaseProxy*/
+	//if (mPlayer->getDynamicObject()->fallRigidBody->checkCollideWith(d->fallRigidBody))
+	//{
+	//	OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
+	//} else 
+	//{
+	//	OutputDebugString("\nNOTHING IS HAPPENING\n");
+	//}
 	//mCamera->update (mPlayer->getCameraNode() -> getPosition(), mPlayer->getDynamicObject()->mSceneNode->getPosition());
 	
 	//mCamera->update (mPlayer->getCameraNode ()->getPosition(), mPlayer->getDynamicObject()->mSceneNode->getPosition ());
