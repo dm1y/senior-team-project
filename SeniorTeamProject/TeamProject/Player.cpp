@@ -63,6 +63,11 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 void Player::setScale(Ogre::Vector3 v)
 {
 	mPlayerObject->setScale(v);
+	btTransform ts;
+	mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
+	ts.setRotation(btQuaternion(0,45,-45,0));
+	ts.setOrigin(btVector3(0,100,50));
+	mPlayerObject->fallRigidBody->setWorldTransform(ts);
 }
 
 // Sets the position 
