@@ -29,28 +29,24 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mAutoCallibrate = true;
 	mEnableKinect = false;
 	initSkel = false;
-
-	// Player physics
-	isJumping = false; 
-	onGround = true;
-	angle = 0;
-	h = 0; 
 	
-	// Create player node using GameObject class 
+	// Create player node using Jordan's Dynamic Object class 
 	mPlayerObject = dynamic;
 	mPlayerObject->setPosition(position);
 	mPlayerObject->addToOgreScene(mSceneManager);
-
+	
+	// Changes in orientation because Simon's animations get imported at weird angles 
+	btTransform ts;
+	mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
+	ts.setRotation(btQuaternion(0,1,-1,0));
+	ts.setOrigin(btVector3(0,100,50));
+	mPlayerObject->fallRigidBody->setWorldTransform(ts);
 
 	// Children nodes for camera in 3rd person perspective 
-	//sightNode = mPlayerObject->mSceneNode->createChildSceneNode("player_sight", Ogre::Vector3 (0, 0,  100));
-	//camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (0, 50, -100));
-	//camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam", Ogre::Vector3 (0, 400, -650));
 	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam");
-	camNode->attachObject(mCamera->mRenderCamera);
+	//camNode->attachObject(mCamera->mRenderCamera);
 	
 	// Sets up Bullet 
-
 	mPlayerObject->getRigidBody()->setActivationState(DISABLE_DEACTIVATION); 
 	mPlayerObject->getRigidBody()->setAngularFactor(btVector3(0.0f,0.01f,0.0f));
 	mPlayerObject->getRigidBody()->setDamping(0.8f, .95f);
@@ -63,22 +59,12 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 void Player::setScale(Ogre::Vector3 v)
 {
 	mPlayerObject->setScale(v);
-	btTransform ts;
-	mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
-	ts.setRotation(btQuaternion(0,45,-45,0));
-	ts.setOrigin(btVector3(0,100,50));
-	mPlayerObject->fallRigidBody->setWorldTransform(ts);
 }
 
 // Sets the position 
 void Player::setPosition (Ogre::Vector3 p) 
 {
 	mPlayerObject->setPosition(p);
-}
-
-void Player::setOrientation (Ogre::Quaternion newOrientation)
-{
-	mPlayerObject->setOrientation(newOrientation);
 }
 
 // Basically the update method for the Player class. 
@@ -97,8 +83,7 @@ Player::Think(float time)
 	
 #pragma region Controls 
 
-	btTransform ts;
-	mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
+	//btTransform ts;
 
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
@@ -211,7 +196,6 @@ Player::Think(float time)
 		{
 			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
-			
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 				mPhysManager->_world->getGravity().getY() + 70,0));
 		}

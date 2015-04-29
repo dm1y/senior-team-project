@@ -11,6 +11,7 @@ namespace Ogre
 }
 class World;
 class InputHandler;
+class Player;
 
 class GameCamera
 
@@ -20,7 +21,7 @@ public:
     GameCamera(Ogre::Camera *renderCamera, InputHandler *input, Ogre::SceneManager *sceneManager); 
 	void updatePosition(Ogre::Vector3 camP, Ogre::Vector3 tarP);
 	void setup();
-	void update(Ogre::Vector3 cameraPosition, Ogre::Vector3 targetPosition);
+	void update(Player *player);
 
 	Ogre::Camera *mRenderCamera; 
 

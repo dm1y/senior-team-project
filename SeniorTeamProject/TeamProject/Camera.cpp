@@ -2,7 +2,7 @@
 #include "Camera.h"
 #include "World.h"
 #include "OgreVector3.h"
-
+#include "Player.h"
 // IOS (Input system) header files
 #include <ois/ois.h>
 
@@ -12,7 +12,10 @@
 GameCamera::GameCamera(Ogre::Camera *renderCamera, InputHandler *input, Ogre::SceneManager *sceneManager) :
 mRenderCamera(renderCamera), mInputHandler(input), mSceneManager (sceneManager)
 {
+	// Sets up mRenderCamera 
 	mRenderCamera->setNearClipDistance(1);
+    mRenderCamera->setPosition(Ogre::Vector3(0,100,-200));
+
 	setup();
 }
 
@@ -23,25 +26,26 @@ void GameCamera::updatePosition(Ogre::Vector3 camP, Ogre::Vector3 tarP) {
     //mTargetNode->setPosition (tarP);
 }
 
-// Sets up autotracking for player 
+// Sets up node information 
 void GameCamera::setup() 
 {
-	 //mCamNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera");
-	 //mTargetNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera_target");
-	 //mCamNode->setAutoTracking (true, mTargetNode); 
-	 //mCamNode->setFixedYawAxis (true);
-	 mRenderCamera->setPosition(Ogre::Vector3(0,100,-200));
-	 //mCamNode->attachObject(mRenderCamera);
-
+	 mCamNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera");
+	 mTargetNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera_target");
+	 mCamNode->setAutoTracking (true, mTargetNode); 
+	 mCamNode->setFixedYawAxis (false);
+	 mCamNode->attachObject(mRenderCamera);
 }
 
-void GameCamera::update(Ogre::Vector3 cameraPosition, Ogre::Vector3 targetPosition)
+void GameCamera::update(Player *player)
 {
+	mTargetNode = player->getCameraNode();
+	mRenderCamera->lookAt(mTargetNode->_getDerivedPosition());
 	// Handles the movement 
 	//Ogre::Vector3 displacement;
 	//Ogre::Vector3 displacement2;
+	//mCamNode->
 
-	//mCamNode->translate(cameraPosition);
+	//mCamNode->(targetPosition);
 
 	//displacement2 = targetPosition - mTargetNode->getPosition () * 0.5f; 
 	//mTargetNode->translate(displacement2);

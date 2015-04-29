@@ -63,14 +63,12 @@ public:
 
 	void setPosition (Ogre::Vector3 p);
 
-	Ogre::SceneNode *getSightNode () { return sightNode; }
     Ogre::SceneNode *getCameraNode () { return camNode; }
 	Ogre::Vector3 getWorldPosition () { return mPlayerObject->mSceneNode->_getDerivedPosition (); }
 
 protected:
 
 	Ogre::SceneManager *mSceneManager;
-	Ogre::SceneNode *sightNode;
 	Ogre::SceneNode *camNode;
 
 	InputHandler *mInputHandler;
@@ -86,8 +84,6 @@ protected:
 	int angle, h; 
 	float dt;
 
-	/* Testing character with ghost object */
-	btPairCachingGhostObject *m_ghostObject;
 	// For testing purposes 
 //	Ogre::Overlay *overly; 
 //	bool overlyBool; 

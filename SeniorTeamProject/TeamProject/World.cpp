@@ -81,6 +81,7 @@ World::Think(float time)
 	//}
 
 	mPlayer->Think(time);
+	mCamera->update(mPlayer);
 	//mCamera->mRenderCamera->lookAt(mPlayer->getWorldPosition());
 	physManager->stepSimulation(time);
 	//mCamera->mRenderCamera->move(mPlayer->getDynamicObject()->position);
