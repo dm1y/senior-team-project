@@ -34,17 +34,19 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject = dynamic;
 	mPlayerObject->setPosition(position);
 	mPlayerObject->addToOgreScene(mSceneManager);
+
 	
 	// Changes in orientation because Simon's animations get imported at weird angles 
-	btTransform ts;
+	/*btTransform ts;
 	mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
 	ts.setRotation(btQuaternion(0,1,-1,0));
 	ts.setOrigin(btVector3(0,100,50));
-	mPlayerObject->fallRigidBody->setWorldTransform(ts);
+	mPlayerObject->fallRigidBody->setWorldTransform(ts);*/
 
 	// Children nodes for camera in 3rd person perspective 
+	mPlayerObject->mSceneNode->setVisible(false, false);
 	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam");
-	//camNode->attachObject(mCamera->mRenderCamera);
+	camNode->attachObject(mCamera->mRenderCamera);
 	
 	// Sets up Bullet 
 	mPlayerObject->getRigidBody()->setActivationState(DISABLE_DEACTIVATION); 
@@ -53,6 +55,31 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->getRigidBody()->setFriction(0.5f);
 	mPlayerObject->addToBullet(mPhysManager); 
 	mPlayerObject->synchWithBullet();
+}
+
+// Fix for Simon 
+void Player::testingShit(DynamicObject *p)
+{
+	Ogre::SceneNode *chewbaca = mPlayerObject->mSceneNode->createChildSceneNode();
+	chewbaca->flipVisibility(true);
+
+	for (Ogre::String name : p->meshNames) {
+		Ogre::Entity *newEnt = mSceneManager->createEntity(name);
+		//mEntity->setCastShadows(true);
+		chewbaca->attachObject(newEnt);
+		//peonChild->resetOrientation();
+		//peonChild->getInheritOrientation();
+		chewbaca->setOrientation(Ogre::Quaternion(0, 0, -1, 1));
+		
+
+		if (newEnt->hasSkeleton())
+		{
+			newEnt->getAnimationState("default_skl")->setEnabled(true);
+			newEnt->getAnimationState("default_skl")->setLoop(true);
+			newEnt->getAnimationState("default_skl")->setWeight(1.0);
+			newEnt->getAnimationState("default_skl")->setLength(1.0);
+		}
+	}
 }
 
 // Sets the scale of player to resize 
@@ -292,7 +319,7 @@ Player::Think(float time)
 #pragma endregion 
 		
 		// "Jump" ... still a WIP (need to cap so player doesn't jump repeatedly) 
-		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE) && !isJumping)
+		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE))
 		{
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 90, 0));
 			//isJumping = true; 

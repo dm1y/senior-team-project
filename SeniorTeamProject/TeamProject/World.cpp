@@ -56,9 +56,11 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	//DynamicObject *p = gameLibrary->getDynamicObject("Jordan");
 	DynamicObject *p = gameLibrary->getDynamicObject("Jesus");
-	mPlayer = new Player(p, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
+	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
+	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
+	mPlayer->testingShit(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
-
+	mPlayer->testingShit(p);
 	//mCamera->updatePosition (Ogre::Vector3 (0, 200, 0), mPlayer->getSightNode ()->getPosition());
 
 	mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
@@ -81,7 +83,7 @@ World::Think(float time)
 	//}
 
 	mPlayer->Think(time);
-	mCamera->update(mPlayer);
+	//mCamera->update(mPlayer);
 	//mCamera->mRenderCamera->lookAt(mPlayer->getWorldPosition());
 	physManager->stepSimulation(time);
 	//mCamera->mRenderCamera->move(mPlayer->getDynamicObject()->position);

@@ -33,13 +33,20 @@ void GameCamera::setup()
 	 mTargetNode = mSceneManager->getRootSceneNode ()->createChildSceneNode ("camera_target");
 	 mCamNode->setAutoTracking (true, mTargetNode); 
 	 mCamNode->setFixedYawAxis (false);
-	 mCamNode->attachObject(mRenderCamera);
+	 //mCamNode->attachObject(mRenderCamera);
 }
 
 void GameCamera::update(Player *player)
 {
 	mTargetNode = player->getCameraNode();
-	mRenderCamera->lookAt(mTargetNode->_getDerivedPosition());
+
+	Ogre::Quaternion orientation = mTargetNode->convertLocalToWorldOrientation(mTargetNode->_getDerivedOrientation()); 
+	mCamNode->setOrientation(orientation);
+	Ogre::Vector3 displacement = mTargetNode->convertLocalToWorldPosition(mTargetNode->_getDerivedPosition());
+	mRenderCamera->lookAt(displacement);
+	
+	//mCamNode->setPosition(Ogre::Vector3(displacement.x, displacement.y, displacement.z));
+
 	// Handles the movement 
 	//Ogre::Vector3 displacement;
 	//Ogre::Vector3 displacement2;
@@ -113,4 +120,30 @@ GameCamera::Think(float time)
 		mRenderCamera->yaw(Ogre::Radian(-0.01f));
 	}
 
+	if (mInputHandler->IsKeyDown(OIS::KC_F))
+	{
+		mRenderCamera->pitch(Ogre::Radian(0.01f));
+
+	} else if (mInputHandler->IsKeyDown(OIS::KC_V))
+	{
+		mRenderCamera->pitch(Ogre::Radian(-0.01f));
+	}
+
+	if (mInputHandler->IsKeyDown(OIS::KC_G))
+	{
+		mRenderCamera->rotate(Ogre::Quaternion(0, 1, 0, 0));
+
+	} else if (mInputHandler->IsKeyDown(OIS::KC_H))
+	{
+		mRenderCamera->rotate(Ogre::Quaternion(0, -1, 0, 0));
+	}
+
+	if (mInputHandler->IsKeyDown(OIS::KC_G))
+	{
+		mRenderCamera->rotate(Ogre::Quaternion(0, 0, 1, 0));
+
+	} else if (mInputHandler->IsKeyDown(OIS::KC_H))
+	{
+		mRenderCamera->rotate(Ogre::Quaternion(0, 0, -1, 0));
+	}
 }
