@@ -61,7 +61,7 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 // TODO: Refactor names 
 void Player::testingShit(DynamicObject *p)
 {
-	Ogre::SceneNode *chewbaca = mPlayerObject->mSceneNode->createChildSceneNode();
+	Ogre::SceneNode *chewbaca = mPlayerObject->mSceneNode->createChildSceneNode("child");
 	chewbaca->flipVisibility(true); // makes this entire thing visible 
 
 	for (Ogre::String name : p->meshNames) {
@@ -184,6 +184,7 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 				mPhysManager->_world->getGravity().getY() + 70,0));
+			mPlayerObject->mSceneNode->getChild("child")->pitch(Ogre::Radian(mPlayerObject->fallRigidBody->getWorldTransform().getRotation().getAngle()));
 			
 #pragma region Testing Purposes 
 			//btQuaternion rot = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
