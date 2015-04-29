@@ -70,15 +70,16 @@ void Player::testingShit(DynamicObject *p)
 		chewbaca->attachObject(newEnt);
 		//chewbaca->resetOrientation();
 		//chewbaca->getInheritOrientation();
-		chewbaca->setOrientation(Ogre::Quaternion(0, 0, -1, 1)); // does the rotation 
-		
+		chewbaca->setOrientation(Ogre::Quaternion(0, 0, 1, -1)); // does the rotation 
+		chewbaca->roll(Ogre::Radian(Ogre::Math::PI)); // fixes it so player's back faces us 
+		//chewbaca->setDirection(mCamera->mRenderCamera->getRealDirection());
 
 		if (newEnt->hasSkeleton())
 		{
 			newEnt->getAnimationState("default_skl")->setEnabled(true);
 			newEnt->getAnimationState("default_skl")->setLoop(true);
 			newEnt->getAnimationState("default_skl")->setWeight(1.0);
-			newEnt->getAnimationState("default_skl")->setLength(1.0);
+			newEnt->getAnimationState("default_skl")->setLength(0.5);
 		}
 	}
 }
@@ -184,7 +185,7 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 				mPhysManager->_world->getGravity().getY() + 70,0));
-			mPlayerObject->mSceneNode->getChild("child")->pitch(Ogre::Radian(mPlayerObject->fallRigidBody->getWorldTransform().getRotation().getAngle()));
+			//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(0.01f));
 			
 #pragma region Testing Purposes 
 			//btQuaternion rot = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
@@ -227,6 +228,8 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 				mPhysManager->_world->getGravity().getY() + 70,0));
+			//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(-0.01f));
+
 		}
 
 		// Moves Forward 
