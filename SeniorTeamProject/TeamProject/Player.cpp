@@ -57,12 +57,13 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->synchWithBullet();
 }
 
-// Fix for Simon 
-// TODO: Refactor names 
+// Fix for Simon in regards to animation mesh's orientation 
+// TODO: Refactor names to something more suitable 
 void Player::testingShit(DynamicObject *p)
 {
+	// makes a child node of parent node 
 	Ogre::SceneNode *chewbaca = mPlayerObject->mSceneNode->createChildSceneNode("child");
-	chewbaca->flipVisibility(true); // makes this entire thing visible 
+	chewbaca->flipVisibility(true); // makes this entire thing visible since parent node is invisible
 
 	for (Ogre::String name : p->meshNames) {
 		Ogre::Entity *newEnt = mSceneManager->createEntity(name);
@@ -79,7 +80,7 @@ void Player::testingShit(DynamicObject *p)
 			newEnt->getAnimationState("default_skl")->setEnabled(true);
 			newEnt->getAnimationState("default_skl")->setLoop(true);
 			newEnt->getAnimationState("default_skl")->setWeight(1.0);
-			newEnt->getAnimationState("default_skl")->setLength(0.5);
+			newEnt->getAnimationState("default_skl")->setLength(1.0);
 		}
 	}
 }
