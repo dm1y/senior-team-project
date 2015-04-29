@@ -16,7 +16,7 @@ mRenderCamera(renderCamera), mInputHandler(input), mSceneManager (sceneManager)
 	mRenderCamera->setNearClipDistance(1);
     mRenderCamera->setPosition(Ogre::Vector3(0,100,-200));
 
-	setup();
+	//setup();
 }
 
 void GameCamera::updatePosition(Ogre::Vector3 camP, Ogre::Vector3 tarP) {

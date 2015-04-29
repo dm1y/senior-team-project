@@ -44,7 +44,7 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->fallRigidBody->setWorldTransform(ts);*/
 
 	// Children nodes for camera in 3rd person perspective 
-	mPlayerObject->mSceneNode->setVisible(false, false);
+	mPlayerObject->mSceneNode->setVisible(false, false); // hides jordan mesh but doesn't hide children 
 	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam");
 	camNode->attachObject(mCamera->mRenderCamera);
 	
@@ -58,18 +58,19 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 }
 
 // Fix for Simon 
+// TODO: Refactor names 
 void Player::testingShit(DynamicObject *p)
 {
 	Ogre::SceneNode *chewbaca = mPlayerObject->mSceneNode->createChildSceneNode();
-	chewbaca->flipVisibility(true);
+	chewbaca->flipVisibility(true); // makes this entire thing visible 
 
 	for (Ogre::String name : p->meshNames) {
 		Ogre::Entity *newEnt = mSceneManager->createEntity(name);
 		//mEntity->setCastShadows(true);
 		chewbaca->attachObject(newEnt);
-		//peonChild->resetOrientation();
-		//peonChild->getInheritOrientation();
-		chewbaca->setOrientation(Ogre::Quaternion(0, 0, -1, 1));
+		//chewbaca->resetOrientation();
+		//chewbaca->getInheritOrientation();
+		chewbaca->setOrientation(Ogre::Quaternion(0, 0, -1, 1)); // does the rotation 
 		
 
 		if (newEnt->hasSkeleton())
@@ -230,6 +231,8 @@ Player::Think(float time)
 		// Moves Forward 
 		if (mInputHandler->IsKeyDown(OIS::KC_UP))
 		{
+			playAnimation("default_skl", time);
+
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
 				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
 
@@ -265,6 +268,7 @@ Player::Think(float time)
 		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
 		{
 			//if (!isJumping)
+			playAnimation("default_skl", time);
 
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
 				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
