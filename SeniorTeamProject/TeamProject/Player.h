@@ -34,7 +34,7 @@ public:
 	void addToScene(); 
 	void setScale(Ogre::Vector3 v);
 	void setOrientation(Ogre::Quaternion newOrientation);
-	void makeGhostObject();
+	void checkGround(float distance, bool checkJump);
 
 	void Think(float time);
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
@@ -80,10 +80,7 @@ protected:
 	Ogre::String meshName; 
 	GameCamera *mCamera;
 
-	bool isJumping;
-	bool onGround;
-	int angle, h; 
-	float dt;
+	bool canJump;
 
 	// For testing purposes 
 //	Ogre::Overlay *overly; 

@@ -35,6 +35,7 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->setPosition(position);
 	mPlayerObject->addToOgreScene(mSceneManager);
 
+	canJump = true; 
 	
 	// Changes in orientation because Simon's animations get imported at weird angles 
 	/*btTransform ts;
@@ -114,7 +115,7 @@ Player::Think(float time)
 #pragma region Controls 
 
 	//btTransform ts;
-
+	
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
 	{
@@ -225,7 +226,6 @@ Player::Think(float time)
 		// Does rotation clockwise 
 		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
 		{
-			//if (!isJumping)
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 				mPhysManager->_world->getGravity().getY() + 70,0));
@@ -272,8 +272,6 @@ Player::Think(float time)
 		// Moves Backward 
 		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
 		{
-			//if (!isJumping)
-			playAnimation("default_skl", time);
 
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
 				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
@@ -330,8 +328,8 @@ Player::Think(float time)
 		// "Jump" ... still a WIP (need to cap so player doesn't jump repeatedly) 
 		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE))
 		{
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 90, 0));
-			//isJumping = true; 
+			if (canJump)
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 90, 0));			
 		}
 
 		// "Crouch" -- TODO: Half the capsule size for collisions 
@@ -343,11 +341,8 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, mPhysManager->_world->getGravity().getY() + 70, 0));
 		}
 
-		else if (isJumping)
-		{
-			// TODO: Implement some kind of collision detector to check if there's a ground below player 
-			//isJumping = false;
-		}
+		checkGround(5000.0f, false); // checks if player is within stage 
+		checkGround(5.0f, true); // check if player is on the ground or currently jumping  
 
 		mPlayerObject->synchWithBullet();
 
@@ -355,6 +350,52 @@ Player::Think(float time)
 	}
 }
 
+void
+Player::checkGround(float distance, bool checkJump)
+{
+	btTransform p; 
+	mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(p);
+	btVector3 position = p.getOrigin();
+
+	btVector3 btFrom(position.getX(), position.getY(), position.getZ());			// current Player position  
+	btVector3 btTo(position.getX(), position.getY() - distance, position.getZ());	// below Player position 
+	btCollisionWorld::ClosestRayResultCallback res(btFrom, btTo);
+
+	mPhysManager->_world->rayTest(btFrom, btTo, res); 
+
+	std::string x = std::to_string(res.m_hitPointWorld.getX());
+	std::string y = std::to_string(res.m_hitPointWorld.getY());
+	std::string z = std::to_string(res.m_hitPointWorld.getZ());
+
+	//OutputDebugString("\n[[Ray test hit point]]:  \n x");
+	//OutputDebugString(x.c_str());
+	//OutputDebugString("\n y ");
+	//OutputDebugString(y.c_str());
+	//OutputDebugString("\n z ");
+	//OutputDebugString(z.c_str());
+
+	if(res.hasHit())
+	{
+		//OutputDebugString("\nHello\n");
+		//printf("Collision at: <%.2f, %.2f, %.2f>\n", res.m_hitPointWorld.getX(), res.m_hitPointWorld.getY(), res.m_hitPointWorld.getZ());
+
+		canJump = true; 
+
+	} else 
+	{
+		if (!checkJump)
+		{
+			// Respawn player 
+			p.setOrigin(btVector3(0, 50, -10));
+			mPlayerObject->fallRigidBody->setWorldTransform(p);
+		} 
+		else
+		{
+			// Player is currently in the air 
+			canJump = false; 
+		}
+	}
+}
 
 void
 Player::detectSway(float time)
