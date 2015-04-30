@@ -60,7 +60,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	//NOTE:: jordanWalk or jordanIdle
 
-	DynamicObject *p = gameLibrary->getDynamicObject("Jesus");
+	DynamicObject *p = gameLibrary->getDynamicObject("JordanIdle");
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
 	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setAnimation(p);
@@ -81,18 +81,43 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 }
 
+bool
+World::checkIntersect(btRigidBody *A, btRigidBody *B)
+{
+	btVector3 Amin;
+	btVector3 Amax;
+	btVector3 Bmin;
+	btVector3 Bmax;
+
+	A->getAabb(Amin, Amax);
+	B->getAabb(Bmin, Bmax);
+
+	if ((((Bmin.getX() <= Amax.getX()) && (Bmin.getY() <= Amax.getY()) && (Bmin.getZ() <= Amax.getZ())) &&
+		((Amax.getX() <= Bmax.getX()) && (Amax.getY() <= Bmax.getY()) && (Amax.getZ() <= Bmax.getZ()))) ||
+		(((Amin.getX() <= Bmax.getX()) && (Amin.getY() <= Bmax.getY()) && (Amin.getZ() <= Bmax.getZ())) &&
+		((Bmax.getX() <= Amax.getX()) && (Bmax.getY() <= Amax.getY()) && (Bmax.getZ() <= Amax.getZ()))))
+		return true;
+	else 
+		return false;
+}
 
 void 
 World::Think(float time)
 {
+	if (checkIntersect(mPlayer->getDynamicObject()->fallRigidBody, d->fallRigidBody))
+		OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
+	else
+		OutputDebugString("\nNOTHING IS HAPPENING\n");
+
+
 	/*mPlayer->getDynamicObject()->fallRigidBody->getBroadphaseProxy*/
-	//if (mPlayer->getDynamicObject()->fallRigidBody->checkCollideWith(d->fallRigidBody))
-	//{
-	//	OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
-	//} else 
-	//{
-	//	OutputDebugString("\nNOTHING IS HAPPENING\n");
-	//}
+	/*if (mPlayer->getDynamicObject()->fallRigidBody->checkCollideWith(d->fallRigidBody))
+	{
+		OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
+	} else 
+	{
+		OutputDebugString("\nNOTHING IS HAPPENING\n");
+	}*/
 	//mCamera->update (mPlayer->getCameraNode() -> getPosition(), mPlayer->getDynamicObject()->mSceneNode->getPosition());
 	
 	//mCamera->update (mPlayer->getCameraNode ()->getPosition(), mPlayer->getDynamicObject()->mSceneNode->getPosition ());

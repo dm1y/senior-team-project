@@ -44,6 +44,9 @@ public:
 	void createWater();
 	void doWaterStuff(float time);
 
+	bool checkIntersect(btRigidBody *A, btRigidBody *B);
+
+
 protected:
 
 	Ogre::SceneManager *mSceneManager;
