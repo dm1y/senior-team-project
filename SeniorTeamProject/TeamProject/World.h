@@ -41,6 +41,9 @@ public:
 
 	GameLibrary *gameLibrary;
 
+	void createWater();
+	void doWaterStuff(float time);
+
 protected:
 
 	Ogre::SceneManager *mSceneManager;

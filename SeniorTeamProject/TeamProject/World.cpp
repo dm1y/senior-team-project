@@ -57,6 +57,9 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	//DynamicObject *p = gameLibrary->getDynamicObject("Jordan");
 
 	// Player setup 
+
+	//NOTE:: jordanWalk or jordanIdle
+
 	DynamicObject *p = gameLibrary->getDynamicObject("Jesus");
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
 	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
@@ -73,6 +76,8 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	d->setScale(Ogre::Vector3(10,10,10));
 
 	mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
+
+	createWater();
 
 }
 
@@ -99,6 +104,8 @@ World::Think(float time)
 	//	d->addToBullet(physManager);
 	//}
 
+	doWaterStuff(time);
+
 	mPlayer->Think(time);
 	//mCamera->update(mPlayer);
 	//mCamera->mRenderCamera->lookAt(mPlayer->getWorldPosition());
@@ -106,4 +113,73 @@ World::Think(float time)
 	//mCamera->mRenderCamera->move(mPlayer->getDynamicObject()->position);
 }
 
+
+#pragma region Water
+
+void
+World::createWater()
+{
+
+#define FLOW_SPEED 0.25
+#define FLOW_HEIGHT 2
+
+	Ogre::Entity *mWaterEntity;
+	Ogre::Plane mWaterPlane;
+
+	mWaterPlane.normal = Ogre::Vector3::UNIT_Y;
+	mWaterPlane.d = -1.5;
+
+	Ogre::MeshManager::getSingleton().createPlane(
+		"WaterPlane", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		mWaterPlane, 1000, 1000, 5, 1, true, 1, 10, 10, Ogre::Vector3::UNIT_Z);
+
+	mWaterEntity = mSceneManager->createEntity("water", "WaterPlane");
+	mWaterEntity->setMaterialName("Examples/Water3");
+
+	Ogre::SceneNode *mWaterNode = mSceneManager->getRootSceneNode()->createChildSceneNode("WaterNode");
+	mWaterNode->attachObject(mWaterEntity);
+	mWaterNode->setPosition(0, 0, 0);
+	mWaterNode->setOrientation(Ogre::Quaternion::IDENTITY);
+	//mWaterNode->setOrientation(0, 0, 1, 0);
+	//mWaterNode->translate(3000, -50, 3000);
+
+	
+	Ogre::Light *mLight = mSceneManager->createLight("WaterLight");
+	mLight->setType(Ogre::Light::LT_DIRECTIONAL);
+	mLight->setDirection(0, -100, 0);
+	
+}
+
+
+void
+World::doWaterStuff(float time)
+{
+	float waterFlow = FLOW_SPEED * time;
+	static float flowAmount = 0.0f;
+	static bool flowUp = true;
+
+	Ogre::SceneNode *mCamera = mPlayer->getCameraNode();
+
+	Ogre::SceneNode *mWaterNode = static_cast<Ogre::SceneNode*>
+		(mSceneManager->getRootSceneNode()->getChild("WaterNode"));
+
+	//mWaterNode->setOrientation(0, 0, 1, 0);
+
+	if (mWaterNode)
+	{
+		if (flowUp)
+			flowAmount += waterFlow;
+		else
+			flowAmount -= waterFlow;
+
+		if (flowAmount >= FLOW_HEIGHT)
+			flowUp = false;
+		else if (flowAmount <= 0.0f)
+			flowUp = true;
+
+		mWaterNode->translate(0, (flowUp ? waterFlow : -waterFlow), 0);
+	}
+}
+
+#pragma endregion Water
 
