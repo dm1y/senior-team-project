@@ -36,13 +36,6 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->addToOgreScene(mSceneManager);
 
 	canJump = true; 
-	
-	// Changes in orientation because Simon's animations get imported at weird angles 
-	/*btTransform ts;
-	mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
-	ts.setRotation(btQuaternion(0,1,-1,0));
-	ts.setOrigin(btVector3(0,100,50));
-	mPlayerObject->fallRigidBody->setWorldTransform(ts);*/
 
 	// Children nodes for camera in 3rd person perspective 
 	mPlayerObject->mSceneNode->setVisible(false, false); // hides jordan mesh but doesn't hide children 
@@ -70,11 +63,8 @@ void Player::setAnimation(DynamicObject *p)
 		Ogre::Entity *newEnt = mSceneManager->createEntity(name);
 		//mEntity->setCastShadows(true);
 		childNode->attachObject(newEnt);
-		//chewbaca->resetOrientation();
-		//chewbaca->getInheritOrientation();
 		childNode->setOrientation(Ogre::Quaternion(0, 0, 1, -1)); // does the rotation 
 		childNode->roll(Ogre::Radian(Ogre::Math::PI)); // fixes it so player's back faces us 
-		//chewbaca->setDirection(mCamera->mRenderCamera->getRealDirection());
 
 		if (newEnt->hasSkeleton())
 		{
@@ -120,7 +110,7 @@ Player::Think(float time)
 	if (mEnableKeyboard) 
 	{
 		// Left 
-		if (mInputHandler->IsKeyDown(OIS::KC_PGDOWN))
+		if (mInputHandler->IsKeyDown(OIS::KC_M) || detectSway() == 1)
 		{
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
 				mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
@@ -133,7 +123,7 @@ Player::Think(float time)
 		}
 
 		// Right 
-		else if (mInputHandler->IsKeyDown(OIS::KC_PGUP))
+		else if (mInputHandler->IsKeyDown(OIS::KC_N) || detectSway() == 0)
 		{
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
 				mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
@@ -146,85 +136,19 @@ Player::Think(float time)
 		}
 
 		// Does the rotation counter-clockwise
-		if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
+		if (mInputHandler->IsKeyDown(OIS::KC_LEFT) || detectTurn() == 1)
 		{
 
-#pragma region Testing Purposes 
-			//btQuaternion or = mPlayerObject->fallRigidBody->getOrientation();
-			//std::string x = std::to_string(or.getX());
-			//std::string y = std::to_string(or.getY());
-			//std::string z = std::to_string(or.getZ());
-			//std::string w = std::to_string(or.getW());
-
-			//OutputDebugString("M pressed [[ Orientation ]]:  \n x");
-			//OutputDebugString(x.c_str());
-			//OutputDebugString("\n y ");
-			//OutputDebugString(y.c_str());
-			//OutputDebugString("\n z ");
-			//OutputDebugString(z.c_str());
-			//OutputDebugString("\n w ");
-			//OutputDebugString(w.c_str());
-			//OutputDebugString("\n Rotation \n");
-
-			//btQuaternion ro = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
-			//std::string W = std::to_string(ro.getW());
-			//std::string X = std::to_string(ro.getX());
-			//std::string Y = std::to_string(ro.getY());
-			//std::string Z = std::to_string(ro.getZ());
-
-			//OutputDebugString("Rotation  \n w");
-			//OutputDebugString(W.c_str());
-			//OutputDebugString("\n x ");
-			//OutputDebugString(X.c_str());
-			//OutputDebugString("\n y ");
-			//OutputDebugString(Y.c_str());
-			//OutputDebugString("\n z ");
-			//OutputDebugString(Z.c_str());
-			//OutputDebugString("\n Before END \n");
-			//if (!isJumping)
-#pragma endregion Prints out to Console 
 
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 				mPhysManager->_world->getGravity().getY() + 70,0));
 			//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(0.01f));
 			
-#pragma region Testing Purposes 
-			//btQuaternion rot = mPlayerObject->fallRigidBody->getWorldTransform().getRotation();
-			//std::string fW = std::to_string(rot.getW());
-			//std::string fX = std::to_string(rot.getX());
-			//std::string fY = std::to_string(rot.getY());
-			//std::string fZ = std::to_string(rot.getZ());
-
-			//btQuaternion orz = mPlayerObject->fallRigidBody->getOrientation();
-			//std::string xz = std::to_string(orz.getX());
-			//std::string yz = std::to_string(orz.getY());
-			//std::string zz = std::to_string(orz.getZ());
-			//std::string ww = std::to_string(orz.getZ());
-
-			//OutputDebugString("After [[ Orientation]] \n x");
-			//OutputDebugString(xz.c_str());
-			//OutputDebugString("\n y ");
-			//OutputDebugString(yz.c_str());
-			//OutputDebugString("\n z ");
-			//OutputDebugString(zz.c_str());
-			//OutputDebugString("\n w ");
-			//OutputDebugString(ww.c_str());
-			//OutputDebugString("\n Next \n");
-			//OutputDebugString("After [[ Rotation ]] \n w");
-			//OutputDebugString(fW.c_str());
-			//OutputDebugString("\n x ");
-			//OutputDebugString(fX.c_str());
-			//OutputDebugString("\n y ");
-			//OutputDebugString(fY.c_str());
-			//OutputDebugString("\n z ");
-			//OutputDebugString(fZ.c_str());
-			//OutputDebugString("\n END \n");
-#pragma endregion Prints out to Console 
 
 		} 
 		// Does rotation clockwise 
-		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
+		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) || detectTurn() == 0)
 		{
 			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
@@ -234,7 +158,7 @@ Player::Think(float time)
 		}
 
 		// Moves Forward 
-		if (mInputHandler->IsKeyDown(OIS::KC_UP))
+		if (mInputHandler->IsKeyDown(OIS::KC_UP) || detectLean() == 0)
 		{
 			playAnimation("default_skl", time);
 
@@ -247,32 +171,11 @@ Player::Think(float time)
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 
 				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40)); 
 
-#pragma region Other method 
-			//btScalar anglee = ts.getRotation().getAngle();
-			//btScalar xRot = btCos(anglee);
-			//btScalar yRot = btSin(anglee);
-			//btScalar zRot = btAtan2(xRot, yRot);
-			//btScalar newXRot = btAtan2(-1 * yRot, zRot);
-			//btScalar newYRot = btAtan2(-1 * zRot, xRot);
-
-			//if (!isJumping)
-			//btVector3 angul = (mPlayerObject->fallRigidBody->getAngularVelocity());
-			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(5, 0, 5));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(newXRot * 10, 0, zRot * 10)); 
-			/*mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(btCos((ts.getRotation().getAngle()) * 10), 
-				0,btSin((ts.getRotation().getAngle())) * 10));*/
-
-			//mPlayerObject->fallRigidBody->setFriction(5);
-
-			//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1, 0, 0));
-			//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(10, 0, 0));
-#pragma endregion Redo once camera is replaced
 		}
 
 		// Moves Backward 
-		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
+		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) || detectLean() == 1)
 		{
-
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
 				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
 
@@ -281,52 +184,11 @@ Player::Think(float time)
 			
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40, 
 				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40)); 
-
 		}
 
-#pragma region Old movement code 
-		//// Up 
-		//else if (mInputHandler->IsKeyDown(OIS::KC_UP) && onGround)
-		// {
-		//	/*mPlayerObject->fallRigidBody->getMotionState()->getWorldTransform(ts);
-		//	Ogre::Real x = ts.getOrigin().getX();
-		//	Ogre::Real y = ts.getOrigin().getY();
-		//	Ogre::Real z = ts.getOrigin().getZ();
-
-		//	Ogre::Real Qx = ts.getRotation().getX();
-		//	Ogre::Real Qy = ts.getRotation().getY();
-		//	Ogre::Real Qz = ts.getRotation().getZ();
-		//	Ogre::Real Qw = ts.getRotation().getW();*/
-
-		//	//mPlayerObject->fallRigidBody->applyCentralImpulse();
-
-		//	//if (!isJumping)
-		//	mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-		//	
-		//	//mPlayerObject->fallRigidBody->setFriction(1);
-		//	
-		//	//mPlayerObject->fallRigidBody->applyCentralImpulse(mPlayerObject->fallRigidBody->getAngularVelocity());
-		//	mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(1,0,-1));
-		//	//mPlayerObject->fallRigidBody->setLinearVelocity(mPlayerObject->fallRigidBody->getAngularVelocity());
-		//	mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,0, 10));
-		//	
-		//}
-
-		//// Down 
-		//else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) && onGround)
-		//{
-		//	//if (!isJumping)
-		//	mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-
-		//	//mPlayerObject->fallRigidBody->setFriction(1);
-		//	mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 10));
-		//	mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 0, -10));
-		//	
-		//}
-#pragma endregion 
 		
 		// Jump
-		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE))
+		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE) || detectJump() == 0)
 		{
 			if (canJump)
 				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, 90, 0));			
@@ -367,17 +229,8 @@ Player::checkGround(float distance, bool checkJump)
 	std::string y = std::to_string(res.m_hitPointWorld.getY());
 	std::string z = std::to_string(res.m_hitPointWorld.getZ());
 
-	//OutputDebugString("\n[[Ray test hit point]]:  \n x");
-	//OutputDebugString(x.c_str());
-	//OutputDebugString("\n y ");
-	//OutputDebugString(y.c_str());
-	//OutputDebugString("\n z ");
-	//OutputDebugString(z.c_str());
-
 	if(res.hasHit())
 	{
-		//OutputDebugString("\nHello\n");
-		//printf("Collision at: <%.2f, %.2f, %.2f>\n", res.m_hitPointWorld.getX(), res.m_hitPointWorld.getY(), res.m_hitPointWorld.getZ());
 
 		canJump = true; 
 
@@ -397,60 +250,97 @@ Player::checkGround(float distance, bool checkJump)
 	}
 }
 
-void
-Player::detectSway(float time)
+int
+Player::detectSway()
 {
-	const float RADIANS_PER_SECOND = 0.5;
-	const float COIN_SPEED = 30;
 
 	Ogre::Degree leftRightAngle = Ogre::Degree(0);
 	Ogre::Degree frontBackAngle = Ogre::Degree(0);
 
 	getSkeletonAngles(leftRightAngle, frontBackAngle);
 	
-	/*
-	if (leftRightAngle.valueDegrees() < 0)
-		mPlayerObject->translate(Ogre::Vector3(time * COIN_SPEED / 2, 0, 0));
+	//SWAY RIGHT
+	if (leftRightAngle.valueDegrees() < 0) return 0;
 
-	if (leftRightAngle.valueDegrees() > 0)
-		mPlayerObject->translate(Ogre::Vector3(-time * COIN_SPEED / 2, 0, 0));
+	//SWAY LEFT
+	if (leftRightAngle.valueDegrees() > 0) return 1;
 
-	if (frontBackAngle.valueDegrees() < 0)
-		mPlayerObject->translate(Ogre::Vector3(0, 0, time * COIN_SPEED / 2));
-
-	if (frontBackAngle.valueDegrees() > 0)
-		mPlayerObject->translate(Ogre::Vector3(0, 0, -time * COIN_SPEED / 2));
-	*/
+	//NONE OF THE ABOVE
+	else
+		return -1;
 }
 
-void
-Player::detectTurn(float time)
+int
+Player::detectLean()
 {
-	const float RADIANS_PER_SECOND = 0.5;
-	const float COIN_SPEED = 30;
 
+	Ogre::Degree leftRightAngle = Ogre::Degree(0);
+	Ogre::Degree frontBackAngle = Ogre::Degree(0);
+
+	getSkeletonAngles(leftRightAngle, frontBackAngle);
+
+		//LEAN FORWARD
+	if (frontBackAngle.valueDegrees() < 0) return 0;
+
+	//LEAN BACK
+	if (frontBackAngle.valueDegrees() > 0) return 1;
+	
+	//NONE OF THE ABOVE
+	else
+		return -1;
+}
+
+int
+Player::detectArm()
+{
 
 	vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
-
-	/*
-	//RIGHT TURN
-	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z)
-		mPlayerObject->translate(Ogre::Vector3(-time * COIN_SPEED / 2, 0, 0));
-	
-	//LEFT TURN
-	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z)
-		mPlayerObject->translate(Ogre::Vector3(time * COIN_SPEED / 2, 0, 0));
-
-	//ARMS IN FRONT
+		//ARMS IN FRONT
 	if (skeletonNodes[NUI_SKELETON_POSITION_HAND_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SPINE].z &&
 		skeletonNodes[NUI_SKELETON_POSITION_HAND_RIGHT].z < skeletonNodes[NUI_SKELETON_POSITION_SPINE].z)
-		mPlayerObject->translate(Ogre::Vector3(0, 0, time * COIN_SPEED / 2));
+		return 0;
 	
 	//ARMS IN BACK
 	if (skeletonNodes[NUI_SKELETON_POSITION_HAND_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SPINE].z &&
 		skeletonNodes[NUI_SKELETON_POSITION_HAND_RIGHT].z > skeletonNodes[NUI_SKELETON_POSITION_SPINE].z)
-		mPlayerObject->translate(Ogre::Vector3(0, 0, -time * COIN_SPEED / 2));
-	*/
+		return 1;
+	
+	//NONE OF THE ABOVE
+	else
+		return -1;
+}
+
+int
+Player::detectTurn()
+{
+	vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+
+	//RIGHT TURN
+	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z)
+		return 0;
+	
+	//LEFT TURN
+	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z)
+		return 1;
+	
+	//NONE OF THE ABOVE
+	else
+		return -1;
+}
+
+int
+Player::detectJump()
+{
+	vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+
+	//LEFT FOOT LIFTED
+	if ((skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y + 10) ||
+	//RIGHT FOOT LIFTED
+		(skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y + 10))
+		return 0;
+
+	else
+		return -1;
 }
 
 void

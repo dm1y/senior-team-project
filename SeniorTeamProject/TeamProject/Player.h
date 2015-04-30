@@ -39,11 +39,14 @@ public:
 	void Think(float time);
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 
+	int detectSway();
+	int detectLean();
+	int detectArm();
+	int detectTurn();
+	int detectJump()
 	bool initSkel;
 	bool getEnableKinect() { return mEnableKinect; }
 	void setEnableKinect(bool enable) { mEnableKinect = enable; }
-	void detectSway(float time);
-	void detectTurn(float time);
 	void drawSkeleton();
 	void createLine(std::string bone, int joint1, int joint2);
 	void drawLine(std::string bone, int joint1, int joint2);
