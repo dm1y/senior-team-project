@@ -36,6 +36,7 @@ using namespace rapidjson;
 World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib, Ogre::Root *mRoot)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib)
 {
+	score = 0;
 	sceneManager->setAmbientLight(Ogre::ColourValue(0, 0, 0));
 	// sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
@@ -49,13 +50,43 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	// Causes shadowcaster error, vertex limit exceeded?
 	// Fixed by turning off shadows... but thats lame
-	DynamicObject *p = gameLibrary->getDynamicObject("JordanIdle");
+	DynamicObject *p = gameLibrary->getDynamicObject("Human");
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
 	
 	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setAnimation(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 	
+	// Teapot object setup 
+	d = gameLibrary->getDynamicObject("TeaPot");
+	d->fallRigidBody->setUserIndex(1); // TeaPot ID is 1 
+	d->setPosition(Ogre::Vector3(0, 80, -50));
+	d->addToOgreScene(mSceneManager);
+	d->addToBullet(physManager);
+	d->setScale(Ogre::Vector3(10,10,10));
+	
+	dynaList.push_back(d);
+	
+	e = gameLibrary->getDynamicObject("TeaPot");
+	e->fallRigidBody->setUserIndex(1); // TeaPot ID is 1 
+	e->setPosition(Ogre::Vector3(0, 80, -90));
+	e->addToOgreScene(mSceneManager);
+	e->addToBullet(physManager);
+	e->setScale(Ogre::Vector3(10,10,10));
+
+	dynaList.push_back(e);
+
+	// Tuna object setup 
+	t = gameLibrary->getDynamicObject("Tuna");
+	t->fallRigidBody->setUserIndex(2); // TeaPot ID is 2
+	t->setPosition(Ogre::Vector3(10, 80, -150));
+	t->addToOgreScene(mSceneManager);
+	t->addToBullet(physManager);
+	t->setScale(Ogre::Vector3(.3,.3,.3));
+
+	dynaList.push_back(t);
+
+
 	Stage* stage = gameLibrary->getStage("IceIsland");
 	
 	StaticScenery *tempIceIsland;
@@ -69,6 +100,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	 	it._Ptr->_Myval->addToBullet(physManager);
 		tempIceIsland = it._Ptr->_Myval;
 	}
+
 	// TODO: Fix this so it's not hardcoded
 	mCamera->mRenderCamera->lookAt(tempIceIsland->mSceneNode->getPosition());
 
@@ -90,10 +122,42 @@ World::Think(float time)
 
 	mPlayer->Think(time);
 
+
+	for (DynamicObject *obj : dynaList) 
+	{
+		if (physManager->checkIntersect(mPlayer->getDynamicObject()->fallRigidBody, obj->fallRigidBody))
+		{
+			if (obj->fallRigidBody->getUserIndex() == 1) 
+			{
+				score++;
+
+				std::string scr = std::to_string(score);
+
+
+				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
+				OutputDebugString(scr.c_str());
+				OutputDebugString("\nSCORE INCREASING! TEAPOT IS NOW INVISIBLE\n");
+
+				//obj->fallRigidBody->~btRigidBody();
+				//obj->fallRigidBody->CF_DISABLE_SPU_COLLISION_PROCESSING;
+				//CF NO CONTACT RESPONSE 
+				//obj->fallRigidBody->CF_NO_CONTACT_RESPONSE;
+				//TODO: Figure out how to delete the actual dynamic object 
+			}
+			else if (obj->fallRigidBody->getUserIndex() == 2) 
+			{
+				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TUNACAN ZOMG!\n");
+			}
+		}
+		else
+		{
+			// Nothing happens since there's no collision 
+			//OutputDebugString("\nNOTHING IS HAPPENING\n");
+		}
+	}
+
 	physManager->stepSimulation(time);
 }
-
-
 
 #pragma region Water
 
@@ -115,7 +179,7 @@ World::createWater()
 		mWaterPlane, 1000, 1000, 5, 1, true, 1, 10, 10, Ogre::Vector3::UNIT_Z);
 
 	mWaterEntity = mSceneManager->createEntity("water", "WaterPlane");
-	mWaterEntity->setMaterialName("Examples/Water3");
+	mWaterEntity->setMaterialName("Examples/Water5");
 
 	Ogre::SceneNode *mWaterNode = mSceneManager->getRootSceneNode()->createChildSceneNode("WaterNode");
 	mWaterNode->attachObject(mWaterEntity);
