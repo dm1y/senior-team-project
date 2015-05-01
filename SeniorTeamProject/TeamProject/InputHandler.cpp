@@ -5,8 +5,8 @@
 
 #include <stdio.h>
 
-InputHandler::InputHandler(Ogre::RenderWindow *renderWindow) : 
-	 mRenderWindow(renderWindow)
+InputHandler::InputHandler(Ogre::RenderWindow *renderWindow, Console* console) : 
+	 mRenderWindow(renderWindow), mConsole(console)
 {
 	OIS::ParamList pl;
 	size_t windowHnd = 0;
@@ -18,14 +18,20 @@ InputHandler::InputHandler(Ogre::RenderWindow *renderWindow) :
 
 	mInputManager = OIS::InputManager::createInputSystem( pl );
 
-	mCurrentKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, false /* not buffered */ ));
+	mCurrentKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true /* not buffered */ ));
+	mCurrentKeyboard->setEventCallback(this);
 }
 
 
 bool
 InputHandler::IsKeyDown(OIS::KeyCode key)
 {
-	return mCurrentKeyboard->isKeyDown(key);
+	// if the console is visible ignore all keyboard input
+	if(!mConsole->isVisible()) {
+		return mCurrentKeyboard->isKeyDown(key);
+	} else {
+		return false;
+	}
 }
 
 bool
@@ -47,3 +53,19 @@ InputHandler::~InputHandler()
 	mInputManager->destroyInputObject(mCurrentKeyboard);
 }
 
+bool InputHandler::keyPressed(const OIS::KeyEvent& ke)  {
+	mConsole->onKeyPressed(ke);
+	if (ke.key == OIS::KC_TAB) {
+		if(mConsole->isVisible()) {
+			mConsole->setVisible(false);
+		} else {
+			mConsole->setVisible(true);
+		}
+	}
+	return true;
+}
+
+bool InputHandler::keyReleased(const OIS::KeyEvent& ke) 
+{ 
+  return true; 
+}

@@ -4,17 +4,18 @@
 #include <ois/ois.h>
 #include <Ogre.h>
 #include "OgreRenderWindow.h"
+#include "Console.h"
 
 class World;
 class GameCamera;
 class InputHandler;
 
 
-class InputHandler // : public OIS::MouseListener, public OIS::KeyListener
+class InputHandler : OIS::KeyListener  // : public OIS::MouseListener, public 
 {
 public:
 
-	InputHandler(Ogre::RenderWindow* win);
+	InputHandler(Ogre::RenderWindow* win, Console* console);
 	~InputHandler();
 	void Think(float time);
 
@@ -27,6 +28,9 @@ protected:
 	OIS::Keyboard *mPreviousKeyboard;
 	OIS::Keyboard *mCurrentKeyboard;
 	char mOldKeys[256];
+	Console *mConsole;
+	virtual bool keyPressed(const OIS::KeyEvent& ke);
+	virtual bool keyReleased(const OIS::KeyEvent& ke);
 
 };
 

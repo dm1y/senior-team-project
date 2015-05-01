@@ -49,5 +49,4 @@ void PhysicsManager::stepSimulation(float time) {
 	for (std::list<IPhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) {
 		it._Ptr->_Myval->synchWithBullet();
 	}
-
 }

@@ -12,29 +12,58 @@
 /* Static scenery represents a drawable mesh that is collidable
  * but does not move, such as level geometry.
  */
-StaticScenery::StaticScenery(Ogre::Vector3 position, Ogre::String meshName, Ogre::SceneManager *sceneManager, PhysicsManager *physManager) {
-	
-	// create the scene node
-    mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-	mSceneNode->setPosition(position);
-	
-	// attach the model entity
-	Ogre::Entity *mEntity = sceneManager->createEntity(meshName);
-	mEntity->setCastShadows(true);
-	mSceneNode->attachObject(mEntity);
 
+StaticScenery::StaticScenery(Ogre::Entity *mEntity) {
+	
+
+	mSceneNode = NULL;
+
+	// save for later when we want to add it to the ogre scene
+	this->mEntity = mEntity;
 
 	// generate a collision shape from the mesh
 	btTriangleMesh* btMesh = ogreToBulletMesh(mEntity->getMesh());
     btBvhTriangleMeshShape* btTriMeshShape = new btBvhTriangleMeshShape(btMesh, true, true);
 
-	btCollisionObject* btObj = new btCollisionObject();
+	// save collion shape for later when we to add it the bullet world
+	btObj = new btCollisionObject();
     btObj->setCollisionShape(btTriMeshShape);
 
-	physManager->_world->addCollisionObject(btObj);
+	/* Save as btRigidBody */
+	btDefaultMotionState* groundMotionState =
+                new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
 
+	btRigidBody::btRigidBodyConstructionInfo
+		groundRigidBodyCI(0, groundMotionState, btTriMeshShape, btVector3(0, 0, 0));
 
+    mRigidBody = new btRigidBody(groundRigidBodyCI);
+
+	// init position and rotation
+	position = Ogre::Vector3(0, 0, 0);
+	rotation = Ogre::Quaternion(1, 0, 0, 0);
 }
+
+
+StaticScenery::StaticScenery(Ogre::Entity *mEntity, btCollisionObject *colObject) {
+	
+	// save for later when we want to add it to the ogre scene
+	this->mEntity = mEntity;
+
+	// save collion shape for later when we to add it the bullet world
+	btObj = colObject;
+	
+	/* Save as btRigidBody */
+	btDefaultMotionState* groundMotionState =
+                new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
+
+	btRigidBody::btRigidBodyConstructionInfo
+		groundRigidBodyCI(0, groundMotionState, btObj->getCollisionShape(), btVector3(0, 0, 0));
+
+    mRigidBody = new btRigidBody(groundRigidBodyCI);
+}
+
+
+
 
 btTriangleMesh* StaticScenery::ogreToBulletMesh(Ogre::MeshPtr mesh) {
 	btTriangleMesh* btMesh = new btTriangleMesh();
@@ -108,4 +137,58 @@ btTriangleMesh* StaticScenery::ogreToBulletMesh(Ogre::MeshPtr mesh) {
     }
 
 	return btMesh;
+}
+
+void StaticScenery::addToOgreScene(Ogre::SceneManager *sceneManager) {
+	/* create a new scene node */
+    mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+	mSceneNode->attachObject(mEntity);	// attach entity to the new scene node
+	synchWithBullet();
+}
+
+void StaticScenery::addToBullet(PhysicsManager *physmanager) {
+	// physmanager->_world->addCollisionObject(btObj);
+	physmanager->_world->addRigidBody(this->mRigidBody);
+}
+
+void StaticScenery::setPosition(Ogre::Vector3 newPos) {
+	
+	// update bullet
+	btTransform trans;
+	mRigidBody->getMotionState()->getWorldTransform(trans);
+	trans.setOrigin(btVector3(newPos.x, newPos.y, newPos.z));
+	//mRigidBody->setCenterOfMassTransform(trans);
+	mRigidBody->setWorldTransform(trans);
+}
+
+void StaticScenery::setOrientation(Ogre::Quaternion newRot) {
+	
+	// update bullet
+	btTransform trans = mRigidBody->getCenterOfMassTransform();
+	trans.setRotation(btQuaternion(newRot.x, newRot.y, newRot.z, newRot.w));
+	//mRigidBody->setCenterOfMassTransform(trans);
+	mRigidBody->setWorldTransform(trans);
+}
+
+
+void StaticScenery::synchWithBullet() {
+	btTransform trans;
+    mRigidBody->getMotionState()->getWorldTransform(trans);	
+	Ogre::Real x = trans.getOrigin().getX();
+	Ogre::Real y = trans.getOrigin().getY();
+	Ogre::Real z = trans.getOrigin().getZ();
+
+	Ogre::Real Qx = trans.getRotation().getX();
+	Ogre::Real Qy = trans.getRotation().getY();
+	Ogre::Real Qz = trans.getRotation().getZ();
+	Ogre::Real Qw = trans.getRotation().getW();
+	mSceneNode->setPosition(Ogre::Vector3(x, y, z));
+	mSceneNode->setOrientation(Qw, Qx, Qy, Qz);
+}
+
+
+
+
+StaticScenery * StaticScenery::clone() {
+	return new StaticScenery(this->mEntity, this->btObj);
 }

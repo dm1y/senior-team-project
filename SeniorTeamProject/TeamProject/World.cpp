@@ -1,6 +1,5 @@
 #include "World.h"
 
-
 /* (TO: OLGA)
  * (From: Jordan)
  *
@@ -34,11 +33,11 @@
 
 using namespace rapidjson;
 
-World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib)   : 
+World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib, Ogre::Root *mRoot)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib)
 {
 	sceneManager->setAmbientLight(Ogre::ColourValue(0, 0, 0));
-	//sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+	// sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
 	Ogre::Light* directionalLight = sceneManager->createLight("directionalLight");
     directionalLight->setType(Ogre::Light::LT_DIRECTIONAL);
@@ -47,96 +46,53 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	directionalLight->setDirection(0,-1,1);
 
 	physManager = new PhysicsManager();
-	
-	// create static scenery
 
-	//mCamera->mRenderCamera->setPosition(Ogre::Vector3(0,50,-10));
-
-	StaticScenery *iceIsland = new StaticScenery(Ogre::Vector3(0,0,0), "iceIsland.MESH.mesh", mSceneManager, physManager);
-
-	//DynamicObject *p = gameLibrary->getDynamicObject("Jordan");
-
-	// Player setup 
-
-	//NOTE:: jordanWalk or jordanIdle
-
+	// Causes shadowcaster error, vertex limit exceeded?
+	// Fixed by turning off shadows... but thats lame
 	DynamicObject *p = gameLibrary->getDynamicObject("JordanIdle");
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
+	
 	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setAnimation(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
-	//mCamera->updatePosition (Ogre::Vector3 (0, 200, 0), mPlayer->getSightNode ()->getPosition());
+	
+	Stage* stage = gameLibrary->getStage("IceIsland");
+	
+	StaticScenery *tempIceIsland;
+	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
+		it._Ptr->_Myval->addToOgreScene(mSceneManager);
+	 	it._Ptr->_Myval->addToBullet(physManager);
+	}
 
-
-	// Teapot object setup 
-	d = gameLibrary->getDynamicObject("TeaPot");
-	d->setPosition(Ogre::Vector3(0, 80, -50));
-	d->addToOgreScene(mSceneManager);
-	d->addToBullet(physManager);
-	d->setScale(Ogre::Vector3(10,10,10));
-
-	mCamera->mRenderCamera->lookAt(iceIsland->mSceneNode->getPosition());
+	for (std::list<StaticScenery*>::iterator it = stage->staticScenery.begin(); it != stage->staticScenery.end(); it++) {
+		it._Ptr->_Myval->addToOgreScene(mSceneManager);
+	 	it._Ptr->_Myval->addToBullet(physManager);
+		tempIceIsland = it._Ptr->_Myval;
+	}
+	// TODO: Fix this so it's not hardcoded
+	mCamera->mRenderCamera->lookAt(tempIceIsland->mSceneNode->getPosition());
 
 	createWater();
-
+	
 }
 
-bool
-World::checkIntersect(btRigidBody *A, btRigidBody *B)
-{
-	btVector3 Amin;
-	btVector3 Amax;
-	btVector3 Bmin;
-	btVector3 Bmax;
-
-	A->getAabb(Amin, Amax);
-	B->getAabb(Bmin, Bmax);
-
-	if ((((Bmin.getX() <= Amax.getX()) && (Bmin.getY() <= Amax.getY()) && (Bmin.getZ() <= Amax.getZ())) &&
-		((Amax.getX() <= Bmax.getX()) && (Amax.getY() <= Bmax.getY()) && (Amax.getZ() <= Bmax.getZ()))) ||
-		(((Amin.getX() <= Bmax.getX()) && (Amin.getY() <= Bmax.getY()) && (Amin.getZ() <= Bmax.getZ())) &&
-		((Bmax.getX() <= Amax.getX()) && (Bmax.getY() <= Amax.getY()) && (Bmax.getZ() <= Amax.getZ()))))
-		return true;
-	else 
-		return false;
-}
 
 void 
 World::Think(float time)
 {
-	if (checkIntersect(mPlayer->getDynamicObject()->fallRigidBody, d->fallRigidBody))
-		OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
-	else
-		OutputDebugString("\nNOTHING IS HAPPENING\n");
-
-
-	/*mPlayer->getDynamicObject()->fallRigidBody->getBroadphaseProxy*/
-	/*if (mPlayer->getDynamicObject()->fallRigidBody->checkCollideWith(d->fallRigidBody))
-	{
-		OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
-	} else 
-	{
-		OutputDebugString("\nNOTHING IS HAPPENING\n");
-	}*/
-	//mCamera->update (mPlayer->getCameraNode() -> getPosition(), mPlayer->getDynamicObject()->mSceneNode->getPosition());
-	
-	//mCamera->update (mPlayer->getCameraNode ()->getPosition(), mPlayer->getDynamicObject()->mSceneNode->getPosition ());
-
-	//if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
-	//	DynamicObject *d = gameLibrary->getDynamicObject("Box");
-	//	d->setPosition(mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -2, 2));
-	//	d->addToOgreScene(mSceneManager);
-	//	d->addToBullet(physManager);
-	//}
-
 	doWaterStuff(time);
 
+	/*if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
+		DynamicObject* temp = this->gameLibrary->getDynamicObject("TeaPot");
+		temp->addToBullet(physManager);
+		temp->addToOgreScene(mSceneManager);
+	}*/
+
 	mPlayer->Think(time);
-	//mCamera->update(mPlayer);
-	//mCamera->mRenderCamera->lookAt(mPlayer->getWorldPosition());
+
 	physManager->stepSimulation(time);
-	//mCamera->mRenderCamera->move(mPlayer->getDynamicObject()->position);
 }
+
 
 
 #pragma region Water
@@ -183,7 +139,7 @@ World::doWaterStuff(float time)
 	static float flowAmount = 0.0f;
 	static bool flowUp = true;
 
-	Ogre::SceneNode *mCamera = mPlayer->getCameraNode();
+	// Ogre::SceneNode *mCamera = mPlayer->getCameraNode();
 
 	Ogre::SceneNode *mWaterNode = static_cast<Ogre::SceneNode*>
 		(mSceneManager->getRootSceneNode()->getChild("WaterNode"));
@@ -207,4 +163,3 @@ World::doWaterStuff(float time)
 }
 
 #pragma endregion Water
-

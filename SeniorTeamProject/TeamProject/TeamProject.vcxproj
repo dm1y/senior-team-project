@@ -113,6 +113,7 @@ copy resources.cfg "$(OutDir)"</Command>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Coin.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="GameLibrary.h" />
     <ClInclude Include="DynamicObject.h" />
@@ -152,6 +153,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="rapidjson\stringbuffer.h" />
     <ClInclude Include="rapidjson\writer.h" />
     <ClInclude Include="Receivers.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="StaticScenery.h" />
     <ClInclude Include="TeamProject.h" />
     <ClInclude Include="World.h" />
@@ -159,6 +161,7 @@ copy resources.cfg "$(OutDir)"</Command>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="GameLibrary.cpp" />
     <ClCompile Include="DynamicObject.cpp" />

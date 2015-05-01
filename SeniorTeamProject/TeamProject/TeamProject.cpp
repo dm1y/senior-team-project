@@ -75,7 +75,10 @@ TeamProject::createViewports(void)
 void 
 TeamProject::createScene() 
 {
-    mInputHandler = new InputHandler(mWindow);
+	Console *console = new Console(mRoot, this->mWorld);
+	console->setVisible(true);
+
+    mInputHandler = new InputHandler(mWindow, console);
 
 	// If a class needs access to another class, you can pass in a pointer in the constructor
 	//   or, if you need circular accesses (player needs access to the world, and the world needs
@@ -88,13 +91,13 @@ TeamProject::createScene()
 	mKinect->initSensor();
 	mKinect->StartSession();
 
-	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary());
+	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary(mSceneMgr), this->mRoot);
+	console->mWorld = mWorld;
 }
 
 bool 
 TeamProject::setup(void)
 {
-
     Ogre::String pluginsPath;
 	Ogre::String configPath;
     // only use plugins.cfg if not static

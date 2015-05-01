@@ -43,7 +43,7 @@ public:
 	int detectLean();
 	int detectArm();
 	int detectTurn();
-	int detectJump()
+	int detectJump();
 	bool initSkel;
 	bool getEnableKinect() { return mEnableKinect; }
 	void setEnableKinect(bool enable) { mEnableKinect = enable; }

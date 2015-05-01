@@ -3,35 +3,31 @@
 #include "IPhysObject.h"
 #include "IOgreObject.h"
 #include "PhysicsManager.h"
-#include <list>
+#include <string>
 
 
-
-class DynamicObject: public IPhysObject, public IOgreObject {
+class DynamicObject: public IPhysObject {
 private:
 
 public:
-	DynamicObject(std::list<Ogre::String> meshName, btCollisionShape *collisionShape, Ogre::Vector3 position);
+	DynamicObject(Ogre::Entity *entity, btRigidBody* rigidBody, btScalar mass, btScalar restitution);
+	DynamicObject(std::list<Ogre::String> meshNames, btCollisionShape *collisionShape, Ogre::Vector3 position);
 	void update();
 	void synchWithBullet();
 	void addToOgreScene(Ogre::SceneManager *sceneManager);
-	void addToOgreScene(Ogre::SceneManager *sceneManager, Ogre::String s);
 	void addToBullet(PhysicsManager *physmanager);
-
-	void setOrientation(Ogre::Quaternion newOrientation);
 	void setPosition(Ogre::Vector3 newPos);
-	void setScale(Ogre::Vector3 v);
-	
-	btRigidBody *getRigidBody() {return fallRigidBody; }
-	btCollisionShape *getHitBox() {return hitBox; }
-	Ogre::Entity *getEntity() {return mEntity;}
-	void addEntity(Ogre::SceneManager *sceneManager, Ogre::String meshName); 
+	void setOrientation(Ogre::Quaternion newRot);
+	DynamicObject * clone(Ogre::SceneManager *mSceneManager);
+	Ogre::SceneNode *mSceneNode;
+	btRigidBody *mRigidBody;
+	static int numCreated;
+	btScalar mass;
+	btScalar restitution;
 
-
-	DynamicObject * clone();
-
-protected:
-	Ogre::Entity *mEntity; 
+	/* Added for compatbility with Simon + Diana */
+	std::list<Ogre::String> meshNames;
+	Ogre::Vector3 position;
 };
 
 #endif

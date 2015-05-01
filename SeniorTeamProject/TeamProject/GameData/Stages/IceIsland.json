@@ -1,12 +1,9 @@
 {
-	"type" : "stage"
-	"attributes" : {}
-	"data" : 
-	[
-		{"TeaPot" : [{"position" : [0,0,0]}, {"rotation" : [1,0,0,0]}]},
-		{"Box" : [{"position" : [0,5,0]}]},
-		{"Box" : [{"position" : [0,6,0]}]},
-		{"Box" : [{"position" : [0,7,0]}]},
-		{"Box" : [{"position" : [0,8,0]}]},
+	"type" : "Stage",
+	"DynamicObjects" : [
+		{"name" : "TeaPot", "position" : [0,50,0], "Orientation" : [1, 0, 0, 0]}
+	],
+	"StaticScenery" : [
+		{"name" : "IceIsland", "position" : [2000,0,0], "Orientation" : [0, 0.7, 0, 0]}
 	]
 }

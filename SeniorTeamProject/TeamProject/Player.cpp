@@ -42,11 +42,12 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	camNode = mPlayerObject->mSceneNode->createChildSceneNode("player_cam");
 	camNode->attachObject(mCamera->mRenderCamera);
 	
-	// Sets up Bullet 
-	mPlayerObject->getRigidBody()->setActivationState(DISABLE_DEACTIVATION); 
-	mPlayerObject->getRigidBody()->setAngularFactor(btVector3(0.0f,0.01f,0.0f));
-	mPlayerObject->getRigidBody()->setDamping(0.8f, .95f);
-	mPlayerObject->getRigidBody()->setFriction(0.5f);
+	// Sets up Bullet 	
+	mPlayerObject->fallRigidBody->setActivationState(DISABLE_DEACTIVATION); 
+	mPlayerObject->fallRigidBody->setAngularFactor(btVector3(0.0f,0.01f,0.0f));
+	mPlayerObject->fallRigidBody->setDamping(0.8f, .95f);
+	mPlayerObject->fallRigidBody->setFriction(0.5f);
+	
 	mPlayerObject->addToBullet(mPhysManager); 
 	mPlayerObject->synchWithBullet();
 }
@@ -55,6 +56,7 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 // TODO: Refactor names to something more suitable 
 void Player::setAnimation(DynamicObject *p)
 {
+
 	// makes a child node of parent node 
 	Ogre::SceneNode *childNode = mPlayerObject->mSceneNode->createChildSceneNode("child");
 	childNode->flipVisibility(true); // makes this entire thing visible since parent node is invisible
@@ -79,7 +81,7 @@ void Player::setAnimation(DynamicObject *p)
 // Sets the scale of player to resize 
 void Player::setScale(Ogre::Vector3 v)
 {
-	mPlayerObject->setScale(v);
+	mPlayerObject->mSceneNode->setScale(v);
 }
 
 // Sets the position 

@@ -26,29 +26,51 @@
  * StaticScenery instead.
  */
 
-DynamicObject::DynamicObject(std::list<Ogre::String> meshName, btCollisionShape *collisionShape, Ogre::Vector3 position) {
-	
-	this->position = position;
-	//this->meshName = meshName;
-	meshNames = meshName;
-	this->hitBox = collisionShape; 
-	
-	// setup rigid body for physics
-	btDefaultMotionState* fallMotionState =
-		new btDefaultMotionState( btTransform(btQuaternion(0, 0, 0, 1), btVector3(position.x, position.y, position.z)));
-	btScalar mass = 1;
-    btVector3 fallInertia(0, 0, 0);
-    collisionShape->calculateLocalInertia(mass, fallInertia);
 
-	// construct the rigid body and add it to the world
-	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, collisionShape, fallInertia);
-    fallRigidBodyCI.m_restitution = 1.0f;
-	fallRigidBody = new btRigidBody(fallRigidBodyCI);
+int DynamicObject::numCreated = 0;
+
+DynamicObject::DynamicObject(Ogre::Entity *entity,  btRigidBody* rigidBody, btScalar mass, btScalar restitution) {
+
+	this->mass = mass;
+	this->restitution = restitution;
+
+	numCreated++;
+	
+	// save entity for later when we want to add it to the ogre scene
+	// this->mEntity = entity;
+
+	this->fallRigidBody = rigidBody;
 }
+
+/* Constructor for compatiblity with Player class */
+DynamicObject::DynamicObject(std::list<Ogre::String> meshNames, btCollisionShape *collisionShape, Ogre::Vector3 position) {
+	/* Compatiblity for Simon + Diana */
+	this->meshNames = meshNames;
+	this->position = position;
+
+	/* create the rigid body */
+	
+	// hardcoding mass TODO: CHANGE LATER!!!!
+	// hardcoding restituion TODO: CHANGE LATER!!!
+	int tempMass = 1;
+	int tempRestitution = 0.5;
+
+	btDefaultMotionState* fallMotionState =
+			new btDefaultMotionState( btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+		
+	btVector3 fallInertia(0, 0, 0);
+	collisionShape->calculateLocalInertia(tempMass, fallInertia);
+
+	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(tempMass, fallMotionState, collisionShape, fallInertia);
+	fallRigidBodyCI.m_restitution = tempRestitution;
+
+	this->fallRigidBody = new btRigidBody(fallRigidBodyCI);
+}
+
 
 void DynamicObject::synchWithBullet() {
 	btTransform trans;
-    fallRigidBody->getMotionState()->getWorldTransform(trans);	
+	this->fallRigidBody->getMotionState()->getWorldTransform(trans);	
 	Ogre::Real x = trans.getOrigin().getX();
 	Ogre::Real y = trans.getOrigin().getY();
 	Ogre::Real z = trans.getOrigin().getZ();
@@ -61,72 +83,68 @@ void DynamicObject::synchWithBullet() {
 	mSceneNode->setOrientation(Qw, Qx, Qy, Qz);
 }
 
+
+/* Only need to set bullet position since the ogre scene node will be
+ * synced to it.
+ */
 void DynamicObject::setPosition(Ogre::Vector3 newPos) {
-	// only need to set bullet pos, since synch with bullet will take care
-	// of the ogre pos.
-	btTransform trans = fallRigidBody->getCenterOfMassTransform();
+	btTransform trans;
+	this->fallRigidBody->getMotionState()->getWorldTransform(trans);
 	trans.setOrigin(btVector3(newPos.x, newPos.y, newPos.z));
-	fallRigidBody->setCenterOfMassTransform(trans);
+	//mRigidBody->setCenterOfMassTransform(trans);
+	this->fallRigidBody->setWorldTransform(trans);
 }
 
-void DynamicObject::setScale(Ogre::Vector3 v) {
-	// sets scale of node to new scale 
-	mSceneNode->setScale(v);
-	// 
+/* Only need to set bullet rotation since the ogre scene node will be
+ * synced to it.
+ */
+void DynamicObject::setOrientation(Ogre::Quaternion newRot) {
+	btTransform trans = this->fallRigidBody->getCenterOfMassTransform();
+	trans.setRotation(btQuaternion(newRot.x, newRot.y, newRot.z, newRot.w));
+	this->fallRigidBody->setWorldTransform(trans);
 }
 
-void DynamicObject::setOrientation(Ogre::Quaternion newOrientation)
-{
-    mSceneNode->setOrientation(newOrientation);
-}
 
 void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
-	// create the scene node
-    mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-	mSceneNode->setPosition(position);
+	
+	if(meshNames.size() == 0) {
+		// Compatibility for Jordan's way
+		
+		/* create the scene node */
+		// mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+		// mSceneNode->attachObject(mEntity);
 
-	// attach the model entity
-	for (Ogre::String name : meshNames) {
-		mEntity = sceneManager->createEntity(name);
+		// synchWithBullet();
 
-		//mEntity->setCastShadows(true);
-		mSceneNode->attachObject(mEntity);
+	} else {
+		// Compatiblity with Diana + Simon's way
 
-		if (mEntity->hasSkeleton())
-		{
-			mEntity->getAnimationState("default_skl")->setEnabled(true);
-			mEntity->getAnimationState("default_skl")->setLoop(true);
-			mEntity->getAnimationState("default_skl")->setWeight(1.0);
-			mEntity->getAnimationState("default_skl")->setLength(1.0);
+		mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+		mSceneNode->setPosition(this->position);
+
+
+		Ogre::Entity *mEntity;
+		// attach the model entity
+		for (Ogre::String name : meshNames) {
+			mEntity = sceneManager->createEntity(name);
+
+			//mEntity->setCastShadows(true);
+			mSceneNode->attachObject(mEntity);
+
+			if (mEntity->hasSkeleton())
+			{
+				mEntity->getAnimationState("default_skl")->setEnabled(true);
+				mEntity->getAnimationState("default_skl")->setLoop(true);
+				mEntity->getAnimationState("default_skl")->setWeight(1.0);
+				mEntity->getAnimationState("default_skl")->setLength(1.0);
+			}			
 		}
-	}
+	}	
 }
-
-void DynamicObject::addEntity(Ogre::SceneManager *sceneManager, Ogre::String meshName) 
-{
-	mEntity = sceneManager->createEntity(meshName);
-	//mEntity->setCastShadows(true);
-	mSceneNode->attachObject(mEntity);
-}; 
-
-
-
-//void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager, Ogre::String s) {
-//	// create the scene node
-//    mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode(s);
-//	mSceneNode->setPosition(position);
-//
-//	// attach the model entity
-//	Ogre::Entity *mEntity = sceneManager->createEntity(s, meshName);
-//	//mEntity->setCastShadows(true);
-//	//mEntity->anim
-//	mSceneNode->attachObject(mEntity);
-//}
-
 
 
 void DynamicObject::addToBullet(PhysicsManager *physmanager) {
-	physmanager->_world->addRigidBody(fallRigidBody);
+	physmanager->_world->addRigidBody(this->fallRigidBody);
 	physmanager->physObjects.push_back(this);
 }
 
@@ -134,6 +152,11 @@ void DynamicObject::update() {
 	synchWithBullet();
 }
 
-DynamicObject * DynamicObject::clone() {
-	return new DynamicObject(meshNames, this->fallRigidBody->getCollisionShape(), this->position);
+
+
+/* Fixing the clone I believe is the last piece of the merge puzzle.
+*/
+DynamicObject * DynamicObject::clone(Ogre::SceneManager *mSceneManager) {
+	return new DynamicObject(this->meshNames, this->fallRigidBody->getCollisionShape(), Ogre::Vector3(0,0,0));
 }
+
