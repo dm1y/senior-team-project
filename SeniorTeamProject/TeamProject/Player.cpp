@@ -52,6 +52,7 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mPlayerObject->synchWithBullet();
 }
 
+
 // Fix for Simon in regards to animation mesh's orientation 
 // TODO: Refactor names to something more suitable 
 void Player::setAnimation(DynamicObject *p)
@@ -70,10 +71,21 @@ void Player::setAnimation(DynamicObject *p)
 
 		if (newEnt->hasSkeleton())
 		{
-			newEnt->getAnimationState("default_skl")->setEnabled(true);
-			newEnt->getAnimationState("default_skl")->setLoop(true);
-			newEnt->getAnimationState("default_skl")->setWeight(1.0);
-			newEnt->getAnimationState("default_skl")->setLength(1.0);
+			Ogre::AnimationStateIterator iter = newEnt->getAllAnimationStates()->getAnimationStateIterator();
+
+			while(iter.hasMoreElements())
+			{
+				Ogre::AnimationState *animState = iter.getNext();
+
+				animState->setEnabled(true);
+				animState->setLoop(true);
+				
+				Ogre::Real animWeight = animState->getWeight();
+				animState->setWeight(animWeight);
+
+				Ogre::Real animLength = animState->getLength();
+				animState->setLength(animLength);
+			}
 		}
 	}
 }
@@ -444,6 +456,9 @@ Player::clearLine(std::string bone)
 	mSceneManager->getRootSceneNode()->removeAndDestroyChild(bone + "_node");
 }
 
+/* Can call idle, jump, strafeLeft, strafeRight, turnLeft, turnRight,   
+ * walkForward, walkBackward (Example: playAnimation("jump", time);)
+ */
 void 
 Player::playAnimation(std::string anim, float time)
 {

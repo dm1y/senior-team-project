@@ -1,0 +1,10 @@
+{
+	"type" : "DynamicObject",
+	"meshNames" : ["jordanBody.mesh", "jordanBeards.mesh", "jordanBottoms.mesh",
+	               "jordanHair.mesh", "jordanMoustaches.mesh", "jordanShoes.mesh",
+	               "jordanTops.mesh"],
+	"mass" : 20,
+	"collisionShape" : "btCapsuleShape",
+	"collisionShapeSize" : [2,1],
+	"restitution" : 0.0
+}

@@ -1,0 +1,427 @@
+material "jordanBodymat"
+{
+	technique jordanBodymat_technique
+	{
+		pass jordanBodymat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+			vertex_program_ref jordanvsLightGENNORM0
+			{
+			}
+			fragment_program_ref jordanfpLightGENDIFF0SPEC0NORM0
+			{
+				param_named normalMul float 1
+			}
+
+			texture_unit jordanBodymat_Diffuse#0
+			{
+				texture jordanFuseModel_Body_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanBodymat_Specular#1
+			{
+				texture jordanFuseModel_Body_specular.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanBodymat_Normal#2
+			{
+				texture jordanFuseModel_Body_normal.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+	technique jordanBodymat_basic_technique
+	{
+	scheme basic_mat
+		pass jordanBodymat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+
+			texture_unit jordanBodymat_Diffuse#3
+			{
+				texture jordanFuseModel_Body_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "jordanHairmat"
+{
+	technique jordanHairmat_technique
+	{
+		pass jordanHairmat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+			vertex_program_ref jordanvsLightGENNORM0
+			{
+			}
+			fragment_program_ref jordanfpLightGENDIFF0SPEC0NORM0
+			{
+				param_named normalMul float 1
+			}
+
+			texture_unit jordanHairmat_Diffuse#0
+			{
+				texture jordanFuseModel_Hair_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanHairmat_Specular#1
+			{
+				texture jordanFuseModel_Hair_specular.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanHairmat_Normal#2
+			{
+				texture jordanFuseModel_Hair_normal.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+	technique jordanHairmat_basic_technique
+	{
+	scheme basic_mat
+		pass jordanHairmat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+
+			texture_unit jordanHairmat_Diffuse#3
+			{
+				texture jordanFuseModel_Hair_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "jordanTopmat"
+{
+	technique jordanTopmat_technique
+	{
+		pass jordanTopmat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+			vertex_program_ref jordanvsLightGENNORM0
+			{
+			}
+			fragment_program_ref jordanfpLightGENDIFF0SPEC0NORM0
+			{
+				param_named normalMul float 1
+			}
+
+			texture_unit jordanTopmat_Diffuse#0
+			{
+				texture jordanFuseModel_Top_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanTopmat_Specular#1
+			{
+				texture jordanFuseModel_Top_specular.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanTopmat_Normal#2
+			{
+				texture jordanFuseModel_Top_normal.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+	technique jordanTopmat_basic_technique
+	{
+	scheme basic_mat
+		pass jordanTopmat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+
+			texture_unit jordanTopmat_Diffuse#3
+			{
+				texture jordanFuseModel_Top_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "jordanBottommat"
+{
+	technique jordanBottommat_technique
+	{
+		pass jordanBottommat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+			vertex_program_ref jordanvsLightGENNORM0
+			{
+			}
+			fragment_program_ref jordanfpLightGENDIFF0SPEC0NORM0
+			{
+				param_named normalMul float 1
+			}
+
+			texture_unit jordanBottommat_Diffuse#0
+			{
+				texture jordanFuseModel_Bottom_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanBottommat_Specular#1
+			{
+				texture jordanFuseModel_Bottom_specular.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanBottommat_Normal#2
+			{
+				texture jordanFuseModel_Bottom_normal.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+	technique jordanBottommat_basic_technique
+	{
+	scheme basic_mat
+		pass jordanBottommat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+
+			texture_unit jordanBottommat_Diffuse#3
+			{
+				texture jordanFuseModel_Bottom_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "jordanBeardmat"
+{
+	technique jordanBeardmat_technique
+	{
+		pass jordanBeardmat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+			vertex_program_ref jordanvsLightGENNORM0
+			{
+			}
+			fragment_program_ref jordanfpLightGENDIFF0SPEC0NORM0
+			{
+				param_named normalMul float 1
+			}
+
+			texture_unit jordanBeardmat_Diffuse#0
+			{
+				texture jordanFuseModel_Beard_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanBeardmat_Specular#1
+			{
+				texture jordanFuseModel_Beard_specular.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanBeardmat_Normal#2
+			{
+				texture jordanFuseModel_Beard_normal.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+	technique jordanBeardmat_basic_technique
+	{
+	scheme basic_mat
+		pass jordanBeardmat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+
+			texture_unit jordanBeardmat_Diffuse#3
+			{
+				texture jordanFuseModel_Beard_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "jordanMoustachemat"
+{
+	technique jordanMoustachemat_technique
+	{
+		pass jordanMoustachemat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+			vertex_program_ref jordanvsLightGENNORM0
+			{
+			}
+			fragment_program_ref jordanfpLightGENDIFF0SPEC0NORM0
+			{
+				param_named normalMul float 1
+			}
+
+			texture_unit jordanMoustachemat_Diffuse#0
+			{
+				texture jordanFuseModel_Moustache_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanMoustachemat_Specular#1
+			{
+				texture jordanFuseModel_Moustache_specular.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanMoustachemat_Normal#2
+			{
+				texture jordanFuseModel_Moustache_normal.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+	technique jordanMoustachemat_basic_technique
+	{
+	scheme basic_mat
+		pass jordanMoustachemat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+
+			texture_unit jordanMoustachemat_Diffuse#3
+			{
+				texture jordanFuseModel_Moustache_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "jordanShoesmat"
+{
+	technique jordanShoesmat_technique
+	{
+		pass jordanShoesmat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+			vertex_program_ref jordanvsLightGENNORM0
+			{
+			}
+			fragment_program_ref jordanfpLightGENDIFF0SPEC0NORM0
+			{
+				param_named normalMul float 1
+			}
+
+			texture_unit jordanShoesmat_Diffuse#0
+			{
+				texture jordanFuseModel_Shoes_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanShoesmat_Specular#1
+			{
+				texture jordanFuseModel_Shoes_specular.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit jordanShoesmat_Normal#2
+			{
+				texture jordanFuseModel_Shoes_normal.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+	technique jordanShoesmat_basic_technique
+	{
+	scheme basic_mat
+		pass jordanShoesmat_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 110.209
+			emissive 0 0 0 1
+
+			texture_unit jordanShoesmat_Diffuse#3
+			{
+				texture jordanFuseModel_Shoes_diffuse.png
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
