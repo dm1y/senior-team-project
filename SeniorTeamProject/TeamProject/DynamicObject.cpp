@@ -104,7 +104,10 @@ void DynamicObject::setOrientation(Ogre::Quaternion newRot) {
 	this->fallRigidBody->setWorldTransform(trans);
 }
 
-
+// sets scale of node to new scale 
+void DynamicObject::setScale(Ogre::Vector3 v) {
+	mSceneNode->setScale(v);
+}
 void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 	
 	if(meshNames.size() == 0) {

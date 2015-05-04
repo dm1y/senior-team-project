@@ -6,6 +6,10 @@
 #include "StaticScenery.h"
 #include "GameLibrary.h"
 #include "Console.h"
+#include "OgreOverlayManager.h"
+#include "OgreOverlay.h"
+#include "OgreFontManager.h"
+#include "OgreTextAreaOverlayElement.h"
 
 
 // Forward delcarations of Ogre classes.  Note the Ogre namespace!
@@ -32,7 +36,6 @@ public:
     // You'll want various methods to access & change your world here
     
     void Think(float time);
-	
 	void addCamera(GameCamera *c) { mCamera = c; }
 
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
@@ -55,6 +58,15 @@ protected:
 	InputHandler *mInputHandler;
 
 	Kinect *mKinect;
+
+	list<DynamicObject*> dynaList; 
+	DynamicObject *d;
+	DynamicObject *t;
+	DynamicObject *e; 
+
+	Ogre::Overlay *overly;
+
+	int score; 
 
 };
 

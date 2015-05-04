@@ -3,6 +3,6 @@
 	"meshNames" : ["TeaPot.MESH.mesh"],
 	"mass" : 1,
 	"collisionShape" : "btBoxShape",
-	"collisionShapeSize" : [1, 1, 1],
+	"collisionShapeSize" : [10.5, 10.5, 10.5],
 	"restitution" : 0.5
 }

@@ -9,6 +9,8 @@ using namespace std;
  * Everything else is all me. 
  */
 
+// Update: Diana worked on the collision and identification aspect of this class 
+
 
 PhysicsManager::PhysicsManager() {
 	/* Setup the bullet Physics world. */
@@ -49,4 +51,26 @@ void PhysicsManager::stepSimulation(float time) {
 	for (std::list<IPhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) {
 		it._Ptr->_Myval->synchWithBullet();
 	}
+}
+
+
+// Simon wrote this. 
+bool
+PhysicsManager::checkIntersect(btRigidBody *A, btRigidBody *B)
+{
+	btVector3 Amin;
+	btVector3 Amax;
+	btVector3 Bmin;
+	btVector3 Bmax;
+
+	A->getAabb(Amin, Amax);
+	B->getAabb(Bmin, Bmax);
+
+	if ((((Bmin.getX() <= Amax.getX()) && (Bmin.getY() <= Amax.getY()) && (Bmin.getZ() <= Amax.getZ())) &&
+		((Amax.getX() <= Bmax.getX()) && (Amax.getY() <= Bmax.getY()) && (Amax.getZ() <= Bmax.getZ()))) ||
+		(((Amin.getX() <= Bmax.getX()) && (Amin.getY() <= Bmax.getY()) && (Amin.getZ() <= Bmax.getZ())) &&
+		((Bmax.getX() <= Amax.getX()) && (Bmax.getY() <= Amax.getY()) && (Bmax.getZ() <= Amax.getZ()))))
+		return true;
+	else 
+		return false;
 }

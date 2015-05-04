@@ -106,6 +106,9 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	createWater();
 	
+
+	Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
+	overly = om.getByName("Sample");
 }
 
 
@@ -147,6 +150,7 @@ World::Think(float time)
 			else if (obj->fallRigidBody->getUserIndex() == 2) 
 			{
 				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TUNACAN ZOMG!\n");
+				overly->show();
 			}
 		}
 		else

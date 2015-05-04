@@ -15,6 +15,8 @@ public:
 	void addBall(btVector3* initialPos);
 	void addPlane();
 	void stepSimulation(float time);
+	bool checkIntersect(btRigidBody *A, btRigidBody *B);
+
 	btBroadphaseInterface* _broadphase;
     btDefaultCollisionConfiguration* _collisionConfiguration;
     btCollisionDispatcher* _dispatcher;

@@ -36,8 +36,11 @@ public:
 	void setOrientation(Ogre::Quaternion newOrientation);
 	void checkGround(float distance, bool checkJump);
 
+
 	void Think(float time);
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
+
+
 
 	int detectSway();
 	int detectLean();
@@ -84,7 +87,7 @@ protected:
 	GameCamera *mCamera;
 
 	bool canJump;
-
+	bool isJumping;
 	// For testing purposes 
 //	Ogre::Overlay *overly; 
 //	bool overlyBool; 
