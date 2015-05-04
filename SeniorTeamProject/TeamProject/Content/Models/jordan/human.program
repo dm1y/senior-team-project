@@ -1,8 +1,8 @@
-vertex_program jordanvsLightGENNORM0 cg
+vertex_program cubevsLightGENNORM0 cg
 {
 	source human.cg
-	profiles vs_1_1 arbvp1
-	entry_point jordanvsLightGENNORM0
+	profiles vs_4_0 vs_1_1 arbvp1
+	entry_point cubevsLightGENNORM0
 	default_params
 	{
 		param_named_auto wMat world_matrix
@@ -13,11 +13,11 @@ vertex_program jordanvsLightGENNORM0 cg
 	}
 }
 
-fragment_program jordanfpLightGENDIFF0SPEC0NORM0 cg
+fragment_program cubefpLightGENDIFF0SPEC0NORM0 cg
 {
 	source human.cg
-	profiles ps_3_0 arbfp1
-	entry_point jordanfpLightGENDIFF0SPEC0NORM0
+	profiles ps_4_0 ps_3_0 arbfp1
+	entry_point cubefpLightGENDIFF0SPEC0NORM0
 	default_params
 	{
 		param_named_auto ambient ambient_light_colour

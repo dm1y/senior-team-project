@@ -175,8 +175,8 @@ void
 World::createWater()
 {
 
-#define FLOW_SPEED 0.25
-#define FLOW_HEIGHT 2
+#define FLOW_SPEED 1
+#define FLOW_HEIGHT 10
 
 	Ogre::Entity *mWaterEntity;
 	Ogre::Plane mWaterPlane;
@@ -189,7 +189,7 @@ World::createWater()
 		mWaterPlane, 1000, 1000, 5, 1, true, 1, 10, 10, Ogre::Vector3::UNIT_Z);
 
 	mWaterEntity = mSceneManager->createEntity("water", "WaterPlane");
-	mWaterEntity->setMaterialName("Examples/Water5");
+	mWaterEntity->setMaterialName("Examples/Water9");
 
 	Ogre::SceneNode *mWaterNode = mSceneManager->getRootSceneNode()->createChildSceneNode("WaterNode");
 	mWaterNode->attachObject(mWaterEntity);

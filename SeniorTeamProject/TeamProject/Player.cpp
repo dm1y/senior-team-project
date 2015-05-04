@@ -78,7 +78,7 @@ void Player::setAnimation(DynamicObject *p)
 			{
 				Ogre::AnimationState *animState = iter.getNext();
 
-				animState->setEnabled(true);
+				//animState->setEnabled(true);
 				animState->setLoop(true);
 				
 				Ogre::Real animWeight = animState->getWeight();
@@ -115,7 +115,7 @@ Player::Think(float time)
 	if ((!mInputHandler->IsKeyDown(OIS::KC_M) && !mInputHandler->IsKeyDown(OIS::KC_N) && !mInputHandler->IsKeyDown(OIS::KC_LEFT)
 		&& !mInputHandler->IsKeyDown(OIS::KC_RIGHT) && !mInputHandler->IsKeyDown(OIS::KC_UP) && !mInputHandler->IsKeyDown(OIS::KC_DOWN)
 		&& !mInputHandler->IsKeyDown(OIS::KC_SPACE))) // TODO add detection for kinect 
-		playAnimation("idle", time);
+		playAnimation("gangnam_style", time);
 
 #pragma endregion End of Kinect code/Not used right now   
 	
@@ -129,7 +129,7 @@ Player::Think(float time)
 		// Left 
 		if (mInputHandler->IsKeyDown(OIS::KC_M) || detectSway() == 1)
 		{
-			playAnimation("strafeLeft", time);
+			playAnimation("strafeRight", time);
 
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
 				mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
@@ -147,7 +147,7 @@ Player::Think(float time)
 		// Right 
 		else if (mInputHandler->IsKeyDown(OIS::KC_N) || detectSway() == 0)
 		{
-			playAnimation("strafeRight", time);
+			playAnimation("strafeLeft", time);
 
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
 				mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
@@ -165,7 +165,7 @@ Player::Think(float time)
 
 			playAnimation("turnLeft", time);
 			
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 				mPhysManager->_world->getGravity().getY() + 70,0));
 			//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(0.01f));
@@ -176,7 +176,7 @@ Player::Think(float time)
 		{
 			playAnimation("turnRight", time);
 
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
 			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 				mPhysManager->_world->getGravity().getY() + 70,0));
 			//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(-0.01f));
@@ -226,11 +226,21 @@ Player::Think(float time)
 
 			if (canJump)
 			{
-				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
+				//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
+				//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
 			}
 		}
+		/*
+		else if (mInputHandler->IsKeyDown(OIS::KC_L))
+		{
+			playAnimation("crouch_idle", time);
 
+			// Half capsule thing 
+			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 0));
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, mPhysManager->_world->getGravity().getY() + 70, 0));
+		}
+		*/
 		checkGround(5000.0f, false); // checks if player is within stage 
 		checkGround(5.0f, true); // check if player is on the ground or currently jumping  
 
@@ -469,11 +479,35 @@ Player::clearLine(std::string bone)
 	mSceneManager->getRootSceneNode()->removeAndDestroyChild(bone + "_node");
 }
 
-/* Can call idle, jump, strafeLeft, strafeRight, turnLeft, turnRight,   
- * walkForward, walkBackward (Example: playAnimation("jump", time);)
+
+/*		crouch_idle | crouch_to_stand | crouch_walk | fall_idle | fall_to_roll
+ *		gangname_style | idle0 | idle1 | idle2 | jump | turnLeft | turnLeft90
+ *		turnRight | turnRight90 | run | run_to_stop | samba | strafeLeft
+ *		strafeRight | the_running_man | walkBackward | walkForward
+ *		(Example: playAnimation("jump", time);)
  */
 void 
 Player::playAnimation(std::string anim, float time)
+{
+	disableAnimations();
+
+	Ogre::SceneManager::MovableObjectIterator iterator = SceneManager()->getMovableObjectIterator("Entity");
+	while(iterator.hasMoreElements())
+	{
+		Ogre::Entity* e = static_cast<Ogre::Entity*>(iterator.getNext());
+		
+		if (e->hasSkeleton())
+		{
+			Ogre::AnimationState *animation = e->getAnimationState(anim);
+			
+			animation->setEnabled("true");
+			animation->addTime(time);
+		}
+	}
+}
+
+void
+Player::stopAnimation(std::string anim)
 {
 	Ogre::SceneManager::MovableObjectIterator iterator = SceneManager()->getMovableObjectIterator("Entity");
 	while(iterator.hasMoreElements())
@@ -483,7 +517,30 @@ Player::playAnimation(std::string anim, float time)
 		if (e->hasSkeleton())
 		{
 			Ogre::AnimationState *animation = e->getAnimationState(anim);
-			animation->addTime(time);
+			animation->setEnabled(false);
+			animation->setTimePosition(0);
+		}
+	}
+}
+
+void
+Player::disableAnimations()
+{
+	Ogre::SceneManager::MovableObjectIterator iterator = SceneManager()->getMovableObjectIterator("Entity");
+	while(iterator.hasMoreElements())
+	{
+		Ogre::Entity* e = static_cast<Ogre::Entity*>(iterator.getNext());
+		
+		if (e->hasSkeleton())
+		{
+			Ogre::AnimationStateIterator iter = e->getAllAnimationStates()->getAnimationStateIterator();
+
+			while(iter.hasMoreElements())
+			{
+				Ogre::AnimationState *animState = iter.getNext();
+
+				animState->setEnabled(false);
+			}
 		}
 	}
 }

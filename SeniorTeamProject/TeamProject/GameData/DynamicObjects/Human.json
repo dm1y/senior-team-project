@@ -1,8 +1,8 @@
 {
 	"type" : "DynamicObject",
-	"meshNames" : ["jordanBody.mesh", "jordanBeards.mesh", "jordanBottoms.mesh",
-	               "jordanHair.mesh", "jordanMoustaches.mesh", "jordanShoes.mesh",
-	               "jordanTops.mesh"],
+	"meshNames" : ["cubeBody.mesh", "cubeBeards.mesh", "cubeBottoms.mesh",
+	               "cubeHair.mesh", "cubeMoustaches.mesh", "cubeShoes.mesh",
+	               "cubeTops.mesh"],
 	"mass" : 20,
 	"collisionShape" : "btCapsuleShape",
 	"collisionShapeSize" : [2,1],

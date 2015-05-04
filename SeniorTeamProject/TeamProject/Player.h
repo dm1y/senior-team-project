@@ -56,6 +56,8 @@ public:
 	void clearLine(std::string bone);
 	void getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2);
 	void playAnimation(std::string anim, float time);
+	void stopAnimation(std::string anim);
+	void disableAnimations();
 	std::vector<Ogre::Vector3> getSkeletonNodes();
 
 

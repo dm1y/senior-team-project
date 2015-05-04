@@ -181,3 +181,47 @@ material Examples/Water8
 		}
 	}
 }
+material Examples/Water9
+{
+	technique
+	{
+		pass
+		{
+			scene_blend colour_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture BeachStones.jpg
+				scale 0.25 0.25
+			}
+
+			texture_unit
+			{
+				texture Water03.jpg
+				env_map spherical
+				scroll_anim 0.02 0.02
+				rotate_anim 0.01
+			}
+		}
+	}
+}
+material Examples/Water10
+{
+	technique
+	{
+		pass
+		{
+			scene_blend colour_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture Water03.jpg
+				env_map spherical
+				scroll_anim 0.02 0.02
+				rotate_anim 0.01
+			}
+		}
+	}
+}
