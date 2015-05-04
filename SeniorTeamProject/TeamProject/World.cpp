@@ -107,6 +107,12 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	createWater();
 	
 
+	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
+	while (iter.hasMoreElements()) 
+	{ 
+		iter.getNext()->load(); 
+	}
+
 	Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
 	overly = om.getByName("Sample");
 }
