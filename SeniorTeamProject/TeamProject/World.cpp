@@ -57,9 +57,9 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	mPlayer->setAnimation(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 	
+#pragma region Testing objects spawn 
 	// Teapot object setup 
 	d = gameLibrary->getDynamicObject("TeaPot");
-	//d->fallRigidBody->setUserIndex(1); // TeaPot ID is 1 
 	d->setPosition(Ogre::Vector3(0, 80, -50));
 	d->addToOgreScene(mSceneManager);
 	d->addToBullet(physManager);
@@ -68,7 +68,6 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	dynaList.push_back(d);
 	
 	e = gameLibrary->getDynamicObject("TeaPot");
-	//e->fallRigidBody->setUserIndex(1); // TeaPot ID is 1 
 	e->setPosition(Ogre::Vector3(0, 80, -90));
 	e->addToOgreScene(mSceneManager);
 	e->addToBullet(physManager);
@@ -78,17 +77,13 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	// Tuna object setup 
 	t = gameLibrary->getDynamicObject("Tuna");
-	//t->fallRigidBody->setUserIndex(2); // TeaPot ID is 2
 	t->setPosition(Ogre::Vector3(10, 80, -150));
 	t->addToOgreScene(mSceneManager);
 	t->addToBullet(physManager);
 	t->setScale(Ogre::Vector3(.3,.3,.3));
 
 	dynaList.push_back(t);
-	std::string num = std::to_string(dynaList.size());
-
-	OutputDebugString("List size of DYNALIST");
-	OutputDebugString(num.c_str());
+#pragma endregion TODO move logic elsewhere once stage is completed 
 
 	Stage* stage = gameLibrary->getStage("IceIsland");
 
@@ -109,7 +104,6 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	createWater();
 	
-
 	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
 	while (iter.hasMoreElements()) 
 	{ 
@@ -134,12 +128,9 @@ World::Think(float time)
 
 	mPlayer->Think(time);
 
-					OutputDebugString("dynaList size part 2 \n");
-
-				std::string num = std::to_string(dynaList.size());
-
-				OutputDebugString(num.c_str());
-
+#pragma region Collision Filtering 
+	// TODO Move this game logic to Physics after stage is completed 
+	// Variables to remove the dynamic object that's in the list 
 	DynamicObject *objToRm; 
 	bool remove = false;
 
@@ -155,8 +146,6 @@ World::Think(float time)
 				score++;
 
 				std::string scr = std::to_string(score);
-
-
 				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
 				OutputDebugString(scr.c_str());
 				OutputDebugString("\nSCORE INCREASING! TEAPOT IS NOW INVISIBLE\n");
@@ -164,26 +153,12 @@ World::Think(float time)
 				physManager->_world->removeRigidBody(obj->fallRigidBody);
 				physManager->physObjects.remove(obj);
 				break; 
-				//obj->ent->getName());
-
-				//mSceneManager->destroyEntity
-				//THIS BREAKS THINGS 
-				//obj->fallRigidBody->~btRigidBody();
-				//obj->fallRigidBody->CF_DISABLE_SPU_COLLISION_PROCESSING;
-				//CF NO CONTACT RESPONSE 
-				//obj->fallRigidBody->CF_NO_CONTACT_RESPONSE;
-				//TODO: Figure out how to delete the actual dynamic object 
 			}
 			else if (obj->fallRigidBody->getUserIndex() == 2) 
 			{
 				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TUNACAN ZOMG!\n");
 				overly->show();
 			}
-		}
-		else
-		{
-			// Nothing happens since there's no collision 
-			//OutputDebugString("\nNOTHING IS HAPPENING\n");
 		}
 	}
 
@@ -193,6 +168,7 @@ World::Think(float time)
 		mSceneManager->destroyEntity(objToRm->ent->getName().c_str());
 		remove = false; 
 	}
+#pragma endregion TODO: Move to physmanager after stage is done 
 
 	physManager->stepSimulation(time);
 }

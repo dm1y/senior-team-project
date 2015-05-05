@@ -68,7 +68,7 @@ DynamicObject::DynamicObject(std::list<Ogre::String> meshNames, btCollisionShape
 	fallRigidBodyCI.m_restitution = tempRestitution;
 
 	this->fallRigidBody = new btRigidBody(fallRigidBodyCI);
-	this->fallRigidBody->setUserIndex(interaction);
+	this->fallRigidBody->setUserIndex(interaction); // used for collision filtering
 }
 
 
