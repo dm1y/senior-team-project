@@ -147,6 +147,10 @@ World::Think(float time)
 				OutputDebugString(scr.c_str());
 				OutputDebugString("\nSCORE INCREASING! TEAPOT IS NOW INVISIBLE\n");
 
+				physManager->_world->removeRigidBody(obj->fallRigidBody);
+				physManager->physObjects.remove(obj);
+
+				//dynaList.remove(obj); THIS BREAKS THINGS 
 				//obj->fallRigidBody->~btRigidBody();
 				//obj->fallRigidBody->CF_DISABLE_SPU_COLLISION_PROCESSING;
 				//CF NO CONTACT RESPONSE 
