@@ -15,7 +15,6 @@
 
 StaticScenery::StaticScenery(Ogre::Entity *mEntity) {
 	
-
 	mSceneNode = NULL;
 
 	// save for later when we want to add it to the ogre scene
@@ -152,7 +151,7 @@ void StaticScenery::addToBullet(PhysicsManager *physmanager) {
 }
 
 void StaticScenery::setPosition(Ogre::Vector3 newPos) {
-	
+
 	// update bullet
 	btTransform trans;
 	mRigidBody->getMotionState()->getWorldTransform(trans);

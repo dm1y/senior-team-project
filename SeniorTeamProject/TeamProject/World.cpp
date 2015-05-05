@@ -88,7 +88,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 
 	Stage* stage = gameLibrary->getStage("IceIsland");
-	
+
 	StaticScenery *tempIceIsland;
 	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
 		it._Ptr->_Myval->addToOgreScene(mSceneManager);

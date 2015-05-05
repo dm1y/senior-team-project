@@ -57,6 +57,7 @@ public:
 	void getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2);
 	void playAnimation(std::string anim, float time);
 	void stopAnimation(std::string anim);
+	void finishAnimation(Ogre::AnimationState *animation, float time);
 	void disableAnimations();
 	std::vector<Ogre::Vector3> getSkeletonNodes();
 

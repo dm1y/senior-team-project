@@ -112,10 +112,11 @@ Player::Think(float time)
 
 	drawSkeleton();
 
-	if ((!mInputHandler->IsKeyDown(OIS::KC_M) && !mInputHandler->IsKeyDown(OIS::KC_N) && !mInputHandler->IsKeyDown(OIS::KC_LEFT)
+	/*if ((!mInputHandler->IsKeyDown(OIS::KC_M) && !mInputHandler->IsKeyDown(OIS::KC_N) && !mInputHandler->IsKeyDown(OIS::KC_LEFT)
 		&& !mInputHandler->IsKeyDown(OIS::KC_RIGHT) && !mInputHandler->IsKeyDown(OIS::KC_UP) && !mInputHandler->IsKeyDown(OIS::KC_DOWN)
 		&& !mInputHandler->IsKeyDown(OIS::KC_SPACE))) // TODO add detection for kinect 
-		playAnimation("gangnam_style", time);
+		*/
+	playAnimation("samba", time);
 
 #pragma endregion End of Kinect code/Not used right now   
 	
@@ -219,17 +220,36 @@ Player::Think(float time)
 		// Jump
 		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE) || detectJump() == 0)
 		{
-			playAnimation("jump", time);
+			playAnimation("fall_idle", time);
 
 			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
 			mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
 
 			if (canJump)
 			{
-				//mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
-				//mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
+				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
 			}
 		}
+
+		else if (mInputHandler->IsKeyDown(OIS::KC_LCONTROL))
+		{
+			playAnimation("crouch_idle", time);
+		}
+		else if (mInputHandler->IsKeyDown(OIS::KC_LSHIFT))
+		{
+			playAnimation("run", time);
+			
+			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+
+			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
+			
+			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 100, 
+				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 100)); 
+		}
+
 		/*
 		else if (mInputHandler->IsKeyDown(OIS::KC_L))
 		{
@@ -500,9 +520,24 @@ Player::playAnimation(std::string anim, float time)
 		{
 			Ogre::AnimationState *animation = e->getAnimationState(anim);
 			
+			/*if (animation->getAnimationName().compare("jump") == 0)
+				finishAnimation(animation, time);
+				*/
 			animation->setEnabled("true");
 			animation->addTime(time);
 		}
+	}
+}
+
+void
+Player::finishAnimation(Ogre::AnimationState *animation, float time)
+{
+	Ogre::Real animLength = animation->getLength();
+	Ogre::Real timePosition = animation->getTimePosition();
+
+	while(!animation->hasEnded())
+	{
+		animation->addTime(time);
 	}
 }
 
