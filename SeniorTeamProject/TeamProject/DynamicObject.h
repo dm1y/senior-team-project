@@ -20,6 +20,8 @@ public:
 	void setOrientation(Ogre::Quaternion newRot);
 	void setScale(Ogre::Vector3 v);
 	DynamicObject * clone(Ogre::SceneManager *mSceneManager);
+
+	Ogre::Entity *ent; 
 	Ogre::SceneNode *mSceneNode;
 	btRigidBody *mRigidBody;
 	static int numCreated;

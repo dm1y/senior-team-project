@@ -31,6 +31,7 @@ int DynamicObject::numCreated = 0;
 
 DynamicObject::DynamicObject(Ogre::Entity *entity,  btRigidBody* rigidBody, btScalar mass, btScalar restitution) {
 
+	this->ent = entity;
 	this->mass = mass;
 	this->restitution = restitution;
 
@@ -130,17 +131,18 @@ void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 		// attach the model entity
 		for (Ogre::String name : meshNames) {
 			mEntity = sceneManager->createEntity(name);
+			ent = mEntity;
 
 			//mEntity->setCastShadows(true);
 			mSceneNode->attachObject(mEntity);
 
-			if (mEntity->hasSkeleton())
+/*			if (mEntity->hasSkeleton())
 			{
 				mEntity->getAnimationState("default_skl")->setEnabled(true);
 				mEntity->getAnimationState("default_skl")->setLoop(true);
 				mEntity->getAnimationState("default_skl")->setWeight(1.0);
 				mEntity->getAnimationState("default_skl")->setLength(1.0);
-			}			
+			}	*/		
 		}
 	}	
 }

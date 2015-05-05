@@ -85,7 +85,10 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	t->setScale(Ogre::Vector3(.3,.3,.3));
 
 	dynaList.push_back(t);
+	std::string num = std::to_string(dynaList.size());
 
+	OutputDebugString("List size of DYNALIST");
+	OutputDebugString(num.c_str());
 
 	Stage* stage = gameLibrary->getStage("IceIsland");
 
@@ -131,6 +134,14 @@ World::Think(float time)
 
 	mPlayer->Think(time);
 
+					OutputDebugString("dynaList size part 2 \n");
+
+				std::string num = std::to_string(dynaList.size());
+
+				OutputDebugString(num.c_str());
+
+	DynamicObject *objToRm; 
+	bool remove = false;
 
 	for (DynamicObject *obj : dynaList) 
 	{
@@ -138,6 +149,9 @@ World::Think(float time)
 		{
 			if (obj->fallRigidBody->getUserIndex() == 1) 
 			{
+				remove = true;
+				objToRm = obj;
+
 				score++;
 
 				std::string scr = std::to_string(score);
@@ -149,8 +163,11 @@ World::Think(float time)
 
 				physManager->_world->removeRigidBody(obj->fallRigidBody);
 				physManager->physObjects.remove(obj);
+				break; 
+				//obj->ent->getName());
 
-				//dynaList.remove(obj); THIS BREAKS THINGS 
+				//mSceneManager->destroyEntity
+				//THIS BREAKS THINGS 
 				//obj->fallRigidBody->~btRigidBody();
 				//obj->fallRigidBody->CF_DISABLE_SPU_COLLISION_PROCESSING;
 				//CF NO CONTACT RESPONSE 
@@ -168,6 +185,13 @@ World::Think(float time)
 			// Nothing happens since there's no collision 
 			//OutputDebugString("\nNOTHING IS HAPPENING\n");
 		}
+	}
+
+	if (remove) 
+	{
+ 		dynaList.remove(objToRm);				
+		mSceneManager->destroyEntity(objToRm->ent->getName().c_str());
+		remove = false; 
 	}
 
 	physManager->stepSimulation(time);
