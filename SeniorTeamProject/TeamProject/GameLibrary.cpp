@@ -257,26 +257,25 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 	}
 }
 
-StaticScenery * GameLibrary::getStaticScenery(string name) {
+StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 position, Ogre::Quaternion orientation) {
 
 	unordered_map<string, StaticScenery*> ::iterator it = staticScenery.find(name);
 
 	StaticScenery *statScenery;
-	if(it != staticScenery.end())
+	if (it != staticScenery.end())
 	{
 		//element found;
 		statScenery = it->second;
 
 		// create a clone of it.
-		return statScenery->clone();
+		return statScenery->clone(this->mSceneManager, position, orientation);
 	} else {
 		// element was not found.
 		// load it in and create instance 
 
 		std::string fileName = "../TeamProject/GameData/StaticScenery/" + name +".json";
 		FILE* pFile = fopen(fileName.c_str(), "rb");
-		
-		
+
 		if (pFile != NULL) {
 			char buffer[65536];
 			rapidjson::FileReadStream is(pFile, buffer, sizeof(buffer));
@@ -297,16 +296,16 @@ StaticScenery * GameLibrary::getStaticScenery(string name) {
 			Ogre::Entity *tempEntity = mSceneManager->createEntity(meshName);
 			tempEntity->setCastShadows(true);
 
-			// Finished parsing the file
+			// Finished parsing the filess
 			// Create the instance and put in the GameLibrary
-			StaticScenery *newStaticScenery = new StaticScenery(tempEntity);
+			StaticScenery *newStaticScenery = new StaticScenery(tempEntity, position, orientation);
 
 			// put it into the library
 			staticScenery.emplace(name, newStaticScenery);
 
 			std::fclose(pFile);
 
-			return newStaticScenery->clone();
+			return newStaticScenery->clone(this->mSceneManager, position, orientation);
 
 		} else {
 			// no file was found
@@ -439,17 +438,10 @@ Stage * GameLibrary::getStage(string name) {
 					rotation = Ogre::Quaternion(1, 0, 0, 0);
 				}
 
-				StaticScenery* newStaticScenery = this->getStaticScenery(name);
-				
-				// XXX: this doesn't actual change the position or rotation
-				// XXX: and it messes up the collision of the rigid body!
-				// newStaticScenery->setPosition(Ogre::Vector3(4000, 4000, 4000));
-				// newStaticScenery->setOrientation(rotation);
+				StaticScenery* newStaticScenery = this->getStaticScenery(name, position, rotation);
 				
 				tempStaticScenery.push_back(newStaticScenery);
-				
-
-			
+		
 			} 
 		}
 

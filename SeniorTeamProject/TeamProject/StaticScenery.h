@@ -8,14 +8,11 @@
 
 class StaticScenery {
 public:
-	StaticScenery(Ogre::Entity *mEntity);
-	StaticScenery(Ogre::Entity *mEntity, btCollisionObject *colObject);
+	StaticScenery(Ogre::Entity *mEntity, Ogre::Vector3 position, Ogre::Quaternion orientation);
 	void addToOgreScene(Ogre::SceneManager *sceneManager);
 	void addToBullet(PhysicsManager *physmanager);
 	btTriangleMesh* ogreToBulletMesh(Ogre::MeshPtr mesh);
-	StaticScenery * clone();
-	void setPosition(Ogre::Vector3 newPos);
-	void setOrientation(Ogre::Quaternion newRot);
+	StaticScenery * clone(Ogre::SceneManager* mSceneManager, Ogre::Vector3 position, Ogre::Quaternion orientation);
 	Ogre::SceneNode *mSceneNode;
 	Ogre::Entity *mEntity;
 	
@@ -26,10 +23,5 @@ public:
 
 	void synchWithBullet();
 
-
-
-	// should these be pointers?
-	Ogre::Vector3 position;
-	Ogre::Quaternion rotation;
 };
 #endif

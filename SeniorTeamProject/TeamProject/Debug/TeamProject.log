@@ -1,5 +1,60 @@
-﻿Build started 5/4/2015 1:42:52 PM.
+﻿Build started 5/4/2015 7:27:15 PM.
+     1>Project "C:\Users\Jordan\senior-team-project\SeniorTeamProject\TeamProject\TeamProject.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/include/OGRE/Overlay" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/boost/" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/include/OIS" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/include/OGRE" /I"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/include" /I../Bullet/src /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Console.cpp
+         Console.cpp
+     1>c:\users\jordan\senior-team-project\seniorteamproject\teamproject\console.cpp(50): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jordan\senior-team-project\seniorteamproject\teamproject\console.cpp(153): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jordan\senior-team-project\seniorteamproject\teamproject\console.cpp(195): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jordan\senior-team-project\seniorteamproject\teamproject\console.cpp(201): warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>c:\users\jordan\senior-team-project\seniorteamproject\teamproject\console.cpp(242): warning C4018: '>' : signed/unsigned mismatch
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\TeamProject.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\Microsoft SDKs\Kinect\v1.8\lib\x86" /LIBPATH:"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/boost/lib" /LIBPATH:"C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0/lib/Debug" OIS_d.lib OgreMain_d.lib OgreOverlay_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\TeamProject.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\TeamProject.lib" /MACHINE:X86 Debug\Camera.obj
+         Debug\Coin.obj
+         Debug\Console.obj
+         Debug\Controller.obj
+         Debug\GameLibrary.obj
+         Debug\DynamicObject.obj
+         Debug\InputHandler.obj
+         Debug\Kinect.obj
+         Debug\main.obj
+         Debug\MainListener.obj
+         Debug\PhysicsManager.obj
+         Debug\Player.obj
+         Debug\StaticScenery.obj
+         Debug\TeamProject.obj
+         Debug\World.obj
+         "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Bullet\bin\BulletCollision_vs2010_debug.lib"
+         "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Bullet\bin\BulletDynamics_vs2010_debug.lib"
+         "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Bullet\bin\LinearMath_vs2010_debug.lib"
+         TeamProject.vcxproj -> C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\TeamProject.exe
+       PostBuildEvent:
+         copy "C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0\bin\Debug\OgreMain_d.dll" "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         copy "C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0\bin\Debug\OgreOverlay_d.dll" "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         copy "C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0\bin\Debug\OIS_d.dll" "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         copy "C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0\bin\Debug\RenderSystem_Direct3D9_d.dll" "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         copy "C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0\bin\Debug\RenderSystem_Direct3D11_d.dll" "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         copy "C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0\bin\Debug\RenderSystem_GL_d.dll" "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         copy "C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0\bin\Debug\Plugin_OctreeZone_d.dll" "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         copy "C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0\bin\Debug\Plugin_OctreeSceneManager_d.dll" "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         copy "C:\Users\Jordan\Desktop\OgreSDK_vc11_v1-9-0\bin\Debug\Plugin_PCZSceneManager_d.dll" "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         
+         copy plugins_d.cfg "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         copy resources_d.cfg "C:\Users\Jordan\senior-team-project\SeniorTeamProject\Debug\"
+         :VCEnd
+                 1 file(s) copied.
+                 1 file(s) copied.
+                 1 file(s) copied.
+                 1 file(s) copied.
+                 1 file(s) copied.
+                 1 file(s) copied.
+                 1 file(s) copied.
+                 1 file(s) copied.
+                 1 file(s) copied.
+                 1 file(s) copied.
+                 1 file(s) copied.
+     1>Done Building Project "C:\Users\Jordan\senior-team-project\SeniorTeamProject\TeamProject\TeamProject.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.04
+Time Elapsed 00:00:41.31

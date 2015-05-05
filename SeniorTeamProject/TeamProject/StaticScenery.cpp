@@ -13,8 +13,9 @@
  * but does not move, such as level geometry.
  */
 
-StaticScenery::StaticScenery(Ogre::Entity *mEntity) {
-	
+StaticScenery::StaticScenery(Ogre::Entity *mEntity, Ogre::Vector3 position,
+							 Ogre::Quaternion orientation) {
+
 	mSceneNode = NULL;
 
 	// save for later when we want to add it to the ogre scene
@@ -30,38 +31,13 @@ StaticScenery::StaticScenery(Ogre::Entity *mEntity) {
 
 	/* Save as btRigidBody */
 	btDefaultMotionState* groundMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
+		new btDefaultMotionState(btTransform(btQuaternion(orientation.x, orientation.y, orientation.z, orientation.w), btVector3(position.x, position.y, position.z)));
 
 	btRigidBody::btRigidBodyConstructionInfo
 		groundRigidBodyCI(0, groundMotionState, btTriMeshShape, btVector3(0, 0, 0));
 
     mRigidBody = new btRigidBody(groundRigidBodyCI);
-
-	// init position and rotation
-	position = Ogre::Vector3(0, 0, 0);
-	rotation = Ogre::Quaternion(1, 0, 0, 0);
 }
-
-
-StaticScenery::StaticScenery(Ogre::Entity *mEntity, btCollisionObject *colObject) {
-	
-	// save for later when we want to add it to the ogre scene
-	this->mEntity = mEntity;
-
-	// save collion shape for later when we to add it the bullet world
-	btObj = colObject;
-	
-	/* Save as btRigidBody */
-	btDefaultMotionState* groundMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
-
-	btRigidBody::btRigidBodyConstructionInfo
-		groundRigidBodyCI(0, groundMotionState, btObj->getCollisionShape(), btVector3(0, 0, 0));
-
-    mRigidBody = new btRigidBody(groundRigidBodyCI);
-}
-
-
 
 
 btTriangleMesh* StaticScenery::ogreToBulletMesh(Ogre::MeshPtr mesh) {
@@ -150,24 +126,7 @@ void StaticScenery::addToBullet(PhysicsManager *physmanager) {
 	physmanager->_world->addRigidBody(this->mRigidBody);
 }
 
-void StaticScenery::setPosition(Ogre::Vector3 newPos) {
 
-	// update bullet
-	btTransform trans;
-	mRigidBody->getMotionState()->getWorldTransform(trans);
-	trans.setOrigin(btVector3(newPos.x, newPos.y, newPos.z));
-	//mRigidBody->setCenterOfMassTransform(trans);
-	mRigidBody->setWorldTransform(trans);
-}
-
-void StaticScenery::setOrientation(Ogre::Quaternion newRot) {
-	
-	// update bullet
-	btTransform trans = mRigidBody->getCenterOfMassTransform();
-	trans.setRotation(btQuaternion(newRot.x, newRot.y, newRot.z, newRot.w));
-	//mRigidBody->setCenterOfMassTransform(trans);
-	mRigidBody->setWorldTransform(trans);
-}
 
 
 void StaticScenery::synchWithBullet() {
@@ -188,6 +147,8 @@ void StaticScenery::synchWithBullet() {
 
 
 
-StaticScenery * StaticScenery::clone() {
-	return new StaticScenery(this->mEntity, this->btObj);
+StaticScenery * StaticScenery::clone(Ogre::SceneManager* mSceneManager, Ogre::Vector3 position, Ogre::Quaternion orientation) {
+	// create a new entity
+	Ogre::Entity* newEntity = mSceneManager->createEntity(this->mEntity->getMesh()->getName());
+	return new StaticScenery(newEntity, position, orientation);
 }
