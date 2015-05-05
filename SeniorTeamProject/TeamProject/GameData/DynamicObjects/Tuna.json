@@ -2,6 +2,7 @@
 	"type" : "DynamicObject",
 	"meshNames" : ["tunacan.MESH.mesh"],
 	"mass" : 10,
+	"interaction" : 2,
 	"collisionShape" : "btCylinderShape",
 	"collisionShapeSize" : [10,10,10],
 	"restitution" : 0.0

@@ -160,6 +160,19 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 				massTemp = 1;
 			}
 
+			// Needed for collisions 
+			// interaction legend by diana 
+			// -1 = no interaction 
+			// 1 = teapots meaning they disappear (for now) 
+			// 2 = tuna can (ending... for now) 
+			int interaction;
+			if (document.HasMember("interaction")) {
+				interaction = document["interaction"].GetInt();
+			} else {
+				interaction = -1; // this means there's no interaction 
+			}
+
+
 
 			string collisionShape;
 			if (document.HasMember("collisionShape")) {
@@ -239,7 +252,7 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			// DynamicObject *newD = new DynamicObject(tempEntity, tempRigidBody, mass, restitution);
 
 			// New way
-			DynamicObject *newD = new DynamicObject(meshNames, colShape, Ogre::Vector3(0,0,0));
+			DynamicObject *newD = new DynamicObject(meshNames, colShape, Ogre::Vector3(0,0,0), interaction);
 
 
 			

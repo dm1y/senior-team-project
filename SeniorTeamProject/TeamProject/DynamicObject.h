@@ -11,7 +11,7 @@ private:
 
 public:
 	DynamicObject(Ogre::Entity *entity, btRigidBody* rigidBody, btScalar mass, btScalar restitution);
-	DynamicObject(std::list<Ogre::String> meshNames, btCollisionShape *collisionShape, Ogre::Vector3 position);
+	DynamicObject(std::list<Ogre::String> meshNames, btCollisionShape *collisionShape, Ogre::Vector3 position, int interaction);
 	void update();
 	void synchWithBullet();
 	void addToOgreScene(Ogre::SceneManager *sceneManager);
@@ -21,6 +21,7 @@ public:
 	void setScale(Ogre::Vector3 v);
 	DynamicObject * clone(Ogre::SceneManager *mSceneManager);
 
+	int interaction; 
 	Ogre::Entity *ent; 
 	Ogre::SceneNode *mSceneNode;
 	btRigidBody *mRigidBody;

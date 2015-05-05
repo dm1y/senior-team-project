@@ -44,10 +44,12 @@ DynamicObject::DynamicObject(Ogre::Entity *entity,  btRigidBody* rigidBody, btSc
 }
 
 /* Constructor for compatiblity with Player class */
-DynamicObject::DynamicObject(std::list<Ogre::String> meshNames, btCollisionShape *collisionShape, Ogre::Vector3 position) {
+DynamicObject::DynamicObject(std::list<Ogre::String> meshNames, btCollisionShape *collisionShape, 
+							 Ogre::Vector3 position, int interaction) {
 	/* Compatiblity for Simon + Diana */
 	this->meshNames = meshNames;
 	this->position = position;
+	this->interaction = interaction;
 
 	/* create the rigid body */
 	
@@ -66,6 +68,7 @@ DynamicObject::DynamicObject(std::list<Ogre::String> meshNames, btCollisionShape
 	fallRigidBodyCI.m_restitution = tempRestitution;
 
 	this->fallRigidBody = new btRigidBody(fallRigidBodyCI);
+	this->fallRigidBody->setUserIndex(interaction);
 }
 
 
@@ -162,6 +165,6 @@ void DynamicObject::update() {
 /* Fixing the clone I believe is the last piece of the merge puzzle.
 */
 DynamicObject * DynamicObject::clone(Ogre::SceneManager *mSceneManager) {
-	return new DynamicObject(this->meshNames, this->fallRigidBody->getCollisionShape(), Ogre::Vector3(0,0,0));
+	return new DynamicObject(this->meshNames, this->fallRigidBody->getCollisionShape(), Ogre::Vector3(0,0,0), this->interaction);
 }
 

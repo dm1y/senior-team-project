@@ -59,7 +59,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	
 	// Teapot object setup 
 	d = gameLibrary->getDynamicObject("TeaPot");
-	d->fallRigidBody->setUserIndex(1); // TeaPot ID is 1 
+	//d->fallRigidBody->setUserIndex(1); // TeaPot ID is 1 
 	d->setPosition(Ogre::Vector3(0, 80, -50));
 	d->addToOgreScene(mSceneManager);
 	d->addToBullet(physManager);
@@ -68,7 +68,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	dynaList.push_back(d);
 	
 	e = gameLibrary->getDynamicObject("TeaPot");
-	e->fallRigidBody->setUserIndex(1); // TeaPot ID is 1 
+	//e->fallRigidBody->setUserIndex(1); // TeaPot ID is 1 
 	e->setPosition(Ogre::Vector3(0, 80, -90));
 	e->addToOgreScene(mSceneManager);
 	e->addToBullet(physManager);
@@ -78,7 +78,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	// Tuna object setup 
 	t = gameLibrary->getDynamicObject("Tuna");
-	t->fallRigidBody->setUserIndex(2); // TeaPot ID is 2
+	//t->fallRigidBody->setUserIndex(2); // TeaPot ID is 2
 	t->setPosition(Ogre::Vector3(10, 80, -150));
 	t->addToOgreScene(mSceneManager);
 	t->addToBullet(physManager);
