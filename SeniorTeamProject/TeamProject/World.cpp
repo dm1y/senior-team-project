@@ -111,7 +111,11 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	}
 
 	Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
-	overly = om.getByName("Sample");
+	overly = om.getByName("Ending");
+	scoreOverlay = Ogre::OverlayManager::getSingleton().getByName("Score");
+	scoreText = Ogre::OverlayManager::getSingleton().getOverlayElement("Score/Panel/Text1");
+	//scoreOverlay = om.getByName("Score");
+	scoreOverlay->show();
 }
 
 
@@ -145,11 +149,14 @@ World::Think(float time)
 
 				score++;
 
+
 				std::string scr = std::to_string(score);
 				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
 				OutputDebugString(scr.c_str());
 				OutputDebugString("\nSCORE INCREASING! TEAPOT IS NOW INVISIBLE\n");
-
+				
+				scoreText->setCaption("Score is: " + scr);
+				
 				physManager->_world->removeRigidBody(obj->fallRigidBody);
 				physManager->physObjects.remove(obj);
 				break; 

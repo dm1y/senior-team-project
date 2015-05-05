@@ -64,7 +64,11 @@ protected:
 	DynamicObject *t;
 	DynamicObject *e; 
 
+
+	// Testing overlay to create a HUD later 
 	Ogre::Overlay *overly;
+	Ogre::Overlay *scoreOverlay;
+	Ogre::OverlayElement *scoreText;
 
 	int score; 
 
