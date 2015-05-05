@@ -417,6 +417,12 @@ Stage * GameLibrary::getStage(string name) {
 				tempDynObj->setPosition(position);
 				tempDynObj->setOrientation(rotation);
 				tempDynObjs.push_back(tempDynObj);
+
+				// psuedocode for collision filtering once this is set up
+				// checks if it's an interactive object and if it is, add to phys manager 
+				// list to handle specific collision checking 
+				// if (tempDynObj->fallRigidBody->getUserIndex() != -1) 
+				//    physmanager->collisionlist.push(tempDynObj)
 			}
 		}		
 
