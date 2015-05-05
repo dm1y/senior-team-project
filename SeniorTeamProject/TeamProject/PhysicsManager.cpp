@@ -44,6 +44,8 @@ void PhysicsManager::addPlane() {
 }
 
 
+
+
 void PhysicsManager::stepSimulation(float time) {
 	_world->stepSimulation(time, 10);
 
@@ -53,6 +55,50 @@ void PhysicsManager::stepSimulation(float time) {
 	}
 }
 
+// Diana wrote this. 
+// This gets called in world. 
+// Checks collisions between player and a list of interactive objects 
+// This might be combined with stepSimulation above later on when condensing code 
+//void PhysicsManager::checkCollisions(Player *p, Ogre::Overlay *overly, Ogre::SceneManager *mSceneManager)
+//{
+//	DynamicObject *objToRm; 
+//	bool remove = false;
+//
+//	for (DynamicObject *obj : dynaObjects) 
+//	{
+//		if (checkIntersect(p->getDynamicObject()->fallRigidBody, obj->fallRigidBody))
+//		{
+//			if (obj->fallRigidBody->getUserIndex() == 1) 
+//			{
+//				remove = true;
+//				objToRm = obj;
+//
+//				//score++;
+//
+//				//std::string scr = std::to_string(score);
+//				//OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
+//				//OutputDebugString(scr.c_str());
+//				///OutputDebugString("\nSCORE INCREASING! TEAPOT IS NOW INVISIBLE\n");
+//
+//				_world->removeRigidBody(obj->fallRigidBody);
+//				physObjects.remove(obj);
+//				break; 
+//			}
+//			else if (obj->fallRigidBody->getUserIndex() == 2) 
+//			{
+//				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TUNACAN ZOMG!\n");
+//				overly->show();
+//			}
+//		}
+//	}
+//
+//	if (remove) 
+//	{
+// 		dynaObjects.remove(objToRm);				
+//		mSceneManager->destroyEntity(objToRm->ent->getName().c_str());
+//		remove = false; 
+//	}
+//}
 
 // Simon wrote this. 
 bool
