@@ -103,7 +103,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	// TODO: Fix this so it's not hardcoded
 	mCamera->mRenderCamera->lookAt(tempIceIsland->mSceneNode->getPosition());
 
-	createWater();
+	//createWater();
 	
 	// Creates new HUD 
 	display = new HUD();
@@ -113,7 +113,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 void 
 World::Think(float time)
 {
-	doWaterStuff(time);
+	//doWaterStuff(time);
 
 	/*if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
 		DynamicObject* temp = this->gameLibrary->getDynamicObject("TeaPot");
@@ -121,20 +121,25 @@ World::Think(float time)
 		temp->addToOgreScene(mSceneManager);
 	}*/
 
-	mPlayer->Think(time);
-
 #pragma region Collision Filtering 
 	// TODO Move this game logic to Physics after stage is completed 
 	// Variables to remove the dynamic object that's in the list 
 	DynamicObject *objToRm; 
 	bool remove = false;
 
+	int i = 0;
+
 	for (DynamicObject *obj : dynaList) 
 	{
+
+		mPlayer->drawHitBox("Object" + std::to_string(i), obj->fallRigidBody);
+
 		if (physManager->checkIntersect(mPlayer->getDynamicObject()->fallRigidBody, obj->fallRigidBody))
 		{
+
 			if (obj->fallRigidBody->getUserIndex() == 1) 
 			{
+
 				remove = true;
 				objToRm = obj;
 
@@ -151,6 +156,7 @@ World::Think(float time)
 				display->displayEnding(true);
 			}
 		}
+		i++;
 	}
 
 	if (remove) 
@@ -159,6 +165,9 @@ World::Think(float time)
 		mSceneManager->destroyEntity(objToRm->ent->getName().c_str());
 		remove = false; 
 	}
+
+	mPlayer->Think(time);
+
 #pragma endregion TODO: Move to physmanager after stage is done 
 
 	physManager->stepSimulation(time);

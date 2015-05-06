@@ -29,6 +29,7 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mAutoCallibrate = true;
 	mEnableKinect = false;
 	initSkel = false;
+	initHitBox = false;
 	
 	// Create player node using Jordan's Dynamic Object class 
 	mPlayerObject = dynamic;
@@ -67,27 +68,9 @@ void Player::setAnimation(DynamicObject *p)
 		Ogre::Entity *newEnt = mSceneManager->createEntity(name);
 		//mEntity->setCastShadows(true);
 		childNode->attachObject(newEnt);
+		childNode->setPosition(0, -50, 0);
 		childNode->setOrientation(Ogre::Quaternion(0, 0, 1, -1)); // does the rotation 
 		childNode->roll(Ogre::Radian(Ogre::Math::PI)); // fixes it so player's back faces us 
-
-		if (newEnt->hasSkeleton())
-		{
-			Ogre::AnimationStateIterator iter = newEnt->getAllAnimationStates()->getAnimationStateIterator();
-
-			while(iter.hasMoreElements())
-			{
-				Ogre::AnimationState *animState = iter.getNext();
-
-				//animState->setEnabled(true);
-				animState->setLoop(true);
-				
-				Ogre::Real animWeight = animState->getWeight();
-				animState->setWeight(animWeight);
-
-				Ogre::Real animLength = animState->getLength();
-				animState->setLength(animLength);
-			}
-		}
 	}
 }
 
@@ -112,11 +95,8 @@ Player::Think(float time)
 
 	drawSkeleton();
 
-	/*if ((!mInputHandler->IsKeyDown(OIS::KC_M) && !mInputHandler->IsKeyDown(OIS::KC_N) && !mInputHandler->IsKeyDown(OIS::KC_LEFT)
-		&& !mInputHandler->IsKeyDown(OIS::KC_RIGHT) && !mInputHandler->IsKeyDown(OIS::KC_UP) && !mInputHandler->IsKeyDown(OIS::KC_DOWN)
-		&& !mInputHandler->IsKeyDown(OIS::KC_SPACE))) // TODO add detection for kinect 
-		*/
-	playAnimation("samba", time);
+	drawHitBox("HitBox", mPlayerObject->fallRigidBody);
+	initHitBox = true;
 
 #pragma endregion End of Kinect code/Not used right now   
 	
@@ -126,99 +106,9 @@ Player::Think(float time)
 
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
-	{
-		// Left 
-		if (mInputHandler->IsKeyDown(OIS::KC_M) || detectSway() == 1)
-		{
-			playAnimation("strafeRight", time);
-
-			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
-				mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
-
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-
-
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40,
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
-
-		}
-
-		// Right 
-		else if (mInputHandler->IsKeyDown(OIS::KC_N) || detectSway() == 0)
-		{
-			playAnimation("strafeLeft", time);
-
-			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
-				mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
-
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -40, 
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40,
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));	
-		}
-
-		// Does the rotation counter-clockwise
-		else if (mInputHandler->IsKeyDown(OIS::KC_LEFT) || detectTurn() == 1)
-		{
-
-			playAnimation("turnLeft", time);
-			
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
-				mPhysManager->_world->getGravity().getY() + 70,0));
-			//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(0.01f));
-			
-		} 
-		// Does rotation clockwise 
-		else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) || detectTurn() == 0)
-		{
-			playAnimation("turnRight", time);
-
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
-				mPhysManager->_world->getGravity().getY() + 70,0));
-			//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(-0.01f));
-
-		}
-
-		// Moves Forward 
-		else if (mInputHandler->IsKeyDown(OIS::KC_UP) || detectLean() == 0)
-		{
-			playAnimation("walkForward", time);
-
-			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
-				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
-
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
-			
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40)); 
-
-			
-		}
-
-		// Moves Backward 
-		else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) || detectLean() == 1)
-		{
-			playAnimation("walkBackward", time);
-
-
-			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
-				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
-
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -1, 
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()) * -1);
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40, 
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40)); 
-		}
-
-		
+	{	
 		// Jump
-		else if (mInputHandler->IsKeyDown(OIS::KC_SPACE) || detectJump() == 0)
+		if (mInputHandler->IsKeyDown(OIS::KC_SPACE) || detectJump() == 0)
 		{
 			playAnimation("fall_idle", time);
 
@@ -232,35 +122,134 @@ Player::Think(float time)
 			}
 		}
 
-		else if (mInputHandler->IsKeyDown(OIS::KC_LCONTROL))
-		{
-			playAnimation("crouch_idle", time);
-		}
-		else if (mInputHandler->IsKeyDown(OIS::KC_LSHIFT))
-		{
-			playAnimation("run", time);
-			
-			btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
-				mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
-
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
-			
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 100, 
-				mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 100)); 
-		}
-
-		/*
-		else if (mInputHandler->IsKeyDown(OIS::KC_L))
-		{
-			playAnimation("crouch_idle", time);
-
-			// Half capsule thing 
-			mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-			mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 0));
-			mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, mPhysManager->_world->getGravity().getY() + 70, 0));
-		}
+		/*if ((!mInputHandler->IsKeyDown(OIS::KC_M) && !mInputHandler->IsKeyDown(OIS::KC_N) && !mInputHandler->IsKeyDown(OIS::KC_LEFT)
+		&& !mInputHandler->IsKeyDown(OIS::KC_RIGHT) && !mInputHandler->IsKeyDown(OIS::KC_UP) && !mInputHandler->IsKeyDown(OIS::KC_DOWN)
+		&& !mInputHandler->IsKeyDown(OIS::KC_SPACE))) // TODO add detection for kinect 
 		*/
+		if (canJump) 
+		{
+			playAnimation("samba", time);
+
+			// Left 
+			if (mInputHandler->IsKeyDown(OIS::KC_M) || detectSway() == 1)
+			{
+				playAnimation("strafeRight", time);
+
+				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
+					mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
+
+				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+
+
+				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40,
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
+
+			}
+
+			// Right 
+			else if (mInputHandler->IsKeyDown(OIS::KC_N) || detectSway() == 0)
+			{
+				playAnimation("strafeLeft", time);
+
+				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
+					mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
+
+				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -40, 
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40,
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));	
+			}
+
+			// Does the rotation counter-clockwise
+			else if (mInputHandler->IsKeyDown(OIS::KC_LEFT) || detectTurn() == 1)
+			{
+
+				playAnimation("turnLeft", time);
+			
+				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
+					mPhysManager->_world->getGravity().getY() + 70,0));
+				//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(0.01f));
+			
+			} 
+			// Does rotation clockwise 
+			else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) || detectTurn() == 0)
+			{
+				playAnimation("turnRight", time);
+
+				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
+					mPhysManager->_world->getGravity().getY() + 70,0));
+				//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(-0.01f));
+
+			}
+
+			// Moves Forward 
+			else if (mInputHandler->IsKeyDown(OIS::KC_UP) || detectLean() == 0)
+			{
+				playAnimation("walkForward", time);
+
+				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+					mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+
+				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
+			
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40)); 
+
+			
+			}
+
+			// Moves Backward 
+			else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) || detectLean() == 1)
+			{
+				playAnimation("walkBackward", time);
+
+
+				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+					mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+
+				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -1, 
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()) * -1);
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40, 
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40)); 
+			}
+
+			else if (mInputHandler->IsKeyDown(OIS::KC_LCONTROL))
+			{
+				playAnimation("crouch_idle", time);
+			}
+			else if (mInputHandler->IsKeyDown(OIS::KC_LSHIFT))
+			{
+				playAnimation("run", time);
+			
+				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+					mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+
+				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
+			
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 100, 
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 100)); 
+			}
+
+			/*
+			else if (mInputHandler->IsKeyDown(OIS::KC_L))
+			{
+				playAnimation("crouch_idle", time);
+
+				// Half capsule thing 
+				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 0));
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, mPhysManager->_world->getGravity().getY() + 70, 0));
+			}
+			*/
+			}
+
 		checkGround(5000.0f, false); // checks if player is within stage 
 		checkGround(5.0f, true); // check if player is on the ground or currently jumping  
 
@@ -488,6 +477,55 @@ Player::drawLine(std::string bone, int joint1, int joint2)
 		myManualObject->begin(bone + "Material", Ogre::RenderOperation::OT_LINE_LIST);
 		myManualObject->position(bone1.x, bone1.y, bone1.z); 
 		myManualObject->position(bone2.x, bone2.y, bone2.z); 
+		myManualObject->end();
+	}
+}
+
+void
+Player::createHitBox(std::string name)
+{
+	Ogre::ManualObject* myManualObject =  mSceneManager->createManualObject(name); 
+	myManualObject->setDynamic(true);
+	Ogre::SceneNode* myManualObjectNode = mSceneManager->getRootSceneNode()->createChildSceneNode(name + "_node"); 
+ 
+	Ogre::MaterialPtr myManualObjectMaterial = Ogre::MaterialManager::getSingleton().create(name + "Material","General"); 
+	myManualObjectMaterial->setReceiveShadows(false); 
+	myManualObjectMaterial->getTechnique(0)->setLightingEnabled(true);
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(1,0,0,0); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(1,0,0); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(1,0,0);
+
+	myManualObjectNode->attachObject(myManualObject);
+}
+
+void
+Player::drawHitBox(std::string name, btRigidBody *box)
+{
+	btVector3 min, max;
+	box->getAabb(min, max);
+
+	if (!initHitBox)
+		createHitBox(name);
+	else if (initHitBox)
+	{
+		Ogre::ManualObject* myManualObject = mSceneManager->getManualObject(name);
+		
+		myManualObject->clear();
+						
+		myManualObject->begin(name + "Material", Ogre::RenderOperation::OT_LINE_LIST);
+		myManualObject->position(min.getX(), min.getY(), min.getZ());
+		myManualObject->position(max.getX(), max.getY(), max.getZ());
+		myManualObject->position(min.getX(), min.getY(), min.getZ());
+		myManualObject->position(max.getX(), min.getY(), min.getZ());
+		myManualObject->position(min.getX(), min.getY(), min.getZ());
+		myManualObject->position(min.getX(), max.getY(), min.getZ());
+		myManualObject->position(min.getX(), min.getY(), max.getZ());
+		myManualObject->position(max.getX(), max.getY(), max.getZ());
+		myManualObject->position(min.getX(), max.getY(), max.getZ());
+		myManualObject->position(max.getX(), max.getY(), max.getZ());
+		myManualObject->position(max.getX(), min.getY(), max.getZ());
+		myManualObject->position(max.getX(), max.getY(), max.getZ());
+		myManualObject->position(max.getX(), max.getY(), min.getZ());
 		myManualObject->end();
 	}
 }

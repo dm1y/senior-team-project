@@ -139,13 +139,24 @@ void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 			//mEntity->setCastShadows(true);
 			mSceneNode->attachObject(mEntity);
 
-/*			if (mEntity->hasSkeleton())
+			if (mEntity->hasSkeleton())
 			{
-				mEntity->getAnimationState("default_skl")->setEnabled(true);
-				mEntity->getAnimationState("default_skl")->setLoop(true);
-				mEntity->getAnimationState("default_skl")->setWeight(1.0);
-				mEntity->getAnimationState("default_skl")->setLength(1.0);
-			}	*/		
+				Ogre::AnimationStateIterator iter = mEntity->getAllAnimationStates()->getAnimationStateIterator();
+
+				while(iter.hasMoreElements())
+				{
+					Ogre::AnimationState *animState = iter.getNext();
+
+					//animState->setEnabled(true);
+					animState->setLoop(true);
+				
+					Ogre::Real animWeight = animState->getWeight();
+					animState->setWeight(animWeight);
+
+					Ogre::Real animLength = animState->getLength();
+					animState->setLength(animLength);
+				}
+			}			
 		}
 	}	
 }

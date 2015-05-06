@@ -59,6 +59,9 @@ public:
 	void stopAnimation(std::string anim);
 	void finishAnimation(Ogre::AnimationState *animation, float time);
 	void disableAnimations();
+	bool initHitBox;
+	void createHitBox(std::string name);
+	void drawHitBox(std::string name, btRigidBody *box);
 	std::vector<Ogre::Vector3> getSkeletonNodes();
 
 
