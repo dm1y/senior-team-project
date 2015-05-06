@@ -306,10 +306,10 @@ Player::detectSway()
 	getSkeletonAngles(leftRightAngle, frontBackAngle);
 	
 	//SWAY RIGHT
-	if (leftRightAngle.valueDegrees() < 0) return 0;
+	if ((leftRightAngle.valueDegrees()) < -25) return 0;
 
 	//SWAY LEFT
-	if (leftRightAngle.valueDegrees() > 0) return 1;
+	if ((leftRightAngle.valueDegrees()) > 25) return 1;
 
 	//NONE OF THE ABOVE
 	else
@@ -326,10 +326,10 @@ Player::detectLean()
 	getSkeletonAngles(leftRightAngle, frontBackAngle);
 
 		//LEAN FORWARD
-	if (frontBackAngle.valueDegrees() < 0) return 0;
+	if (frontBackAngle.valueDegrees() > 25) return 1;
 
 	//LEAN BACK
-	if (frontBackAngle.valueDegrees() > 0) return 1;
+	if (frontBackAngle.valueDegrees() < -25) return 0;
 	
 	//NONE OF THE ABOVE
 	else
@@ -362,11 +362,11 @@ Player::detectTurn()
 	vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
 
 	//RIGHT TURN
-	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z)
+	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z - 0.1)
 		return 0;
 	
 	//LEFT TURN
-	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z)
+	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z + 0.1)
 		return 1;
 	
 	//NONE OF THE ABOVE
@@ -380,9 +380,9 @@ Player::detectJump()
 	vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
 
 	//LEFT FOOT LIFTED
-	if ((skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y + 10) ||
+	if ((skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y + 0.1) ||
 	//RIGHT FOOT LIFTED
-		(skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y + 10))
+		(skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y + 0.1))
 		return 0;
 
 	else
