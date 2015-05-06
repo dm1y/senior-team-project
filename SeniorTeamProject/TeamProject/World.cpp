@@ -170,7 +170,7 @@ World::Think(float time)
 
 #pragma endregion TODO: Move to physmanager after stage is done 
 
-	physManager->stepSimulation(time);
+	physManager->stepSimulation(time, this);
 }
 
 #pragma region Water

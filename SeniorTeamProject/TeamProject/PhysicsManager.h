@@ -9,7 +9,9 @@
 //#include "OgreOverlay.h"
 //#include "OgreFontManager.h"
 //#include "OgreTextAreaOverlayElement.h"
- 
+
+class World;
+
 class PhysicsManager
 {
 private:
@@ -19,7 +21,7 @@ public:
 	~PhysicsManager();
 	void addBall(btVector3* initialPos);
 	void addPlane();
-	void stepSimulation(float time);
+	void stepSimulation(float time, World* mWorld);
 	bool checkIntersect(btRigidBody *A, btRigidBody *B);
 	//void checkCollisions(Player *p, Ogre::Overlay *overly, Ogre::SceneManager *mSceneManager);
 

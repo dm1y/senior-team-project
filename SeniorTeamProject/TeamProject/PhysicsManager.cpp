@@ -46,7 +46,7 @@ void PhysicsManager::addPlane() {
 
 
 
-void PhysicsManager::stepSimulation(float time) {
+void PhysicsManager::stepSimulation(float time, World* mWorld) {
 	_world->stepSimulation(time, 10);
 
 	/* update all physics objects */
