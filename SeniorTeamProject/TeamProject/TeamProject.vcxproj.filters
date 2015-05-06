@@ -144,13 +144,13 @@
     <ClInclude Include="rapidjson\writer.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Stage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -194,10 +194,10 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Controller.cpp">
+    <ClCompile Include="Console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Console.cpp">
+    <ClCompile Include="HUD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

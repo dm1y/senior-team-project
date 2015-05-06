@@ -13,10 +13,10 @@
 #include "OgreMath.h"
 #include "OgreSceneManager.h"
 #include "OgreSceneNode.h"
-#include "OgreOverlayManager.h"
-#include "OgreOverlay.h"
-#include "OgreFontManager.h"
-#include "OgreTextAreaOverlayElement.h"
+//#include "OgreOverlayManager.h"
+//#include "OgreOverlay.h"
+//#include "OgreFontManager.h"
+//#include "OgreTextAreaOverlayElement.h"
 #include <stdlib.h> 
 
 
@@ -29,6 +29,7 @@
 #include "InputHandler.h"
 #include "Kinect.h"
 #include "Player.h"
+#include "HUD.h"
 #include <list>
 
 using namespace rapidjson;
@@ -36,7 +37,7 @@ using namespace rapidjson;
 World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib, Ogre::Root *mRoot)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib)
 {
-	score = 0;
+	//score = 0;
 	sceneManager->setAmbientLight(Ogre::ColourValue(0, 0, 0));
 	// sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
@@ -104,18 +105,8 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	createWater();
 	
-	Ogre::ResourceManager::ResourceMapIterator iter = Ogre::FontManager::getSingleton().getResourceIterator();
-	while (iter.hasMoreElements()) 
-	{ 
-		iter.getNext()->load(); 
-	}
-
-	Ogre::OverlayManager& om = Ogre::OverlayManager::getSingleton();
-	overly = om.getByName("Ending");
-	scoreOverlay = Ogre::OverlayManager::getSingleton().getByName("Score");
-	scoreText = Ogre::OverlayManager::getSingleton().getOverlayElement("Score/Panel/Text1");
-	//scoreOverlay = om.getByName("Score");
-	scoreOverlay->show();
+	// Creates new HUD 
+	display = new HUD();
 }
 
 
@@ -147,15 +138,8 @@ World::Think(float time)
 				remove = true;
 				objToRm = obj;
 
-				score++;
-
-
-				std::string scr = std::to_string(score);
-				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
-				OutputDebugString(scr.c_str());
-				OutputDebugString("\nSCORE INCREASING! TEAPOT IS NOW INVISIBLE\n");
-				
-				scoreText->setCaption("Score is: " + scr);
+				display->incrementScore();
+				//OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
 				
 				physManager->_world->removeRigidBody(obj->fallRigidBody);
 				physManager->physObjects.remove(obj);
@@ -164,7 +148,7 @@ World::Think(float time)
 			else if (obj->fallRigidBody->getUserIndex() == 2) 
 			{
 				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TUNACAN ZOMG!\n");
-				overly->show();
+				display->displayEnding(true);
 			}
 		}
 	}

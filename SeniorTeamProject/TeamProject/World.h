@@ -5,11 +5,8 @@
 #include "DynamicObject.h"
 #include "StaticScenery.h"
 #include "GameLibrary.h"
+#include "HUD.h"
 #include "Console.h"
-#include "OgreOverlayManager.h"
-#include "OgreOverlay.h"
-#include "OgreFontManager.h"
-#include "OgreTextAreaOverlayElement.h"
 
 
 // Forward delcarations of Ogre classes.  Note the Ogre namespace!
@@ -25,6 +22,7 @@ class GameCamera;
 class InputHandler;
 class Player;
 class Kinect;
+class HUD;
 
 
 class World
@@ -49,6 +47,8 @@ public:
 	Ogre::SceneManager *mSceneManager;
 	
 	Player* mPlayer; 
+
+	HUD *display;
 	
 	void createWater();
 	void doWaterStuff(float time);
@@ -63,14 +63,6 @@ protected:
 	DynamicObject *d;
 	DynamicObject *t;
 	DynamicObject *e; 
-
-
-	// Testing overlay to create a HUD later 
-	Ogre::Overlay *overly;
-	Ogre::Overlay *scoreOverlay;
-	Ogre::OverlayElement *scoreText;
-
-	int score; 
 
 };
 
