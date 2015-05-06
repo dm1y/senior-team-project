@@ -103,7 +103,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	// TODO: Fix this so it's not hardcoded
 	mCamera->mRenderCamera->lookAt(tempIceIsland->mSceneNode->getPosition());
 
-	//createWater();
+	createWater();
 	
 	// Creates new HUD 
 	display = new HUD();
@@ -113,7 +113,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 void 
 World::Think(float time)
 {
-	//doWaterStuff(time);
+	doWaterStuff(time);
 
 	/*if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
 		DynamicObject* temp = this->gameLibrary->getDynamicObject("TeaPot");

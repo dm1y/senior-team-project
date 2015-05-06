@@ -504,6 +504,15 @@ Player::drawHitBox(std::string name, btRigidBody *box)
 	btVector3 min, max;
 	box->getAabb(min, max);
 
+	btScalar mX, mY, mZ, MX, MY, MZ;
+	mX = min.getX();
+	mY = min.getY();
+	mZ = min.getZ();
+
+	MX = max.getX();
+	MY = max.getY();
+	MZ = max.getZ();
+
 	if (!initHitBox)
 		createHitBox(name);
 	else if (initHitBox)
@@ -513,19 +522,54 @@ Player::drawHitBox(std::string name, btRigidBody *box)
 		myManualObject->clear();
 						
 		myManualObject->begin(name + "Material", Ogre::RenderOperation::OT_LINE_LIST);
-		myManualObject->position(min.getX(), min.getY(), min.getZ());
-		myManualObject->position(max.getX(), max.getY(), max.getZ());
-		myManualObject->position(min.getX(), min.getY(), min.getZ());
-		myManualObject->position(max.getX(), min.getY(), min.getZ());
-		myManualObject->position(min.getX(), min.getY(), min.getZ());
-		myManualObject->position(min.getX(), max.getY(), min.getZ());
-		myManualObject->position(min.getX(), min.getY(), max.getZ());
-		myManualObject->position(max.getX(), max.getY(), max.getZ());
-		myManualObject->position(min.getX(), max.getY(), max.getZ());
-		myManualObject->position(max.getX(), max.getY(), max.getZ());
-		myManualObject->position(max.getX(), min.getY(), max.getZ());
-		myManualObject->position(max.getX(), max.getY(), max.getZ());
-		myManualObject->position(max.getX(), max.getY(), min.getZ());
+		myManualObject->position(mX, mY, mZ);
+		myManualObject->position(MX, mY, mZ);
+
+		myManualObject->position(MX, mY, mZ);
+		myManualObject->position(MX, mY, MZ);
+
+		myManualObject->position(MX, mY, MZ);
+		myManualObject->position(mX, mY, MZ);
+
+		myManualObject->position(mX, mY, MZ);
+		myManualObject->position(mX, mY, mZ);
+
+		myManualObject->position(MX, MY, MZ);
+		myManualObject->position(mX, MY, MZ);
+
+		myManualObject->position(mX, MY, MZ);
+		myManualObject->position(mX, MY, mZ);
+
+		myManualObject->position(mX, MY, mZ);
+		myManualObject->position(MX, MY, mZ);
+
+		myManualObject->position(mX, MY, mZ);
+		myManualObject->position(MX, MY, MZ);
+
+		myManualObject->position(mX, mY, mZ);
+		myManualObject->position(mX, MY, mZ);
+
+		myManualObject->position(MX, mY, mZ);
+		myManualObject->position(MX, MY, mZ);
+
+		myManualObject->position(MX, mY, MZ);
+		myManualObject->position(MX, MY, MZ);
+
+		myManualObject->position(mX, mY, MZ);
+		myManualObject->position(mX, MY, MZ);
+
+		myManualObject->position(mX, mY, mZ);
+		myManualObject->position(MX, MY, MZ);
+
+		myManualObject->position(MX, mY, mZ);
+		myManualObject->position(mX, MY, MZ);
+
+		myManualObject->position(MX, mY, MZ);
+		myManualObject->position(mX, MY, mZ);
+
+		myManualObject->position(mX, mY, MZ);
+		myManualObject->position(MX, MY, mZ);
+		
 		myManualObject->end();
 	}
 }

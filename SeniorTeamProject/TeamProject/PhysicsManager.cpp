@@ -112,10 +112,34 @@ PhysicsManager::checkIntersect(btRigidBody *A, btRigidBody *B)
 	A->getAabb(Amin, Amax);
 	B->getAabb(Bmin, Bmax);
 
-	if ((((Bmin.getX() <= Amax.getX()) && (Bmin.getY() <= Amax.getY()) && (Bmin.getZ() <= Amax.getZ())) &&
-		((Amax.getX() <= Bmax.getX()) && (Amax.getY() <= Bmax.getY()) && (Amax.getZ() <= Bmax.getZ()))) ||
-		(((Amin.getX() <= Bmax.getX()) && (Amin.getY() <= Bmax.getY()) && (Amin.getZ() <= Bmax.getZ())) &&
-		((Bmax.getX() <= Amax.getX()) && (Bmax.getY() <= Amax.getY()) && (Bmax.getZ() <= Amax.getZ()))))
+	btScalar AmX, AmY, AmZ, AMX, AMY, AMZ, BmX, BmY, BmZ, BMX, BMY, BMZ;
+	AmX = Amin.getX();
+	AmY = Amin.getY();
+	AmZ = Amin.getZ();
+
+	AMX = Amax.getX();
+	AMY = Amax.getY();
+	AMZ = Amax.getZ();
+
+	BmX = Bmin.getX();
+	BmY = Bmin.getY();
+	BmZ = Bmin.getZ();
+
+	BMX = Bmax.getX();
+	BMY = Bmax.getY();
+	BMZ = Bmax.getZ();
+
+		 //
+	if ((((BmX <= AMX) && (BmY <= AMY) && (BmZ <= AMZ)) &&
+	     ((AMX <= BMX) && (AMY <= BMY) && (AMZ <= BMZ))) ||
+		(((AmX <= BMX) && (AmY <= BMY) && (AmZ <= BMZ)) &&
+		 ((BMX <= AMX) && (BMY <= AMY) && (BMZ <= AMZ))) ||
+		 // B is inside of A
+		(((AmX <= BmX) && (AmY <= BmY) && (AmX <= BmY)) &&
+		 ((BMX <= AMX) && (BMY <= AMY) && (BMX <= AMY))) ||
+		 // A is inside of B
+		(((BmX <= AmX) && (BmY <= AmY) && (BmZ <= AmZ)) &&
+		 ((AMX <= BMX) && (AMY <= BMY) && (AMZ <= BMZ))))
 		return true;
 	else 
 		return false;
