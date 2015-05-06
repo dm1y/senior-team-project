@@ -48,7 +48,6 @@ void PhysicsManager::addPlane() {
 
 void PhysicsManager::stepSimulation(float time, World* mWorld) {
 	_world->stepSimulation(time, 10);
-
 	/* update all physics objects */
 	for (std::list<IPhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) {
 		it._Ptr->_Myval->synchWithBullet();
