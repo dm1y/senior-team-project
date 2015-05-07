@@ -160,6 +160,13 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 				massTemp = 1;
 			}
 
+
+			// Parse scale info
+			Ogre::Vector3 scale = Ogre::Vector3(1, 1, 1);
+			if (document.HasMember("scale")) {
+				scale = parseVector3(document["scale"]);
+			}
+
 			// Needed for collisions 
 			// interaction legend by diana 
 			// -1 = no interaction 
@@ -255,7 +262,8 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			DynamicObject *newD = new DynamicObject(meshNames, colShape, Ogre::Vector3(0,0,0), interaction);
 
 
-			
+			// set the scale
+			newD->setScale(scale);
 
 			// put it into the library
 			dynamicObjects.emplace(name, newD);
@@ -305,9 +313,16 @@ StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 positio
 				meshName = "ERROR.MESH.mesh";
 			}
 
+
+
+
+
 			// TODO: unique identifier system
 			Ogre::Entity *tempEntity = mSceneManager->createEntity(meshName);
 			tempEntity->setCastShadows(true);
+
+
+
 
 			// Finished parsing the filess
 			// Create the instance and put in the GameLibrary
