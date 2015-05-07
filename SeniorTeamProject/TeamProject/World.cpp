@@ -60,30 +60,30 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	
 #pragma region Testing objects spawn 
 	// Teapot object setup 
-	d = gameLibrary->getDynamicObject("TeaPot");
-	d->setPosition(Ogre::Vector3(0, 80, -50));
-	d->addToOgreScene(mSceneManager);
-	d->addToBullet(physManager);
-	d->setScale(Ogre::Vector3(10,10,10));
-	
-	dynaList.push_back(d);
-	
-	e = gameLibrary->getDynamicObject("TeaPot");
-	e->setPosition(Ogre::Vector3(0, 80, -90));
-	e->addToOgreScene(mSceneManager);
-	e->addToBullet(physManager);
-	e->setScale(Ogre::Vector3(10,10,10));
+	//d = gameLibrary->getDynamicObject("TeaPot");
+	//d->setPosition(Ogre::Vector3(0, 80, -50));
+	//d->addToOgreScene(mSceneManager);
+	//d->addToBullet(physManager);
+	//d->setScale(Ogre::Vector3(10,10,10));
+	//
+	//dynaList.push_back(d);
+	//
+	//e = gameLibrary->getDynamicObject("TeaPot");
+	//e->setPosition(Ogre::Vector3(0, 80, -90));
+	//e->addToOgreScene(mSceneManager);
+	//e->addToBullet(physManager);
+	//e->setScale(Ogre::Vector3(10,10,10));
 
-	dynaList.push_back(e);
+	//dynaList.push_back(e);
 
-	// Tuna object setup 
-	t = gameLibrary->getDynamicObject("Tuna");
-	t->setPosition(Ogre::Vector3(10, 80, -150));
-	t->addToOgreScene(mSceneManager);
-	t->addToBullet(physManager);
-	t->setScale(Ogre::Vector3(.3,.3,.3));
+	//// Tuna object setup 
+	//t = gameLibrary->getDynamicObject("Tuna");
+	//t->setPosition(Ogre::Vector3(10, 80, -150));
+	//t->addToOgreScene(mSceneManager);
+	//t->addToBullet(physManager);
+	//t->setScale(Ogre::Vector3(.3,.3,.3));
 
-	dynaList.push_back(t);
+	//dynaList.push_back(t);
 #pragma endregion TODO move logic elsewhere once stage is completed 
 
 	Stage* stage = gameLibrary->getStage("IceIsland");
@@ -124,47 +124,47 @@ World::Think(float time)
 #pragma region Collision Filtering 
 	// TODO Move this game logic to Physics after stage is completed 
 	// Variables to remove the dynamic object that's in the list 
-	DynamicObject *objToRm; 
-	bool remove = false;
+	//DynamicObject *objToRm; 
+	//bool remove = false;
 
-	int i = 0;
+	//int i = 0;
 
-	for (DynamicObject *obj : dynaList) 
-	{
+	//for (DynamicObject *obj : dynaList) 
+	//{
 
-		mPlayer->drawHitBox("Object" + std::to_string(i), obj->fallRigidBody);
+	//	mPlayer->drawHitBox("Object" + std::to_string(i), obj->fallRigidBody);
 
-		if (physManager->checkIntersect(mPlayer->getDynamicObject()->fallRigidBody, obj->fallRigidBody))
-		{
+	//	if (physManager->checkIntersect(mPlayer->getDynamicObject()->fallRigidBody, obj->fallRigidBody))
+	//	{
 
-			if (obj->fallRigidBody->getUserIndex() == 1) 
-			{
+	//		if (obj->fallRigidBody->getUserIndex() == 1) 
+	//		{
 
-				remove = true;
-				objToRm = obj;
+	//			remove = true;
+	//			objToRm = obj;
 
-				display->incrementScore();
-				//OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
-				
-				physManager->_world->removeRigidBody(obj->fallRigidBody);
-				physManager->physObjects.remove(obj);
-				break; 
-			}
-			else if (obj->fallRigidBody->getUserIndex() == 2) 
-			{
-				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TUNACAN ZOMG!\n");
-				display->displayEnding(true);
-			}
-		}
-		i++;
-	}
+	//			display->incrementScore();
+	//			//OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
+	//			
+	//			physManager->_world->removeRigidBody(obj->fallRigidBody);
+	//			physManager->physObjects.remove(obj);
+	//			break; 
+	//		}
+	//		else if (obj->fallRigidBody->getUserIndex() == 2) 
+	//		{
+	//			OutputDebugString("\nPLAYER IS COLLIDING WITH THE TUNACAN ZOMG!\n");
+	//			display->displayEnding(true);
+	//		}
+	//	}
+	//	i++;
+	//}
 
-	if (remove) 
-	{
- 		dynaList.remove(objToRm);				
-		mSceneManager->destroyEntity(objToRm->ent->getName().c_str());
-		remove = false; 
-	}
+	//if (remove) 
+	//{
+ //		dynaList.remove(objToRm);				
+	//	mSceneManager->destroyEntity(objToRm->ent->getName().c_str());
+	//	remove = false; 
+	//}
 
 	mPlayer->Think(time);
 

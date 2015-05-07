@@ -22,9 +22,8 @@ public:
 	DynamicObject * clone(Ogre::SceneManager *mSceneManager);
 
 	int interaction; 
-	Ogre::Entity *ent; 
+	//Ogre::Entity *ent; 
 	Ogre::SceneNode *mSceneNode;
-	btRigidBody *mRigidBody;
 	static int numCreated;
 	btScalar mass;
 	btScalar restitution;

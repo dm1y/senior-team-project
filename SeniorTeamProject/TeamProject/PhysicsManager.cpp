@@ -1,4 +1,8 @@
 #include "PhysicsManager.h"
+#include "World.h"
+#include "Player.h"
+#include "HUD.h"
+
 using namespace std;
 
 /* (TO: OLGA)
@@ -49,9 +53,48 @@ void PhysicsManager::addPlane() {
 void PhysicsManager::stepSimulation(float time, World* mWorld) {
 	_world->stepSimulation(time, 10);
 	/* update all physics objects */
-	for (std::list<IPhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) {
+	//for (std::list<IPhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) {
+	//	it._Ptr->_Myval->synchWithBullet();
+	//}
+
+	IPhysObject *objToRm; 
+	bool remove = false; 
+
+	/* update all physics objects */
+	for (std::list<IPhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) 
+	{
+		if (it._Ptr->_Myval->fallRigidBody->getUserIndex() != -1) 
+		{
+			if (checkIntersect(mWorld->mPlayer->getDynamicObject()->fallRigidBody, it._Ptr->_Myval->fallRigidBody))
+			{
+				if (it._Ptr->_Myval->fallRigidBody->getUserIndex() == 1) 
+				{
+
+					remove = true;
+					objToRm = it._Ptr->_Myval;
+
+					mWorld->display->incrementScore();
+					break; 
+				}
+				else if (it._Ptr->_Myval->fallRigidBody->getUserIndex() == 2)
+				{
+					mWorld->display->displayEnding(true);
+				}
+			}
+		}
 		it._Ptr->_Myval->synchWithBullet();
 	}
+	
+	if (remove)
+	{
+		// removes from bullet 
+		_world->removeRigidBody(objToRm->fallRigidBody);
+		physObjects.remove(objToRm);
+
+		// removes from world so it's no longer visible
+		mWorld->SceneManager()->destroyEntity(objToRm->ent->getName().c_str()); 
+	}
+
 }
 
 // Diana wrote this. 
