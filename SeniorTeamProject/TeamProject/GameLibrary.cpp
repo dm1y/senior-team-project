@@ -98,14 +98,8 @@ GameLibrary::GameLibrary(Ogre::SceneManager *sceneManager) {
 	Returns null if no object was found that matches name.
 */
 DynamicObject * GameLibrary::getDynamicObject(string name) {
-	// polymorphic maps in c++ scare me, so for now
-	// the gamelibrary has a seperate map for each type.
-	// Maybe talk to gallas about polymorphic data structures in c++.
-
 	// see if an instance of the object exists in dynamicObjects map.
 	// if not load it in from memory, create it, and put it in the map.
-
-	// TODO: if no value is found for key handle error gracefully.
 
 	unordered_map<string, DynamicObject*> ::iterator it = dynamicObjects.find(name);
 
@@ -230,9 +224,6 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 				
 			}
 			*/
-
-
-
 			
 
 			// create the rigid body
@@ -250,17 +241,9 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 
 			// Create the rigid body
 			btRigidBody* tempRigidBody = new btRigidBody(fallRigidBodyCI);
-			
-			
-			
-			
-
-			// Jordan way
-			// DynamicObject *newD = new DynamicObject(tempEntity, tempRigidBody, mass, restitution);
 
 			// New way
 			DynamicObject *newD = new DynamicObject(meshNames, colShape, Ogre::Vector3(0,0,0), interaction);
-
 
 			// set the scale
 			newD->setScale(scale);
