@@ -51,12 +51,6 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	// Causes shadowcaster error, vertex limit exceeded?
 	// Fixed by turning off shadows... but thats lame
-	DynamicObject *p = gameLibrary->getDynamicObject("Human");
-	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
-	
-	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
-	mPlayer->setAnimation(p);
-	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 	
 #pragma region Testing objects spawn 
 	// Teapot object setup 
@@ -92,7 +86,15 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
 		it._Ptr->_Myval->addToOgreScene(mSceneManager);
 	 	it._Ptr->_Myval->addToBullet(physManager);
+		it._Ptr->_Myval->setScale(it._Ptr->_Myval->scaling);
 	}
+
+	DynamicObject *p = gameLibrary->getDynamicObject("Human");
+	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
+	
+	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
+	mPlayer->setAnimation(p);
+	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 
 	for (std::list<StaticScenery*>::iterator it = stage->staticScenery.begin(); it != stage->staticScenery.end(); it++) {
 		it._Ptr->_Myval->addToOgreScene(mSceneManager);

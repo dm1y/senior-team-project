@@ -243,10 +243,7 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			btRigidBody* tempRigidBody = new btRigidBody(fallRigidBodyCI);
 
 			// New way
-			DynamicObject *newD = new DynamicObject(meshNames, colShape, Ogre::Vector3(0,0,0), interaction);
-
-			// set the scale
-			newD->setScale(scale);
+			DynamicObject *newD = new DynamicObject(meshNames, colShape, Ogre::Vector3(0,0,0), interaction, scale);
 
 			// put it into the library
 			dynamicObjects.emplace(name, newD);
