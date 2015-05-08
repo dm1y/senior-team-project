@@ -47,7 +47,7 @@ DynamicObject::DynamicObject(Ogre::Entity *entity,  btRigidBody* rigidBody, btSc
 DynamicObject::DynamicObject(std::list<Ogre::String> meshNames, btCollisionShape *collisionShape, 
 							 Ogre::Vector3 position, int interaction, Ogre::Vector3 scale) {
 	/* Compatiblity for Simon + Diana */
-	this->meshNames = meshNames;
+    this->meshNames = meshNames;
 	this->position = position;
 	this->interaction = interaction;
 	this->scaling = scale;
@@ -110,9 +110,21 @@ void DynamicObject::setOrientation(Ogre::Quaternion newRot) {
 }
 
 // sets scale of node to new scale 
-void DynamicObject::setScale(Ogre::Vector3 v) {
+void DynamicObject::setScale(Ogre::Vector3 v, PhysicsManager* physManager) {
+	
+	// scale scene node
 	mSceneNode->setScale(v);
+	
+
+	/*
+	// scale collision shape
+	this->fallRigidBody->getCollisionShape()->setLocalScaling(btVector3(2, 2, 2));
+
+	// tell the bullet world about the change
+	physManager->_world->updateSingleAabb(this->fallRigidBody);	
+	*/
 }
+
 void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 	
 	if(meshNames.size() == 0) {
@@ -129,7 +141,6 @@ void DynamicObject::addToOgreScene(Ogre::SceneManager *sceneManager) {
 
 		mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
 		mSceneNode->setPosition(this->position);
-
 
 		Ogre::Entity *mEntity;
 		// attach the model entity

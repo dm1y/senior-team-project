@@ -18,7 +18,7 @@ public:
 	void addToBullet(PhysicsManager *physmanager);
 	void setPosition(Ogre::Vector3 newPos);
 	void setOrientation(Ogre::Quaternion newRot);
-	void setScale(Ogre::Vector3 v);
+	void setScale(Ogre::Vector3 v, PhysicsManager* physManager);
 	DynamicObject * clone(Ogre::SceneManager *mSceneManager);
 
 	int interaction; 

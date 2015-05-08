@@ -49,7 +49,7 @@ public:
 	Player* mPlayer; 
 
 	HUD *display;
-	
+	Stage* stage;	
 	void createWater();
 	void doWaterStuff(float time);
 

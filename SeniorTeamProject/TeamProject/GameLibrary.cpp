@@ -174,7 +174,6 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			}
 
 
-
 			string collisionShape;
 			if (document.HasMember("collisionShape")) {
 				collisionShape = document["collisionShape"].GetString();
@@ -182,28 +181,62 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 				collisionShape = "btBoxShape";
 			}
 
-			/* Parse the CollisionShape and its size size */
+
 			
 			// temp vars used for parsing collision shape size data
 			btVector3 colDim3;
 			btScalar colScala;
 			btScalar colScalb;
+
+			/* Parse the CollisionShape and its size size */
+			
+
+			// if no collision shape size is specified in the json file
+			// base its size off of the dimensions of the mesh
+			// For simplicity, this only works if the dynamic object has
+			// one mesh. 
+
+			Ogre::Vector3 meshDimensions;
+			if (!document.HasMember("collisionShapeSize") && meshNames.size() == 1) {
+
+				// XXX: The collision shape auto sizing functionality is experimental
+				// and needs to be tested.
+
+				Ogre::Entity* tempEntity = mSceneManager->createEntity(meshNames.front());
+				colDim3 = ogreToBulletVector3(tempEntity->getMesh()->getBounds().getHalfSize());
+				colScala = tempEntity->getMesh()->getBoundingSphereRadius(); // radius
+				colScalb = tempEntity->getMesh()->getBounds().getSize()[1]; // height
+			
+				// apply scale
+				colDim3 = btVector3(colDim3[0] * scale.x, colDim3[1] * scale.y, colDim3[2] * scale.z);
+				colScala * scale.x;
+				colScalb * scale.y;
+			} else if(document.HasMember("collisionShapeSize")) {
+				if (document["collisionShapeSize"].Size() == 3) {
+					colDim3 = ogreToBulletVector3(parseVector3(document["collisionShapeSize"]));
+				}
+				colScala = document["collisionShapeSize"][0].GetDouble();	
+				colScalb = document["collisionShapeSize"][1].GetDouble();   
+			} else {
+				OutputDebugString("ERROR! Need to specify the collisionshape size!");
+				// default collision shape sizes
+				colDim3 = btVector3(1,1,1);
+				colScala = 1;
+				colScalb = 1;
+			}
+
+
 			
 			// holds the actual collision shape of the object
 			btCollisionShape *colShape;
 			
 			if (collisionShape.compare("btSphereShape") == 0) {
-				colScala = document["collisionShapeSize"][0].GetDouble();
 				colShape = new btSphereShape(colScala);
 			} else if(collisionShape.compare("btBoxShape") == 0) {
-				colDim3 = ogreToBulletVector3(parseVector3(document["collisionShapeSize"]));
 				colShape = new btBoxShape(colDim3);
 			} else if(collisionShape.compare("btCylinderShape") == 0) {
-				colDim3 = ogreToBulletVector3(parseVector3(document["collisionShapeSize"]));
 				colShape = new btCylinderShape(colDim3);
 			} else if(collisionShape.compare("btCapsuleShape") == 0) {
-				colScala = document["collisionShapeSize"][0].GetDouble();
-				colScalb = document["collisionShapeSize"][1].GetDouble();
 				colShape = new btCapsuleShape(colScala, colScalb);
 			} else {
 				// default to box shape if no valid collision shape was found

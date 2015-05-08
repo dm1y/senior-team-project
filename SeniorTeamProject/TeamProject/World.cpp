@@ -80,21 +80,23 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	//dynaList.push_back(t);
 #pragma endregion TODO move logic elsewhere once stage is completed 
 
-	Stage* stage = gameLibrary->getStage("IceIsland");
-
-	StaticScenery *tempIceIsland;
-	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
-		it._Ptr->_Myval->addToOgreScene(mSceneManager);
-	 	it._Ptr->_Myval->addToBullet(physManager);
-		it._Ptr->_Myval->setScale(it._Ptr->_Myval->scaling);
-	}
-
 	DynamicObject *p = gameLibrary->getDynamicObject("Human");
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
 	
 	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setAnimation(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
+
+
+
+	stage = gameLibrary->getStage("IceIsland");
+
+	StaticScenery *tempIceIsland;
+	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
+		it._Ptr->_Myval->addToOgreScene(mSceneManager);
+	 	it._Ptr->_Myval->addToBullet(physManager);
+		// it._Ptr->_Myval->setScale(it._Ptr->_Myval->scaling, this->physManager);
+	}
 
 	for (std::list<StaticScenery*>::iterator it = stage->staticScenery.begin(); it != stage->staticScenery.end(); it++) {
 		it._Ptr->_Myval->addToOgreScene(mSceneManager);
@@ -105,7 +107,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	// TODO: Fix this so it's not hardcoded
 	mCamera->mRenderCamera->lookAt(tempIceIsland->mSceneNode->getPosition());
 
-	createWater();
+	// createWater();
 	
 	// Creates new HUD 
 	display = new HUD();
@@ -115,7 +117,13 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 void 
 World::Think(float time)
 {
-	doWaterStuff(time);
+	// doWaterStuff(time);
+
+
+	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
+		mPlayer->drawHitBox(it._Ptr->_Myval->mSceneNode->getName(), it._Ptr->_Myval->fallRigidBody);
+	}
+
 
 	/*if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
 		DynamicObject* temp = this->gameLibrary->getDynamicObject("TeaPot");

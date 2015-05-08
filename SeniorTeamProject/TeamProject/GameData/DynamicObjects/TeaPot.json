@@ -4,7 +4,7 @@
 	"mass" : 1,
 	"interaction" : 1,
 	"collisionShape" : "btBoxShape",
-	"collisionShapeSize" : [10.5, 10.5, 10.5],
-	"scale": [10, 10, 10],
+	"collisionShapeSize" : [1, 1, 1],
+	"scale": [1, 1, 1],
 	"restitution" : 0.5
 }
