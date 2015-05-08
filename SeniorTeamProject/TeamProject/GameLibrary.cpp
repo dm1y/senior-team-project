@@ -159,6 +159,9 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			Ogre::Vector3 scale = Ogre::Vector3(1, 1, 1);
 			if (document.HasMember("scale")) {
 				scale = parseVector3(document["scale"]);
+			} else 
+			{
+				scale = Ogre::Vector3(1, 1, 1);
 			}
 
 			// Needed for collisions 
@@ -184,9 +187,9 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 
 			
 			// temp vars used for parsing collision shape size data
-			btVector3 colDim3;
-			btScalar colScala;
-			btScalar colScalb;
+			btVector3 colDim3 = btVector3(1,1,1);
+			btScalar colScala = 1;
+			btScalar colScalb = 1;
 
 			/* Parse the CollisionShape and its size size */
 			
@@ -197,21 +200,32 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			// one mesh. 
 
 			Ogre::Vector3 meshDimensions;
+			std::string s = std::to_string(meshNames.size()); 
+			
+			OutputDebugString("The size of mesh is \n");
+			OutputDebugString(s.c_str());
+			OutputDebugString("\n");
+
 			if (!document.HasMember("collisionShapeSize") && meshNames.size() == 1) {
 
 				// XXX: The collision shape auto sizing functionality is experimental
 				// and needs to be tested.
-
+				OutputDebugString("Going into IF STATEMENT\n");
 				Ogre::Entity* tempEntity = mSceneManager->createEntity(meshNames.front());
+				OutputDebugString(meshNames.front().c_str());
 				colDim3 = ogreToBulletVector3(tempEntity->getMesh()->getBounds().getHalfSize());
 				colScala = tempEntity->getMesh()->getBoundingSphereRadius(); // radius
 				colScalb = tempEntity->getMesh()->getBounds().getSize()[1]; // height
 			
 				// apply scale
+				OutputDebugString("\nApplying scale\n");
 				colDim3 = btVector3(colDim3[0] * scale.x, colDim3[1] * scale.y, colDim3[2] * scale.z);
-				colScala * scale.x;
-				colScalb * scale.y;
+				colScala = colScala * scale.x;
+				colScalb = colScalb * scale.y;
+
 			} else if(document.HasMember("collisionShapeSize")) {
+				/// Note: FIgure out why it keeps going into this if block instead of the first one 
+				OutputDebugString("Else if \n");
 				if (document["collisionShapeSize"].Size() == 3) {
 					colDim3 = ogreToBulletVector3(parseVector3(document["collisionShapeSize"]));
 				}

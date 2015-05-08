@@ -95,7 +95,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
 		it._Ptr->_Myval->addToOgreScene(mSceneManager);
 	 	it._Ptr->_Myval->addToBullet(physManager);
-		// it._Ptr->_Myval->setScale(it._Ptr->_Myval->scaling, this->physManager);
+		it._Ptr->_Myval->setScale(it._Ptr->_Myval->scaling, this->physManager);
 	}
 
 	for (std::list<StaticScenery*>::iterator it = stage->staticScenery.begin(); it != stage->staticScenery.end(); it++) {
