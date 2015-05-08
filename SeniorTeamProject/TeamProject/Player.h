@@ -73,6 +73,7 @@ public:
 //	Ogre::Overlay *setOverlay(Ogre::Overlay *o) { return overly = o;}
 
 	DynamicObject *getDynamicObject() { return mPlayerObject; }
+	DynamicObject *animObject;
 
 	void setPosition (Ogre::Vector3 p);
 

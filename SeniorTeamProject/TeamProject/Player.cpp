@@ -56,7 +56,6 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 
 
 // Fix for Simon in regards to animation mesh's orientation 
-// TODO: Refactor names to something more suitable 
 void Player::setAnimation(DynamicObject *p)
 {
 
@@ -68,7 +67,7 @@ void Player::setAnimation(DynamicObject *p)
 		Ogre::Entity *newEnt = mSceneManager->createEntity(name);
 		//mEntity->setCastShadows(true);
 		childNode->attachObject(newEnt);
-		childNode->setPosition(0, -50, 0);
+		childNode->setPosition(0, -125, 0);
 		childNode->setOrientation(Ogre::Quaternion(0, 0, 1, -1)); // does the rotation 
 		childNode->roll(Ogre::Radian(Ogre::Math::PI)); // fixes it so player's back faces us 
 	}
@@ -96,6 +95,7 @@ Player::Think(float time)
 	drawSkeleton();
 
 	drawHitBox("HitBox", mPlayerObject->fallRigidBody);
+	
 	initHitBox = true;
 
 #pragma endregion End of Kinect code/Not used right now   
@@ -117,15 +117,12 @@ Player::Think(float time)
 
 			if (canJump)
 			{
-				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 90, currCameraPos.getZ() * 40));			
+				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 125, currCameraPos.getZ() * 40));			
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 125, currCameraPos.getZ() * 40));			
+
 			}
 		}
 
-		/*if ((!mInputHandler->IsKeyDown(OIS::KC_M) && !mInputHandler->IsKeyDown(OIS::KC_N) && !mInputHandler->IsKeyDown(OIS::KC_LEFT)
-		&& !mInputHandler->IsKeyDown(OIS::KC_RIGHT) && !mInputHandler->IsKeyDown(OIS::KC_UP) && !mInputHandler->IsKeyDown(OIS::KC_DOWN)
-		&& !mInputHandler->IsKeyDown(OIS::KC_SPACE))) // TODO add detection for kinect 
-		*/
 		if (canJump) 
 		{
 			playAnimation("samba", time);
@@ -160,7 +157,8 @@ Player::Think(float time)
 				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -40, 
 					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));
 				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40,
-					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));	
+					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));
+
 			}
 
 			// Does the rotation counter-clockwise
@@ -173,6 +171,7 @@ Player::Think(float time)
 				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 					mPhysManager->_world->getGravity().getY() + 70,0));
 				//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(0.01f));
+
 			
 			} 
 			// Does rotation clockwise 
@@ -184,6 +183,7 @@ Player::Think(float time)
 				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 					mPhysManager->_world->getGravity().getY() + 70,0));
 				//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(-0.01f));
+
 
 			}
 
@@ -200,7 +200,6 @@ Player::Think(float time)
 			
 				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 
 					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40)); 
-
 			
 			}
 
@@ -217,6 +216,8 @@ Player::Think(float time)
 					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()) * -1);
 				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40, 
 					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40)); 
+
+
 			}
 
 			else if (mInputHandler->IsKeyDown(OIS::KC_LCONTROL))
@@ -235,26 +236,16 @@ Player::Think(float time)
 			
 				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 100, 
 					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 100)); 
+
+
 			}
 
-			/*
-			else if (mInputHandler->IsKeyDown(OIS::KC_L))
-			{
-				playAnimation("crouch_idle", time);
-
-				// Half capsule thing 
-				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(0, 0, 0));
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0, mPhysManager->_world->getGravity().getY() + 70, 0));
-			}
-			*/
-			}
+		}
 
 		checkGround(5000.0f, false); // checks if player is within stage 
-		checkGround(5.0f, true); // check if player is on the ground or currently jumping  
+		checkGround(50.0f, true); // check if player is on the ground or currently jumping  
 
 		mPlayerObject->synchWithBullet();
-
 #pragma endregion Input controls for keyboard 
 	}
 }

@@ -1,9 +1,9 @@
 {
 	"type" : "DynamicObject",
 	"meshNames" : ["cubeJordan.mesh"],
-	"mass" : 20,
+	"mass" : 1,
 	"interaction" : -1,
-	"collisionShape" : "btCapsuleShape",
-	"collisionShapeSize" : [1,1],
+	"collisionShape" : "btBoxShape",
+	"scale" : [0.25, 0.25, 0.25],
 	"restitution" : 0.0
 }

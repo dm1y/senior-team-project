@@ -206,7 +206,7 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			OutputDebugString(s.c_str());
 			OutputDebugString("\n");
 
-			if (!document.HasMember("collisionShapeSize") && meshNames.size() == 1) {
+			if (!document.HasMember("collisionShapeSize")) {
 
 				// XXX: The collision shape auto sizing functionality is experimental
 				// and needs to be tested.

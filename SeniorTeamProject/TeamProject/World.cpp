@@ -83,11 +83,9 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	DynamicObject *p = gameLibrary->getDynamicObject("Human");
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
 	
-	mPlayer = new Player(j, Ogre::Vector3(0, 50,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
+	mPlayer = new Player(j, Ogre::Vector3(0, 10,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setAnimation(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
-
-
 
 	stage = gameLibrary->getStage("IceIsland");
 
