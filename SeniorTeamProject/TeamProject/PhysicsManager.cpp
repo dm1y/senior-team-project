@@ -24,6 +24,8 @@ PhysicsManager::PhysicsManager() {
     _solver = new btSequentialImpulseConstraintSolver();
     _world = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
     _world->setGravity(btVector3(0, -100, 0));
+
+	//_dispatcher->
 }
 
 PhysicsManager::~PhysicsManager() {
@@ -144,10 +146,30 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 //	}
 //}
 
+
 // Simon wrote this. 
 bool
 PhysicsManager::checkIntersect(btRigidBody *A, btRigidBody *B)
 {
+
+	/*btCollisionWorld::ContactResultCallback 
+	{
+		btScalar addSingleResult(btManifoldPoint& cp, const btCollisionObject*
+		colObj0, int partId0, int index0, const btCollisionObject* colObj1, int partId1,
+		int index1)
+		{
+			btVector3 ptA = cp.getPositionWorldOnA();
+			btVector3 ptB = cp.getPositionWorldOnB();
+			return 0;
+		}
+	}*/
+
+	//btCollisionWorld::contactPairTest(A, B, call); 
+	//btCollisionObject *an; 
+	//A->upcast(an);
+	// TODO: upcast to btCollisionObject and perform the contactPairTest
+	// TODO: figur eout how to use contactPairTest 
+
 	btVector3 Amin;
 	btVector3 Amax;
 	btVector3 Bmin;

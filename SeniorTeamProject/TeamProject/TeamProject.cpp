@@ -76,7 +76,7 @@ void
 TeamProject::createScene() 
 {
 	Console *console = new Console(mRoot, this->mWorld);
-	console->setVisible(true);
+	console->setVisible(false);
 
     mInputHandler = new InputHandler(mWindow, console);
 

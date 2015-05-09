@@ -5,5 +5,5 @@
 	"interaction" : 1,
 	"collisionShape" : "btBoxShape",
 	"scale": [5, 5, 5],
-	"restitution" : 0.5
+	"restitution" : 0.0
 }
