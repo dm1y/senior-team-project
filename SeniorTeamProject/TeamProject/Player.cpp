@@ -243,7 +243,7 @@ Player::Think(float time)
 		}
 
 		checkGround(5000.0f, false); // checks if player is within stage 
-		checkGround(50.0f, true); // check if player is on the ground or currently jumping  
+		checkGround(5.0f, true); // check if player is on the ground or currently jumping  
 
 		mPlayerObject->synchWithBullet();
 #pragma endregion Input controls for keyboard 
@@ -258,17 +258,26 @@ Player::checkGround(float distance, bool checkJump)
 	btVector3 position = p.getOrigin();
 
 	btVector3 btFrom(position.getX(), position.getY(), position.getZ());			// current Player position  
-	btVector3 btTo(position.getX(), position.getY() - distance, position.getZ());	// below Player position 
+	btVector3 btTo(position.getX(), position.getY() - 20 - distance, position.getZ());	// below Player position 
 	btCollisionWorld::ClosestRayResultCallback res(btFrom, btTo);
 
 	mPhysManager->_world->rayTest(btFrom, btTo, res); 
 
+	std::string player_y = std::to_string(position.getY());
+	OutputDebugString("Player y position is : \n"); 
+	OutputDebugString(player_y.c_str());
+	OutputDebugString("\n hit length is \n");
+
 	std::string x = std::to_string(res.m_hitPointWorld.getX());
 	std::string y = std::to_string(res.m_hitPointWorld.getY());
+
+	OutputDebugString(y.c_str());
+	OutputDebugString("\n");
 	std::string z = std::to_string(res.m_hitPointWorld.getZ());
 
 	if(res.hasHit())
 	{
+		OutputDebugString("Has hit so canJump is true?\n");
 		canJump = true; 
 
 	} else 
@@ -278,11 +287,13 @@ Player::checkGround(float distance, bool checkJump)
 			// Respawn player 
 			p.setOrigin(btVector3(0, 50, -10));
 			mPlayerObject->fallRigidBody->setWorldTransform(p);
+			OutputDebugString("respawning player\n");
 		} 
 		else
 		{
 			// Player is currently in the air 
 			canJump = false; 
+			OutputDebugString("Player is in the air\n");
 		}
 	}
 }
