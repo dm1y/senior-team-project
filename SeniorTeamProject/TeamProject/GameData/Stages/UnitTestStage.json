@@ -1,0 +1,6 @@
+{
+	"type" : "Stage",
+	"StaticScenery" : [
+		{"name" : "OneUnitBox", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]}
+	]
+}
