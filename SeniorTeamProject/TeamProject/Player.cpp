@@ -94,7 +94,7 @@ Player::Think(float time)
 
 	drawSkeleton();
 
-	drawHitBox("HitBox", mPlayerObject->fallRigidBody);
+	//drawHitBox("HitBox", mPlayerObject->fallRigidBody);
 	
 	initHitBox = true;
 
