@@ -59,11 +59,6 @@ protected:
 
 	Kinect *mKinect;
 
-	list<DynamicObject*> dynaList; 
-	DynamicObject *d;
-	DynamicObject *t;
-	DynamicObject *e; 
-
 };
 
 #endif
