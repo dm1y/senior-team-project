@@ -264,20 +264,20 @@ Player::checkGround(float distance, bool checkJump)
 	mPhysManager->_world->rayTest(btFrom, btTo, res); 
 
 	std::string player_y = std::to_string(position.getY());
-	OutputDebugString("Player y position is : \n"); 
-	OutputDebugString(player_y.c_str());
-	OutputDebugString("\n hit length is \n");
+	//OutputDebugString("Player y position is : \n"); 
+	//OutputDebugString(player_y.c_str());
+	//OutputDebugString("\n hit length is \n");
 
 	std::string x = std::to_string(res.m_hitPointWorld.getX());
 	std::string y = std::to_string(res.m_hitPointWorld.getY());
 
-	OutputDebugString(y.c_str());
-	OutputDebugString("\n");
+	//OutputDebugString(y.c_str());
+	//OutputDebugString("\n");
 	std::string z = std::to_string(res.m_hitPointWorld.getZ());
 
 	if(res.hasHit())
 	{
-		OutputDebugString("Has hit so canJump is true?\n");
+		//OutputDebugString("Has hit so canJump is true?\n");
 		canJump = true; 
 
 	} else 
@@ -287,13 +287,13 @@ Player::checkGround(float distance, bool checkJump)
 			// Respawn player 
 			p.setOrigin(btVector3(0, 50, -10));
 			mPlayerObject->fallRigidBody->setWorldTransform(p);
-			OutputDebugString("respawning player\n");
+			//OutputDebugString("respawning player\n");
 		} 
 		else
 		{
 			// Player is currently in the air 
 			canJump = false; 
-			OutputDebugString("Player is in the air\n");
+			//OutputDebugString("Player is in the air\n");
 		}
 	}
 }

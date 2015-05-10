@@ -25,6 +25,8 @@ public:
 	bool checkIntersect(btRigidBody *A, btRigidBody *B);
 	//void checkCollisions(Player *p, Ogre::Overlay *overly, Ogre::SceneManager *mSceneManager);
 
+
+
 	btBroadphaseInterface* _broadphase;
     btDefaultCollisionConfiguration* _collisionConfiguration;
     btCollisionDispatcher* _dispatcher;

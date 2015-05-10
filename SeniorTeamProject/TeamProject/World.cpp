@@ -118,9 +118,9 @@ World::Think(float time)
 	// doWaterStuff(time);
 
 
-	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
-		mPlayer->drawHitBox(it._Ptr->_Myval->mSceneNode->getName(), it._Ptr->_Myval->fallRigidBody);
-	}
+	//for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
+	//	mPlayer->drawHitBox(it._Ptr->_Myval->mSceneNode->getName(), it._Ptr->_Myval->fallRigidBody);
+	//}
 
 
 	/*if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
