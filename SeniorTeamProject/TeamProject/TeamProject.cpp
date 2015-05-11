@@ -81,7 +81,9 @@ TeamProject::createScene()
 	console->setVisible(false);
 
     mInputHandler = new InputHandler(mWindow, console);
-	mInputHandler->setEventCallback(MenuManager::getInstance());
+	MenuManager* menuManager = MenuManager::getInstance();
+	menuManager->mConsole = console;
+	mInputHandler->setEventCallback(menuManager);
 
 	// If a class needs access to another class, you can pass in a pointer in the constructor
 	//   or, if you need circular accesses (player needs access to the world, and the world needs

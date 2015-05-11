@@ -4,6 +4,7 @@
 #include "OgrePrerequisites.h"
 #include "OgreColourValue.h"
 #include <OIS/OIS.h>
+#include "Console.h"
 
 namespace Ogre
 {
@@ -57,6 +58,9 @@ public:
 	void setMenuConfig(std::string configString);
 
 	virtual void handleKeypress(const OIS::KeyEvent &e);
+
+
+
 protected:
 	class MenuItem;
 
@@ -281,6 +285,8 @@ public:
 	std::string getMenuConfig();
 	void setMenuConfig(std::string configString);
 
+	// Quick and dirty member for the console
+	Console *mConsole;
 
 private:
 	MenuManager() { }

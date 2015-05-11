@@ -19,6 +19,7 @@ MenuManager* MenuManager::getInstance()
 	if (mInstance == 0)
 	{
 		mInstance = new MenuManager();
+		mInstance->mConsole = NULL;
 	}
 	return mInstance;
 }
@@ -27,6 +28,19 @@ MenuManager* MenuManager::getInstance()
 
 bool MenuManager::keyPressed(const OIS::KeyEvent &e)
 {
+	this->mConsole->onKeyPressed(e);
+	
+	if (e.key == OIS::KC_TAB) {
+		if(mConsole->isVisible()) {
+			mConsole->setVisible(false);	
+		} else {
+			mConsole->setVisible(true);
+		}
+		return true;
+	}
+
+
+	if (!mConsole->isVisible()) {
 		for (std::map<Ogre::String, Menu*>::iterator it = mMenus.begin();
 		 it != mMenus.end();
 		 it++)
@@ -37,7 +51,8 @@ bool MenuManager::keyPressed(const OIS::KeyEvent &e)
 				break;
 			}
 		}
-		return true;
+	}
+	return true;
 }
 bool  MenuManager::keyReleased(const OIS::KeyEvent &e)
 {
