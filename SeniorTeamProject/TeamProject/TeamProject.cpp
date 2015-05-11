@@ -97,7 +97,13 @@ TeamProject::createScene()
 	mKinect->StartSession();
 
 	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary(mSceneMgr), this->mRoot, display);
+	
+	// so ugly cringe coding omg im sorry
 	console->mWorld = mWorld;
+	// create placement Node
+	console->placementNode = mWorld->mSceneManager->getRootSceneNode()->createChildSceneNode();
+	console->placementNode->setVisible(false);
+
 
 
 	// Display whether user is logged in [found on the upper left corner]  

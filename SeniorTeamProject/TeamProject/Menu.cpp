@@ -28,8 +28,51 @@ MenuManager* MenuManager::getInstance()
 
 bool MenuManager::keyPressed(const OIS::KeyEvent &e)
 {
+
+	if (mConsole->isInPlacementMode) {
+
+		if (e.key == OIS::KC_RETURN) {
+			mConsole->placeStaticScenery();
+		} else if (e.key == OIS::KC_DELETE) {
+			// cancel the placement
+			// exit placement mode
+			mConsole->placementNode->detachAllObjects();
+			mConsole->placementNode->setVisible(false);
+			mConsole->mWorld->mPlayer->setEnableKeyboard(true);
+			mConsole->isInPlacementMode = false;
+		} else {
+			if (e.key == OIS::KC_LEFT) {
+				mConsole->placementNode->translate(1,0,0);
+			} else if(e.key == OIS::KC_RIGHT) {
+				mConsole->placementNode->translate(-1,0,0);
+			}
+
+			if (e.key == OIS::KC_UP) {
+				mConsole->placementNode->translate(0,0,1);
+			} else if (e.key == OIS::KC_DOWN) {
+				mConsole->placementNode->translate(0,0,-1);
+			}
+
+			if (e.key == OIS::KC_PGUP) {
+				mConsole->placementNode->translate(0,1,0);
+			} else if (e.key == OIS::KC_PGDOWN) {
+				mConsole->placementNode->translate(0,-1,0);
+			}
+
+		}
+
+		return true;
+	}
+
+
+
+
 	this->mConsole->onKeyPressed(e);
 	
+
+
+
+
 	if (e.key == OIS::KC_TAB) {
 		if(mConsole->isVisible()) {
 			mConsole->setVisible(false);	
