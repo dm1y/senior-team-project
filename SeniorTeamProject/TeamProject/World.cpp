@@ -42,8 +42,6 @@ using namespace rapidjson;
 World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib, Ogre::Root *mRoot, HUD * hud)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib), display(hud)
 {
-	//score = 0;
-	// sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 	sceneManager->setAmbientLight(Ogre::ColourValue(0.2, 0.2, 0.2));
 
 	Ogre::Vector3 lightdir(0.55, -0.3, 0.75);
@@ -61,45 +59,13 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	// Causes shadowcaster error, vertex limit exceeded?
 	// Fixed by turning off shadows... but thats lame
-	
-#pragma region Testing objects spawn 
-	// Teapot object setup 
-	//d = gameLibrary->getDynamicObject("TeaPot");
-	//d->setPosition(Ogre::Vector3(0, 80, -50));
-	//d->addToOgreScene(mSceneManager);
-	//d->addToBullet(physManager);
-	//d->setScale(Ogre::Vector3(10,10,10));
-	//
-	//dynaList.push_back(d);
-	//
-	//e = gameLibrary->getDynamicObject("TeaPot");
-	//e->setPosition(Ogre::Vector3(0, 80, -90));
-	//e->addToOgreScene(mSceneManager);
-	//e->addToBullet(physManager);
-	//e->setScale(Ogre::Vector3(10,10,10));
 
-	//dynaList.push_back(e);
-
-	//// Tuna object setup 
-	//t = gameLibrary->getDynamicObject("Tuna");
-	//t->setPosition(Ogre::Vector3(10, 80, -150));
-	//t->addToOgreScene(mSceneManager);
-	//t->addToBullet(physManager);
-	//t->setScale(Ogre::Vector3(.3,.3,.3));
-
-	//dynaList.push_back(t);
-#pragma endregion TODO move logic elsewhere once stage is completed 
-
-
-
-
-	
 	
 	DynamicObject *p = gameLibrary->getDynamicObject("Human");
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
 	
 
-	mPlayer = new Player(j, Ogre::Vector3(0, 10,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
+	mPlayer = new Player(j, Ogre::Vector3(30, 0, -500), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setAnimation(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 
@@ -125,7 +91,6 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	createWater();
 	
-	// Creates new HUD 
 
 }
 
@@ -141,64 +106,9 @@ World::Think(float time)
 	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
 		mPlayer->drawHitBox(it._Ptr->_Myval->mSceneNode->getName(), it._Ptr->_Myval->fallRigidBody);
 	}
-	
-
-
-	/*if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
-		DynamicObject* temp = this->gameLibrary->getDynamicObject("TeaPot");
-		temp->addToBullet(physManager);
-		temp->addToOgreScene(mSceneManager);
-	}*/
-
-#pragma region Collision Filtering 
-	// TODO Move this game logic to Physics after stage is completed 
-	// Variables to remove the dynamic object that's in the list 
-	//DynamicObject *objToRm; 
-	//bool remove = false;
-
-	//int i = 0;
-
-	//for (DynamicObject *obj : dynaList) 
-	//{
-
-	//	mPlayer->drawHitBox("Object" + std::to_string(i), obj->fallRigidBody);
-
-	//	if (physManager->checkIntersect(mPlayer->getDynamicObject()->fallRigidBody, obj->fallRigidBody))
-	//	{
-
-	//		if (obj->fallRigidBody->getUserIndex() == 1) 
-	//		{
-
-	//			remove = true;
-	//			objToRm = obj;
-
-	//			display->incrementScore();
-	//			//OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
-	//			
-	//			physManager->_world->removeRigidBody(obj->fallRigidBody);
-	//			physManager->physObjects.remove(obj);
-	//			break; 
-	//		}
-	//		else if (obj->fallRigidBody->getUserIndex() == 2) 
-	//		{
-	//			OutputDebugString("\nPLAYER IS COLLIDING WITH THE TUNACAN ZOMG!\n");
-	//			display->displayEnding(true);
-	//		}
-	//	}
-	//	i++;
-	//}
-
-	//if (remove) 
-	//{
- //		dynaList.remove(objToRm);				
-	//	mSceneManager->destroyEntity(objToRm->ent->getName().c_str());
-	//	remove = false; 
-	//}
-
-	
+		
 	 mPlayer->Think(time);
 
-#pragma endregion TODO: Move to physmanager after stage is done 
 
 	physManager->stepSimulation(time, this);
 }

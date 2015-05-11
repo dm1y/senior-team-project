@@ -354,7 +354,7 @@ void ScrollSelectMenu::reset(std::vector<Ogre::String> items,  std::function<voi
 
 		textArea->setCaption("");
 		textArea->setCharHeight(mItemHeight * 1.5f);
-		//textArea->setFontName("Big");
+		textArea->setFontName("Big");
 		textArea->setCharHeight(mItemHeight);
 		mPanelText->addChild(textArea);
 		mElems.push_back(textArea);
@@ -649,7 +649,7 @@ Menu::MenuItem::MenuItem(Ogre::String text, Ogre::String name,  Menu *parent, fl
 	mY  = y;
 	mItemText->setCaption(text);
 	mItemText->setCharHeight(parent->mItemHeight);
-	//mItemText->setFontName("Big");
+	mItemText->setFontName("Big");
 	mItemText->setColour(Ogre::ColourValue(1,1,1));
 	mParent->mPanelText->addChild(mItemText);
 	mSaved = saved;

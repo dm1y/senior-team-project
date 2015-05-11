@@ -129,7 +129,7 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 					// Respawn player 
 					btTransform position; 
 					mWorld->mPlayer->getDynamicObject()->fallRigidBody->getMotionState()->getWorldTransform(position);
-					position.setOrigin(btVector3(0, 50, -10));
+					position.setOrigin(btVector3(30, 0, -500));
 					mWorld->mPlayer->getDynamicObject()->fallRigidBody->setWorldTransform(position);
 				}
 				else if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 2)
