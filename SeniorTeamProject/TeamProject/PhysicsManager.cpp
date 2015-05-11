@@ -124,6 +124,7 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 		{
 			if (call.m_connected)
 			{
+				OutputDebugString("connecting");
 				if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 0)
 				{
 					// Respawn player 

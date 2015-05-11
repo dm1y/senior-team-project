@@ -109,7 +109,7 @@ void add(Console *console, std::vector<Ogre::String> *args) {
 			} 
 		} else if((*args)[1].compare("-s") == 0) {
 			// adding a dynamic object
-			StaticScenery* tempObj = console->mWorld->gameLibrary->getStaticScenery((*args)[2], console->mWorld->mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -20, -30), Ogre::Quaternion::IDENTITY, -1);
+			StaticScenery* tempObj = console->mWorld->gameLibrary->getStaticScenery((*args)[2], console->mWorld->mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -20, -30), Ogre::Quaternion::IDENTITY);
 
 			if (tempObj != NULL) {
 				console->print("Loaded!");

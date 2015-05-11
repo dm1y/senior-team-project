@@ -299,7 +299,7 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 	}
 }
 
-StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 position, Ogre::Quaternion orientation, int interaction) {
+StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 position, Ogre::Quaternion orientation) {
 
 	unordered_map<string, StaticScenery*> ::iterator it = staticScenery.find(name);
 
@@ -310,7 +310,7 @@ StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 positio
 		statScenery = it->second;
 
 		// create a clone of it.
-		return statScenery->clone(this->mSceneManager, position, orientation, interaction);
+		return statScenery->clone(this->mSceneManager, position, orientation, statScenery->mRigidBody->getUserIndex());
 	} else {
 		// element was not found.
 		// load it in and create instance 
@@ -334,6 +334,15 @@ StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 positio
 				meshName = "ERROR.MESH.mesh";
 			}
 
+			int interaction = -1; 
+
+			// interaction legend 
+			// -1 = no interaction 
+			// 0 = player respawns  
+			if (document.HasMember("interaction")) {
+				OutputDebugString("interaction is set to 0 hurr\n"); 
+				interaction = document["interaction"].GetInt();
+			}
 
 
 
@@ -475,14 +484,15 @@ Stage * GameLibrary::getStage(string name) {
 				
 				Ogre::Vector3 position = Ogre::Vector3(0, 0, 0);
 				Ogre::Quaternion rotation = Ogre::Quaternion(1, 0, 0, 0);
-				int interaction = -1; 
+//				int interaction = -1; 
 
 				// interaction legend 
 				// -1 = no interaction 
 				// 0 = player respawns  
-				if (document.HasMember("interaction")) {
-					interaction = document["interaction"].GetInt();
-				}
+				//if (document.HasMember("interaction")) {
+				//	OutputDebugString("interaction is set to 0 \n"); 
+				//	interaction = document["interaction"].GetInt();
+				//}
 
 				if (document["StaticScenery"][i].HasMember("position")) {
 					double x = document["StaticScenery"][i]["position"][0].GetDouble();
@@ -504,7 +514,7 @@ Stage * GameLibrary::getStage(string name) {
 					rotation = Ogre::Quaternion(1, 0, 0, 0);
 				}
 
-				StaticScenery* newStaticScenery = this->getStaticScenery(name, position, rotation, interaction);
+				StaticScenery* newStaticScenery = this->getStaticScenery(name, position, rotation);
 				
 				tempStaticScenery.push_back(newStaticScenery);
 		
