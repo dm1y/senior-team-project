@@ -32,20 +32,30 @@
 #include "HUD.h"
 #include <list>
 
+
+
+
+
+
 using namespace rapidjson;
 
 World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib, Ogre::Root *mRoot)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib)
 {
 	//score = 0;
-	sceneManager->setAmbientLight(Ogre::ColourValue(0, 0, 0));
 	// sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+	sceneManager->setAmbientLight(Ogre::ColourValue(0.2, 0.2, 0.2));
 
-	Ogre::Light* directionalLight = sceneManager->createLight("directionalLight");
-    directionalLight->setType(Ogre::Light::LT_DIRECTIONAL);
-    directionalLight->setDiffuseColour(Ogre::ColourValue(1, 1, 1));
-    directionalLight->setSpecularColour(Ogre::ColourValue(1, 1, 1));
-	directionalLight->setDirection(0,-1,1);
+	Ogre::Vector3 lightdir(0.55, -0.3, 0.75);
+	lightdir.normalise();
+
+	Ogre::Light* light = sceneManager->createLight("TestLight");
+	light->setType(Ogre::Light::LT_DIRECTIONAL);
+	light->setDirection(lightdir);
+	light->setDiffuseColour(Ogre::ColourValue::White);
+	light->setSpecularColour(Ogre::ColourValue(0.4, 0.4, 0.4));
+
+
 
 	physManager = new PhysicsManager();
 
@@ -80,32 +90,40 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	//dynaList.push_back(t);
 #pragma endregion TODO move logic elsewhere once stage is completed 
 
+
+
+
+	
+	
 	DynamicObject *p = gameLibrary->getDynamicObject("Human");
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
 	
+
 	mPlayer = new Player(j, Ogre::Vector3(0, 10,-10), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setAnimation(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 
-	stage = gameLibrary->getStage("IceIsland");
+	
 
-	StaticScenery *tempIceIsland;
+	stage = gameLibrary->getStage("UnitTestStage");
+	
 	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
 		it._Ptr->_Myval->addToOgreScene(mSceneManager);
 	 	it._Ptr->_Myval->addToBullet(physManager);
 		it._Ptr->_Myval->setScale(it._Ptr->_Myval->scaling, this->physManager);
 	}
 
+	StaticScenery *camLookIt;
 	for (std::list<StaticScenery*>::iterator it = stage->staticScenery.begin(); it != stage->staticScenery.end(); it++) {
 		it._Ptr->_Myval->addToOgreScene(mSceneManager);
 	 	it._Ptr->_Myval->addToBullet(physManager);
-		tempIceIsland = it._Ptr->_Myval;
+		camLookIt = it._Ptr->_Myval;
 	}
 
 	// TODO: Fix this so it's not hardcoded
-	mCamera->mRenderCamera->lookAt(tempIceIsland->mSceneNode->getPosition());
+	mCamera->mRenderCamera->lookAt(camLookIt->mSceneNode->getPosition());
 
-	// createWater();
+	createWater();
 	
 	// Creates new HUD 
 	display = new HUD();
@@ -115,12 +133,15 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 void 
 World::Think(float time)
 {
-	// doWaterStuff(time);
+	doWaterStuff(time);
 
 
+
+	
 	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
 		mPlayer->drawHitBox(it._Ptr->_Myval->mSceneNode->getName(), it._Ptr->_Myval->fallRigidBody);
 	}
+	
 
 
 	/*if (mInputHandler->IsKeyDown(OIS::KC_SPACE)) {
@@ -174,7 +195,8 @@ World::Think(float time)
 	//	remove = false; 
 	//}
 
-	mPlayer->Think(time);
+	
+	 mPlayer->Think(time);
 
 #pragma endregion TODO: Move to physmanager after stage is done 
 
@@ -187,8 +209,8 @@ void
 World::createWater()
 {
 
-#define FLOW_SPEED 1
-#define FLOW_HEIGHT 10
+#define FLOW_SPEED 0.8
+#define FLOW_HEIGHT 4
 
 	Ogre::Entity *mWaterEntity;
 	Ogre::Plane mWaterPlane;
@@ -198,14 +220,14 @@ World::createWater()
 
 	Ogre::MeshManager::getSingleton().createPlane(
 		"WaterPlane", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-		mWaterPlane, 1000, 1000, 5, 1, true, 1, 10, 10, Ogre::Vector3::UNIT_Z);
+		mWaterPlane, 5000, 5000, 5, 1, true, 1, 10, 10, Ogre::Vector3::UNIT_Z);
 
 	mWaterEntity = mSceneManager->createEntity("water", "WaterPlane");
 	mWaterEntity->setMaterialName("Examples/Water9");
 
 	Ogre::SceneNode *mWaterNode = mSceneManager->getRootSceneNode()->createChildSceneNode("WaterNode");
 	mWaterNode->attachObject(mWaterEntity);
-	mWaterNode->setPosition(0, 0, 0);
+	mWaterNode->setPosition(0, -5, 0);
 	mWaterNode->setOrientation(Ogre::Quaternion::IDENTITY);
 	//mWaterNode->setOrientation(0, 0, 1, 0);
 	//mWaterNode->translate(3000, -50, 3000);
@@ -249,3 +271,6 @@ World::doWaterStuff(float time)
 }
 
 #pragma endregion Water
+
+
+

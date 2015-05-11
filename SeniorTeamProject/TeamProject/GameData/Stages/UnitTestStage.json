@@ -1,6 +1,10 @@
 {
 	"type" : "Stage",
 	"StaticScenery" : [
-		{"name" : "OneUnitBox", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]}
+		{"name" : "TenUnitBox", "position" : [20,0,0], "Orientation" : [1, 0, 0, 0]},
+		{"name" : "DolphinIsland", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]},
+		{"name" : "PalmTree1", "position" : [50, 0, -500], "Orientation" : [1, 0, 0, 0]},
+		{"name" : "PalmTree2", "position" : [100, 0, -500], "Orientation" : [1, 0, 0, 0]},
+		{"name" : "Ocean", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]}
 	]
 }
