@@ -14,7 +14,7 @@
  */
 
 StaticScenery::StaticScenery(Ogre::Entity *mEntity, Ogre::Vector3 position,
-							 Ogre::Quaternion orientation) {
+							 Ogre::Quaternion orientation, int interaction) {
 
 	mSceneNode = NULL;
 
@@ -37,6 +37,7 @@ StaticScenery::StaticScenery(Ogre::Entity *mEntity, Ogre::Vector3 position,
 		groundRigidBodyCI(0, groundMotionState, btTriMeshShape, btVector3(0, 0, 0));
 
     mRigidBody = new btRigidBody(groundRigidBodyCI);
+	mRigidBody->setUserIndex(interaction);
 }
 
 
@@ -147,8 +148,8 @@ void StaticScenery::synchWithBullet() {
 
 
 
-StaticScenery * StaticScenery::clone(Ogre::SceneManager* mSceneManager, Ogre::Vector3 position, Ogre::Quaternion orientation) {
+StaticScenery * StaticScenery::clone(Ogre::SceneManager* mSceneManager, Ogre::Vector3 position, Ogre::Quaternion orientation, int interaction) {
 	// create a new entity
 	Ogre::Entity* newEntity = mSceneManager->createEntity(this->mEntity->getMesh()->getName());
-	return new StaticScenery(newEntity, position, orientation);
+	return new StaticScenery(newEntity, position, orientation, interaction);
 }

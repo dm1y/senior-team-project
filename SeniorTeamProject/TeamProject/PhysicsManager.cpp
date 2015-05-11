@@ -42,6 +42,28 @@ void PhysicsManager::addPlane() {
 
 /* Update function for the Bullet world */
 void PhysicsManager::stepSimulation(float time, World* mWorld) {
+
+	/* Creates the callback to detect whether objects are touching in the world */
+	struct MyContactResultCallback : public btDiscreteDynamicsWorld::ContactResultCallback
+	{
+		bool m_connected;
+
+		MyContactResultCallback() 
+		{
+			m_connected = false;
+		}
+				
+		virtual btScalar   addSingleResult(btManifoldPoint& cp,	
+			const btCollisionObjectWrapper* colObj0Wrap,int partId0,
+			int index0,const btCollisionObjectWrapper* colObj1Wrap,
+			int partId1,int index1)  
+		{
+			/* Sets boolean to true if there's been a contact */
+			m_connected = true; 
+			return 0;
+		}
+	};
+
 	_world->stepSimulation(time, 10);
 	
 	IPhysObject *objToRm; 
@@ -52,27 +74,6 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 	{
 		if (it._Ptr->_Myval->fallRigidBody->getUserIndex() != -1) 
 		{
-			/* Creates the callback to detect whether objects are touching in the world */
-			struct MyContactResultCallback : public btDiscreteDynamicsWorld::ContactResultCallback
-			{
-				bool m_connected;
-
-				MyContactResultCallback() 
-				{
-					m_connected = false;
-				}
-				
-				virtual btScalar   addSingleResult(btManifoldPoint& cp,	
-					const btCollisionObjectWrapper* colObj0Wrap,int partId0,
-					int index0,const btCollisionObjectWrapper* colObj1Wrap,
-					int partId1,int index1)  
-				{
-					/* Sets boolean to true if there's been a contact */
-					m_connected = true; 
-					return 0;
-				}
-			};
-
 			MyContactResultCallback result;
 
 			/* Does the testing between player and the objects we want to iterate through */
@@ -110,5 +111,32 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 
 		/* Removes from ogre world so it's no longer visible */
 		mWorld->SceneManager()->destroyEntity(objToRm->ent->getName().c_str()); 
+	}
+
+	// Checks if player is colliding with a static scenary with interaction # 0 
+	for (std::list<StaticScenery*>::iterator it = mWorld->stage->staticScenery.begin(); it != mWorld->stage->staticScenery.end(); it++) {
+		MyContactResultCallback call;
+
+		/* Does the testing between player and the objects we want to iterate through */
+		_world->contactPairTest(mWorld->mPlayer->getDynamicObject()->fallRigidBody, it._Ptr->_Myval->mRigidBody, call);
+
+		if (it._Ptr->_Myval->mRigidBody->getUserIndex() != -1)
+		{
+			if (call.m_connected)
+			{
+				if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 0)
+				{
+					// Respawn player 
+					btTransform position; 
+					mWorld->mPlayer->getDynamicObject()->fallRigidBody->getMotionState()->getWorldTransform(position);
+					position.setOrigin(btVector3(0, 50, -10));
+					mWorld->mPlayer->getDynamicObject()->fallRigidBody->setWorldTransform(position);
+				}
+				else if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 2)
+				{
+					mWorld->display->displayEnding(true);
+				}
+			}
+		}
 	}
 }
