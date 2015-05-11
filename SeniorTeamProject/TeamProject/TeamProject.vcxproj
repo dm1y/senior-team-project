@@ -120,6 +120,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="IOgreObject.h" />
     <ClInclude Include="IPhysObject.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="JsonUtils.h" />
     <ClInclude Include="Kinect.h" />
     <ClInclude Include="MainListener.h" />
     <ClInclude Include="Menu.h" />
@@ -167,6 +168,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClCompile Include="GameLibrary.cpp" />
     <ClCompile Include="DynamicObject.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="JsonUtils.cpp" />
     <ClCompile Include="Kinect.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainListener.cpp" />

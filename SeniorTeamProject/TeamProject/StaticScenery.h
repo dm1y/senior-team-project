@@ -8,11 +8,11 @@
 
 class StaticScenery {
 public:
-	StaticScenery(Ogre::Entity *mEntity, Ogre::Vector3 position, Ogre::Quaternion orientation);
+	StaticScenery(Ogre::Entity *mEntity, Ogre::Vector3 position, Ogre::Quaternion orientation, int interaction);
 	void addToOgreScene(Ogre::SceneManager *sceneManager);
 	void addToBullet(PhysicsManager *physmanager);
 	btTriangleMesh* ogreToBulletMesh(Ogre::MeshPtr mesh);
-	StaticScenery * clone(Ogre::SceneManager* mSceneManager, Ogre::Vector3 position, Ogre::Quaternion orientation);
+	StaticScenery * clone(Ogre::SceneManager* mSceneManager, Ogre::Vector3 position, Ogre::Quaternion orientation, int interaction);
 	Ogre::SceneNode *mSceneNode;
 	Ogre::Entity *mEntity;
 	

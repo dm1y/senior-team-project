@@ -202,30 +202,24 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 			Ogre::Vector3 meshDimensions;
 			std::string s = std::to_string(meshNames.size()); 
 			
-			OutputDebugString("The size of mesh is \n");
-			OutputDebugString(s.c_str());
-			OutputDebugString("\n");
 
 			if (!document.HasMember("collisionShapeSize")) {
 
 				// XXX: The collision shape auto sizing functionality is experimental
 				// and needs to be tested.
-				OutputDebugString("Going into IF STATEMENT\n");
+
 				Ogre::Entity* tempEntity = mSceneManager->createEntity(meshNames.front());
-				OutputDebugString(meshNames.front().c_str());
 				colDim3 = ogreToBulletVector3(tempEntity->getMesh()->getBounds().getHalfSize());
 				colScala = tempEntity->getMesh()->getBoundingSphereRadius(); // radius
 				colScalb = tempEntity->getMesh()->getBounds().getSize()[1]; // height
 			
 				// apply scale
-				OutputDebugString("\nApplying scale\n");
 				colDim3 = btVector3(colDim3[0] * scale.x, colDim3[1] * scale.y, colDim3[2] * scale.z);
 				colScala = colScala * scale.x;
 				colScalb = colScalb * scale.y;
 
 			} else if(document.HasMember("collisionShapeSize")) {
 				/// Note: FIgure out why it keeps going into this if block instead of the first one 
-				OutputDebugString("Else if \n");
 				if (document["collisionShapeSize"].Size() == 3) {
 					colDim3 = ogreToBulletVector3(parseVector3(document["collisionShapeSize"]));
 				}
@@ -305,7 +299,7 @@ DynamicObject * GameLibrary::getDynamicObject(string name) {
 	}
 }
 
-StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 position, Ogre::Quaternion orientation) {
+StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 position, Ogre::Quaternion orientation, int interaction) {
 
 	unordered_map<string, StaticScenery*> ::iterator it = staticScenery.find(name);
 
@@ -316,7 +310,7 @@ StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 positio
 		statScenery = it->second;
 
 		// create a clone of it.
-		return statScenery->clone(this->mSceneManager, position, orientation);
+		return statScenery->clone(this->mSceneManager, position, orientation, interaction);
 	} else {
 		// element was not found.
 		// load it in and create instance 
@@ -353,14 +347,16 @@ StaticScenery * GameLibrary::getStaticScenery(string name, Ogre::Vector3 positio
 
 			// Finished parsing the filess
 			// Create the instance and put in the GameLibrary
-			StaticScenery *newStaticScenery = new StaticScenery(tempEntity, position, orientation);
+			StaticScenery *newStaticScenery = new StaticScenery(tempEntity, position, orientation, interaction);
+
+
 
 			// put it into the library
 			staticScenery.emplace(name, newStaticScenery);
 
 			std::fclose(pFile);
 
-			return newStaticScenery->clone(this->mSceneManager, position, orientation);
+			return newStaticScenery->clone(this->mSceneManager, position, orientation, interaction);
 
 		} else {
 			// no file was found
@@ -455,6 +451,7 @@ Stage * GameLibrary::getStage(string name) {
 					rotation = Ogre::Quaternion(1, 0, 0, 0);
 				}
 
+
 				DynamicObject* tempDynObj =  this->getDynamicObject(name);
 				tempDynObj->setPosition(position);
 				tempDynObj->setOrientation(rotation);
@@ -478,7 +475,15 @@ Stage * GameLibrary::getStage(string name) {
 				
 				Ogre::Vector3 position = Ogre::Vector3(0, 0, 0);
 				Ogre::Quaternion rotation = Ogre::Quaternion(1, 0, 0, 0);
-			
+				int interaction = -1; 
+
+				// interaction legend 
+				// -1 = no interaction 
+				// 0 = player respawns  
+				if (document.HasMember("interaction")) {
+					interaction = document["interaction"].GetInt();
+				}
+
 				if (document["StaticScenery"][i].HasMember("position")) {
 					double x = document["StaticScenery"][i]["position"][0].GetDouble();
 					double y = document["StaticScenery"][i]["position"][1].GetDouble();
@@ -499,7 +504,7 @@ Stage * GameLibrary::getStage(string name) {
 					rotation = Ogre::Quaternion(1, 0, 0, 0);
 				}
 
-				StaticScenery* newStaticScenery = this->getStaticScenery(name, position, rotation);
+				StaticScenery* newStaticScenery = this->getStaticScenery(name, position, rotation, interaction);
 				
 				tempStaticScenery.push_back(newStaticScenery);
 		

@@ -4,11 +4,14 @@
 #include "Camera.h"
 #include "Kinect.h"
 #include <ois.h>
+#include "Menu.h"
 
 MainListener::MainListener(Ogre::RenderWindow *mainWindow, InputHandler *inputManager, World *world, GameCamera *cam, Kinect *sensor) :
 mRenderWindow(mainWindow), mInputHandler(inputManager), mWorld(world), mGameCamera(cam), mKinect(sensor)
 {
 	x = 0;
+	mPaused = false;
+	mQuit = false;
 }
 
 
@@ -24,12 +27,18 @@ bool
     //  The only reason we have the Think method of the InputHandler return
     //   a value, is for the escape key to cause our application to end.
     //   Feel free to change this to something that makes more sense to you.
+
+	if (!mPaused)
+	{
 	mKinect->update(evt.timeSinceLastFrame);
 	mInputHandler->Think(time);
+	
 	mWorld->Think(time);
     mGameCamera->Think(time);
-
+	}
 	// Call think methods on any other managers / etc you want to add
+	MenuManager::getInstance()->think(time);
+
 
 	bool keepGoing = true;
 
@@ -43,6 +52,14 @@ bool
         {
             mKinect->cancelCallibration();
         }
+		 else if (MenuManager::getInstance()->getActiveMenu() != NULL)
+        {
+            // do nothing
+        }
+		 else 
+		 {
+		   MenuManager::getInstance()->getMenu("pause")->enable();
+		 }
 
 		keepGoing = false;
 	}

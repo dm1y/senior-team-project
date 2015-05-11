@@ -1,21 +1,12 @@
 #include "PhysicsManager.h"
+#include "BulletCollision\CollisionDispatch\btCollisionWorld.h"
 #include "World.h"
 #include "Player.h"
 #include "HUD.h"
 
 using namespace std;
 
-/* (TO: OLGA)
- * (From: Jordan)
- * I wrote this entire class, the code in the constructor and destructor is 
- * standard code for configuring the bullet physics environment.
- * 
- * Everything else is all me. 
- */
-
-// Update: Diana worked on the collision and identification aspect of this class 
-
-
+/* Constructor */
 PhysicsManager::PhysicsManager() {
 	/* Setup the bullet Physics world. */
     _broadphase = new btDbvtBroadphase();
@@ -26,6 +17,7 @@ PhysicsManager::PhysicsManager() {
     _world->setGravity(btVector3(0, -100, 0));
 }
 
+/* Deconstructor */
 PhysicsManager::~PhysicsManager() {
     delete _world;
     delete _solver;
@@ -34,6 +26,7 @@ PhysicsManager::~PhysicsManager() {
     delete _broadphase;
 }
 
+/* Adds a plane */
 void PhysicsManager::addPlane() {
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
 	btDefaultMotionState* groundMotionState =
@@ -47,155 +40,103 @@ void PhysicsManager::addPlane() {
 	_world->addRigidBody(groundRigidBody);
 }
 
-
-
-
+/* Update function for the Bullet world */
 void PhysicsManager::stepSimulation(float time, World* mWorld) {
-	_world->stepSimulation(time, 10);
-	/* update all physics objects */
-	//for (std::list<IPhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) {
-	//	it._Ptr->_Myval->synchWithBullet();
-	//}
 
+	/* Creates the callback to detect whether objects are touching in the world */
+	struct MyContactResultCallback : public btDiscreteDynamicsWorld::ContactResultCallback
+	{
+		bool m_connected;
+
+		MyContactResultCallback() 
+		{
+			m_connected = false;
+		}
+				
+		virtual btScalar   addSingleResult(btManifoldPoint& cp,	
+			const btCollisionObjectWrapper* colObj0Wrap,int partId0,
+			int index0,const btCollisionObjectWrapper* colObj1Wrap,
+			int partId1,int index1)  
+		{
+			/* Sets boolean to true if there's been a contact */
+			m_connected = true; 
+			return 0;
+		}
+	};
+
+	_world->stepSimulation(time, 10);
+	
 	IPhysObject *objToRm; 
 	bool remove = false; 
 
-	/* update all physics objects */
+	/* Update all physics objects */
 	for (std::list<IPhysObject*>::iterator it = physObjects.begin(); it != physObjects.end(); it++) 
 	{
 		if (it._Ptr->_Myval->fallRigidBody->getUserIndex() != -1) 
 		{
-			if (checkIntersect(mWorld->mPlayer->getDynamicObject()->fallRigidBody, it._Ptr->_Myval->fallRigidBody))
-			{
-				OutputDebugString("\n It's intersecting!\n");
+			MyContactResultCallback result;
 
+			/* Does the testing between player and the objects we want to iterate through */
+			_world->contactPairTest(mWorld->mPlayer->getDynamicObject()->fallRigidBody, it._Ptr->_Myval->fallRigidBody, result);
+
+			/* Gets the result of the contact pair test and see whether objects have contacted each other */
+			if (result.m_connected) {
+
+				/* Increments score if this object with index 1 has been touched by the player */
 				if (it._Ptr->_Myval->fallRigidBody->getUserIndex() == 1) 
 				{
-
 					remove = true;
 					objToRm = it._Ptr->_Myval;
 
 					mWorld->display->incrementScore();
 					break; 
 				}
+
+				/* Ends the level if this object with index 2 has been touched by the player */
 				else if (it._Ptr->_Myval->fallRigidBody->getUserIndex() == 2)
 				{
 					mWorld->display->displayEnding(true);
 				}
 			}
 		}
+		/* Synchronizes object with Bullet */
 		it._Ptr->_Myval->synchWithBullet();
 	}
 	
 	if (remove)
 	{
-		// removes from bullet 
+		/* Removes object and rigid body from Bullet */
 		_world->removeRigidBody(objToRm->fallRigidBody);
 		physObjects.remove(objToRm);
 
-		// removes from world so it's no longer visible
+		/* Removes from ogre world so it's no longer visible */
 		mWorld->SceneManager()->destroyEntity(objToRm->ent->getName().c_str()); 
 	}
 
-}
+	// Checks if player is colliding with a static scenary with interaction # 0 
+	for (std::list<StaticScenery*>::iterator it = mWorld->stage->staticScenery.begin(); it != mWorld->stage->staticScenery.end(); it++) {
+		MyContactResultCallback call;
 
-// Diana wrote this. 
-// This gets called in world. 
-// Checks collisions between player and a list of interactive objects 
-// This might be combined with stepSimulation above later on when condensing code 
-//void PhysicsManager::checkCollisions(Player *p, Ogre::Overlay *overly, Ogre::SceneManager *mSceneManager)
-//{
-//	DynamicObject *objToRm; 
-//	bool remove = false;
-//
-//	for (DynamicObject *obj : dynaObjects) 
-//	{
-//		if (checkIntersect(p->getDynamicObject()->fallRigidBody, obj->fallRigidBody))
-//		{
-//			if (obj->fallRigidBody->getUserIndex() == 1) 
-//			{
-//				remove = true;
-//				objToRm = obj;
-//
-//				//score++;
-//
-//				//std::string scr = std::to_string(score);
-//				//OutputDebugString("\nPLAYER IS COLLIDING WITH THE TEAPOT ZOMG!\n");
-//				//OutputDebugString(scr.c_str());
-//				///OutputDebugString("\nSCORE INCREASING! TEAPOT IS NOW INVISIBLE\n");
-//
-//				_world->removeRigidBody(obj->fallRigidBody);
-//				physObjects.remove(obj);
-//				break; 
-//			}
-//			else if (obj->fallRigidBody->getUserIndex() == 2) 
-//			{
-//				OutputDebugString("\nPLAYER IS COLLIDING WITH THE TUNACAN ZOMG!\n");
-//				overly->show();
-//			}
-//		}
-//	}
-//
-//	if (remove) 
-//	{
-// 		dynaObjects.remove(objToRm);				
-//		mSceneManager->destroyEntity(objToRm->ent->getName().c_str());
-//		remove = false; 
-//	}
-//}
+		/* Does the testing between player and the objects we want to iterate through */
+		_world->contactPairTest(mWorld->mPlayer->getDynamicObject()->fallRigidBody, it._Ptr->_Myval->mRigidBody, call);
 
-// Simon wrote this. 
-bool
-PhysicsManager::checkIntersect(btRigidBody *A, btRigidBody *B)
-{
-	btVector3 Amin;
-	btVector3 Amax;
-	btVector3 Bmin;
-	btVector3 Bmax;
-
-	A->getAabb(Amin, Amax);
-	B->getAabb(Bmin, Bmax);
-
-	OutputDebugString("\n Checking intersect \n");
-
-	btScalar AmX, AmY, AmZ, AMX, AMY, AMZ, BmX, BmY, BmZ, BMX, BMY, BMZ;
-	AmX = Amin.getX();
-	AmY = Amin.getY();
-	AmZ = Amin.getZ();
-
-	AMX = Amax.getX();
-	AMY = Amax.getY();
-	AMZ = Amax.getZ();
-
-	BmX = Bmin.getX();
-	BmY = Bmin.getY();
-	BmZ = Bmin.getZ();
-
-	BMX = Bmax.getX();
-	BMY = Bmax.getY();
-	BMZ = Bmax.getZ();
-
-		 //
-	if ((((BmX <= AMX) && (BmY <= AMY) && (BmZ <= AMZ)) &&
-	     ((AMX <= BMX) && (AMY <= BMY) && (AMZ <= BMZ))) ||
-		(((AmX <= BMX) && (AmY <= BMY) && (AmZ <= BMZ)) &&
-		 ((BMX <= AMX) && (BMY <= AMY) && (BMZ <= AMZ))) ||
-		 // B is inside of A
-		(((AmX <= BmX) && (AmY <= BmY) && (AmX <= BmY)) &&
-		 ((BMX <= AMX) && (BMY <= AMY) && (BMX <= AMY))) ||
-		 // A is inside of B
-		(((BmX <= AmX) && (BmY <= AmY) && (BmZ <= AmZ)) &&
-		 ((AMX <= BMX) && (AMY <= BMY) && (AMZ <= BMZ))))
-		return true;
-	else 
-		return false;
-
-	//if ((((Bmin.getX() <= Amax.getX()) && (Bmin.getY() <= Amax.getY()) && (Bmin.getZ() <= Amax.getZ())) &&
-	//	((Amax.getX() <= Bmax.getX()) && (Amax.getY() <= Bmax.getY()) && (Amax.getZ() <= Bmax.getZ()))) ||
-	//	(((Amin.getX() <= Bmax.getX()) && (Amin.getY() <= Bmax.getY()) && (Amin.getZ() <= Bmax.getZ())) &&
-	//	((Bmax.getX() <= Amax.getX()) && (Bmax.getY() <= Amax.getY()) && (Bmax.getZ() <= Amax.getZ()))))
-	//	return true;
-	//else 
-	//	return false;
-
+		if (it._Ptr->_Myval->mRigidBody->getUserIndex() != -1)
+		{
+			if (call.m_connected)
+			{
+				if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 0)
+				{
+					// Respawn player 
+					btTransform position; 
+					mWorld->mPlayer->getDynamicObject()->fallRigidBody->getMotionState()->getWorldTransform(position);
+					position.setOrigin(btVector3(0, 50, -10));
+					mWorld->mPlayer->getDynamicObject()->fallRigidBody->setWorldTransform(position);
+				}
+				else if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 2)
+				{
+					mWorld->display->displayEnding(true);
+				}
+			}
+		}
+	}
 }

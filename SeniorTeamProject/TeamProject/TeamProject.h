@@ -20,6 +20,7 @@ class World;
 class GameCamera;
 class MainListener;
 class Kinect;
+class HUD; 
 
 class TeamProject :  public Ogre::WindowEventListener
 {
@@ -66,6 +67,15 @@ protected:
     //  game logic
 	void createFrameListener(void);
 
+	// Starts the game 
+	void startGame(void);
+
+	// Ends the game 
+	void endGame(void);
+
+	// sets up menus 
+	void setupMenus(bool loginRequired);
+
 
 	MainListener *mFrameListener;
 
@@ -73,6 +83,7 @@ protected:
 	World *mWorld;
     GameCamera *mGameCamera;
 	Kinect *mKinect;
+	HUD *display;
 	
     Ogre::Root *mRoot;
     Ogre::Camera* mCamera;

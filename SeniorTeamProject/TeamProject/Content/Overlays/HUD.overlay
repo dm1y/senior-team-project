@@ -1,0 +1,55 @@
+Ending
+{
+    zorder 200
+	
+    container Panel(Ending/Panel)
+    {
+      metrics_mode relative
+
+      left 0.05
+      top 0.3
+      width 0.75
+      height 0.2
+	  material BlueSemiTran
+	  
+		element TextArea(Ending/Panel/Text1)
+		{
+		metrics_mode relative
+		
+         left 0.1
+		 top 0.05
+         font_name BlueHighwayBig
+         char_height 0.05
+         colour 1 1 1
+         caption Congratulations, you have beat the game! 
+		}
+    }
+}
+
+
+Score
+{
+    zorder 100
+	
+    container Panel(Score/Panel)
+    {
+      metrics_mode relative
+
+      left 0.05
+      top 0.7
+      width 0.2
+      height 0.2
+	  
+		element TextArea(Score/Panel/Text1)
+		{
+		metrics_mode relative
+		
+         left 0.1
+		 top 0.05
+         font_name BlueHighwayBig
+         char_height 0.05
+         colour 1 1 1
+         caption Score is: 0
+		}
+    }
+}

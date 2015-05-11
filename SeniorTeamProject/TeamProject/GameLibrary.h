@@ -20,7 +20,7 @@ private:
 public:
 	GameLibrary(Ogre::SceneManager *sceneManager);
 	DynamicObject * getDynamicObject(string name);
-	StaticScenery * getStaticScenery(string name, Ogre::Vector3 position, Ogre::Quaternion orientation);
+	StaticScenery * getStaticScenery(string name, Ogre::Vector3 position, Ogre::Quaternion orientation, int interaction);
 	Stage * getStage(string name);
 	Ogre::SceneManager *mSceneManager;	
 	Ogre::Vector3 parseVector3(const rapidjson::Value& x);

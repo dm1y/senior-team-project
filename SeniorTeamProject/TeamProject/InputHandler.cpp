@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 
+
 InputHandler::InputHandler(Ogre::RenderWindow *renderWindow, Console* console) : 
 	 mRenderWindow(renderWindow), mConsole(console)
 {
@@ -20,6 +21,11 @@ InputHandler::InputHandler(Ogre::RenderWindow *renderWindow, Console* console) :
 
 	mCurrentKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true /* not buffered */ ));
 	mCurrentKeyboard->setEventCallback(this);
+}
+
+void InputHandler::setEventCallback(OIS::KeyListener *keyListener)
+{
+	mCurrentKeyboard->setEventCallback(keyListener);
 }
 
 
