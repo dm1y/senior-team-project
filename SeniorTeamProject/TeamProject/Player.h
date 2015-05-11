@@ -1,3 +1,7 @@
+#ifndef __PLAYER_H_
+#define __PLAYER_H_
+
+
 #include "OgreVector3.h"
 #include "Receivers.h"
 #include "OgreSceneManager.h"
@@ -104,3 +108,5 @@ protected:
 	bool mEnableKeyboard;
 	bool mAutoCallibrate;
 };
+
+#endif

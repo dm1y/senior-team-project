@@ -11,9 +11,9 @@
 #include "OgreOverlay.h"
 #include "World.h"
 #include "Camera.h"
+#include "Player.h"
 
 class World;
-
 
 class Console: Ogre::FrameListener
 {
@@ -53,6 +53,11 @@ public:
     std::list<Ogre::String> lines; /* All the lines of text in the console */
 	Ogre::String prompt;
 	std::map<Ogre::String,void (*)(Console *console, std::vector<Ogre::String> *args)> commands;
+	bool isInPlacementMode;
+	std::string statSceneNameToPlace;
+	Ogre::Vector3 toPlacePos;
+	Ogre::SceneNode* placementNode;
+	void placeStaticScenery();
 };
 
 
