@@ -22,6 +22,11 @@ public:
 	bool IsKeyDown(OIS::KeyCode key);
 	bool WasKeyDown(OIS::KeyCode key);
 
+	static InputHandler *getInstance();
+	void setEventCallback(OIS::KeyListener *keyListener);
+	static void destroyInstance();
+	void initialize(Ogre::RenderWindow* win);
+
 protected:
 	OIS::InputManager* mInputManager;
 	Ogre::RenderWindow *mRenderWindow;

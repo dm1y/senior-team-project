@@ -354,7 +354,7 @@ void ScrollSelectMenu::reset(std::vector<Ogre::String> items,  std::function<voi
 
 		textArea->setCaption("");
 		textArea->setCharHeight(mItemHeight * 1.5f);
-		textArea->setFontName("Big");
+		//textArea->setFontName("Big");
 		textArea->setCharHeight(mItemHeight);
 		mPanelText->addChild(textArea);
 		mElems.push_back(textArea);
@@ -475,15 +475,19 @@ Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float
 
 
 	mItemHeight = 0.05f;
+	
+
 	Ogre::OverlayManager& overlayManager = Ogre::OverlayManager::getSingleton();
-         // Create an overlay
-     mMenuOverlay = overlayManager.create( "Menu"+name );
+    
+	// Create an overlay
+	
+	mMenuOverlay = overlayManager.create( "Menu"+name );
  
 	 // Create a panel
 	 mPanel = static_cast<Ogre::OverlayContainer*>( overlayManager.createOverlayElement( "Panel", name +"Panel" ) );
 	 mPanel->setPosition(xPos, yPos );
 	 mPanel->setDimensions( 1 - 2*mStartingX, 0.9f );
-	 mPanel->setMaterialName( "Menu/Background/Blue" );
+	 //mPanel->setMaterialName( "Menu/Background/Blue" );
 	 // Add the panel to the overlay
 	 mMenuOverlay->add2D( mPanel );
 
@@ -493,7 +497,7 @@ Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float
 
 	 mMenuHighlight = static_cast<Ogre::OverlayContainer*>( overlayManager.createOverlayElement( "Panel", name +"HighlightPanel" ) );
 	 mMenuHighlight->setDimensions( 1 - 2*mStartingX, mItemHeight * 1.5f);
-	 mMenuHighlight->setMaterialName( "Menu/Highlight/Blue" );
+	 //mMenuHighlight->setMaterialName( "Menu/Highlight/Blue" );
 	 mPanel->addChild(mMenuHighlight);
 
 
@@ -502,7 +506,7 @@ Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float
 	textArea->setPosition(mStartingX, mStartingY);
 	textArea->setCaption(header);
 	textArea->setCharHeight(mItemHeight * 1.5f);
-	textArea->setFontName("Big");
+	//textArea->setFontName("Big");
 	textArea->setColour(mUnHighlightColor);
 	mPanel->addChild(textArea);
 
@@ -643,7 +647,7 @@ Menu::MenuItem::MenuItem(Ogre::String text, Ogre::String name,  Menu *parent, fl
 	mY  = y;
 	mItemText->setCaption(text);
 	mItemText->setCharHeight(parent->mItemHeight);
-	mItemText->setFontName("Big");
+	//mItemText->setFontName("Big");
 	mItemText->setColour(Ogre::ColourValue(1,1,1));
 	mParent->mPanelText->addChild(mItemText);
 	mSaved = saved;

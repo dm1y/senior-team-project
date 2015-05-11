@@ -29,7 +29,8 @@ class World
 {
 public:
 	
-	World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib, Ogre::Root *mRoot);
+	World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, 
+		GameCamera *gameCamera, GameLibrary *gameLib, Ogre::Root *mRoot, HUD *hud);
 
     // You'll want various methods to access & change your world here
     

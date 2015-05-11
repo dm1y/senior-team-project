@@ -4,6 +4,8 @@
 #include "MainListener.h"
 #include "Camera.h"
 #include "Kinect.h"
+#include "HUD.h"
+#include "Menu.h"
 
 #include "Ogre.h"
 #include "OgreConfigFile.h"
@@ -79,6 +81,7 @@ TeamProject::createScene()
 	console->setVisible(false);
 
     mInputHandler = new InputHandler(mWindow, console);
+	mInputHandler->setEventCallback(MenuManager::getInstance());
 
 	// If a class needs access to another class, you can pass in a pointer in the constructor
 	//   or, if you need circular accesses (player needs access to the world, and the world needs
@@ -86,14 +89,183 @@ TeamProject::createScene()
 	//   of doing it, giving the world access to the camera and the input handler.
 	
 	mGameCamera = new GameCamera(mCamera, mInputHandler, mSceneMgr);   
-
+	display = new HUD();
 	mKinect = new Kinect();
 	mKinect->initSensor();
 	mKinect->StartSession();
 
-	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary(mSceneMgr), this->mRoot);
+	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary(mSceneMgr), this->mRoot, display);
 	console->mWorld = mWorld;
+
+
+	// Display whether user is logged in [found on the upper left corner]  
+	Ogre::OverlayManager::getSingleton().getByName("Login/Failure")->show();
 }
+
+void
+TeamProject::setupMenus(bool loginRequired)
+{
+	MenuManager *menus = MenuManager::getInstance();
+    HUD *h = display;
+    MainListener *l = mFrameListener;
+    World *w = mWorld;
+    Kinect *k = mKinect;
+
+    Menu *mainMenu = new Menu("Main Menu", "main", 0.05f, 0.1f, 0.08f);
+
+	OutputDebugString("creating first menu");
+
+ //   Menu *options = new Menu("Options", "options", 0.05f, 0.1f, 0.1f, mainMenu);
+ //   Menu *controlOptions = new Menu("Control Options", "controloptions", 0.05f, 0.1f, 0.07f, options);
+ //   Menu *gameplayOptions = new Menu("Gameplay Options", "gameplayoptions", 0.05f, 0.05f, 0.07f, options);
+ //   //Menu *soundOptions = new Menu("Sound Options", "soundOptions", 0.05f, 0.1f,0.1f, options);
+ //   Menu *advancedOptions = new Menu("Advanced Options", "advancedOptions", 0.05f, 0.1f, 0.08f, options);
+    Menu *login = new Menu("Login", "login", 0.05f, 0.1f,0.1f, mainMenu);
+ //   Menu *pauseMenu = new Menu("Pause Menu", "pause", 0.05f, 0.1f);
+ //   Menu *confirmMenu = new Menu("Confirm Profile Reset", "profleReset", 0.1f, 0.1f, 0.1f, advancedOptions);
+	//Menu *endGameMenu = new Menu("Game Over!", "gameOver", 0.1f, 0.1f, 0.1f, NULL);
+
+	menus->addMenu(mainMenu);
+ //   menus->addMenu(options);
+ //   menus->addMenu(pauseMenu);
+	//menus->addMenu(gameplayOptions);
+	//menus->addMenu(controlOptions);
+	//menus->addMenu(soundOptions);
+	//menus->addMenu(advancedOptions);
+	//menus->addMenu(login);
+	//menus->addMenu(endGameMenu);
+	//menus->addMenu(confirmMenu);
+
+	/////////////////////////////////////////////////
+	// Login Menu 
+	//////////////////////////////////////////////////
+
+	// Needs logger.cpp and logger.h which needs SSL setup 
+	/*login->AddChooseString("Username",[lm](Ogre::String s) {lm->changeUsername(s); },"",15,false);
+	login->AddChooseString("Password",[lm, this](Ogre::String s) {this->setFromConfigString(lm->changePassword(s));},"",15,true);
+	login->AddSelectElement("Return to Main Menu", [login, mainMenu]() {login->disable(); mainMenu->enable();});*/
+	
+	/////////////////////////////////////////////////
+	// Options Menu 
+	//////////////////////////////////////////////////
+
+ //   options->AddSelectElement("Control Options", [options, controlOptions]() {options->disable(); controlOptions->enable();});
+ //   options->AddSelectElement("Gameplay Options", [options, gameplayOptions]() {options->disable(); gameplayOptions->enable();});
+ //   //options->AddSelectElement("Sound Options", [options, soundOptions]() {options->disable(); soundOptions->enable();});
+ //   options->AddSelectElement("Advanced Options", [options, advancedOptions]() {options->disable(); advancedOptions->enable();});
+	//options->AddSelectElement("Return to Main Menu", [options, mainMenu]() {options->disable(); mainMenu->enable();});
+	
+	
+	/////////////////////////////////////////////////
+	// Options Submenu:  Controls 
+	//////////////////////////////////////////////////
+
+ //   controlOptions->AddChooseBool("Callibrate Kinect Every Game", [p](bool x) {p->setAutoCallibrate(x); }, p->getAutoCallibrate(), true);
+ //   controlOptions->AddChooseFloat("Kinect Sensitivity Left / Right", [p](float x) {p->setKinectSentitivityLR(x); }, 0.7f, 1.5f, 1.f, 0.1f, true);
+ //   controlOptions->AddChooseFloat("Kinect Sensitivity Front / Back", [p](float x) {p->setKinectSentitivityFB(x); }, 0.7f, 1.5f, 1.f, 0.1f, true);
+ //   controlOptions->AddSelectElement("Callibrate Kinect Now", [controlOptions, k]() {controlOptions->disable(); k->callibrate(4.0f, [controlOptions]() {controlOptions->enable();});});
+ //   controlOptions->AddChooseBool("Invert Front/Back Controls", [p](bool x) {p->setInvertControls(x); }, p->getInvertControls(), true);
+	//controlOptions->AddChooseBool("Enable Kinect", [p](bool x) { p->setEnableKinect(x);  if (!x) p->setAutoCallibrate(false); }, p->getEnableKinect(), true);
+	//controlOptions->AddChooseBool("Enable Keyboard", [p](bool x) { p->setEnableKeyboard(x);}, p->getEnableKeyboard(), true);
+
+ //   controlOptions->AddSelectElement("Return to Options Menu", [controlOptions,options]() {controlOptions->disable(); options->enable();});
+
+	/////////////////////////////////////////////////
+	// Options Submenu:  Sounds 
+	//////////////////////////////////////////////////
+
+    //soundOptions->AddChooseBool("Enalbe Sound", [sb](bool x) {sb->setEnableSound(x); }, sb->getEnableSound(), true);
+	//soundOptions->AddChooseInt("Volume", [sb](int x) {sb->setVolume(x); }, 0, 128, sb->getVolume(), 5, true);
+
+	//std::vector<Ogre::String> namesSoundType;
+	//std::vector<std::function<void()>> callbacksSoundType;
+	//namesSoundType.push_back("Realistic (blades)");
+	//callbacksSoundType.push_back([sb]() {sb->setCurrentIndex(0); });
+
+	//namesSoundType.push_back("Representational (tones)");
+	//callbacksSoundType.push_back([sb]() {sb->setCurrentIndex(1); });
+
+	//soundOptions->AddChooseEnum("Sound Type",namesSoundType,callbacksSoundType,0, true);	
+	//soundOptions->AddSelectElement("Return to Options Menu", [soundOptions,options]() {soundOptions->disable(); options->enable();});
+
+	/////////////////////////////////////////////////
+	// Main Menu 
+	//////////////////////////////////////////////////
+
+
+	mainMenu->AddSelectElement("Start Standard Game", [mainMenu,this]() { mainMenu->disable(); this->startGame(); });
+	//mainMenu->AddSelectElement("Login", [mainMenu, login]() {mainMenu->disable(); login->enable();});
+	//mainMenu->AddSelectElement("Options", [options, mainMenu]() {options->enable(); mainMenu->disable();});
+	//mainMenu->AddSelectElement("Quit", [l, this]() {this->writeConfigStr(); l->quit();});
+
+	/////////////////////////////////////////////////
+	// Pause Menu 
+	//////////////////////////////////////////////////
+
+
+    //pauseMenu->AddSelectElement("Continue", [pauseMenu, p]() {pauseMenu->disable(); p->setPaused(false); });
+    //pauseMenu->AddSelectElement("End Game (Return to Main Menu)", [pauseMenu,mainMenu, p, w, h, this]() {this->endGame(), h->showHUDElements(false); pauseMenu->disable();mainMenu->enable(); p->setPaused(true); });
+    //pauseMenu->AddSelectElement("Quit (Close Program)", [this, l]() {this->writeConfigStr();l->quit();});
+
+	/////////////////////////////////////////////////
+	// End Game / Ghost Menu 
+	//////////////////////////////////////////////////
+
+
+	//endGameMenu->AddSelectElement("Replay Against Ghost", [this, endGameMenu]() {endGameMenu->disable(); this->replayGhost();});
+	//endGameMenu->AddSelectElement("Save Ghost", [ghost, awkGhostSave, endGameMenu]() {endGameMenu->disable(); ghost->writeFile(); awkGhostSave->enable();  });
+    //endGameMenu->AddSelectElement("Return to Main Menu", [endGameMenu,mainMenu, p, w, h, this]() {this->endGame(), h->showHUDElements(false); endGameMenu->disable();mainMenu->enable(); p->setPaused(true); });
+
+	//awkGhostSave->AddSelectElement("OK", [endGameMenu, awkGhostSave]() {endGameMenu->enable(); awkGhostSave->disable();});
+
+
+
+
+	/////////////////////////////////////////////////
+	// Options Submenu:  Advanced 
+	//////////////////////////////////////////////////
+
+ //   advancedOptions->AddSelectElement("Get Profile from Server", [this]() {this->readConfigStr();});
+ //   advancedOptions->AddSelectElement("Reset Profile", [advancedOptions, confirmMenu]() {advancedOptions->disable();confirmMenu->enable();});
+	//advancedOptions->AddSelectElement("Return to Options Menu", [advancedOptions, options]() {advancedOptions->disable(); options->enable();});
+ //   confirmMenu->AddSelectElement("Reset Profile (Cannot be undone!)", [this, p, w, a, advancedOptions, confirmMenu, menus]() {p->resetToDefaults();
+	// w->resetToDefaults(); 
+	// a->ResetAll();
+	//menus->resetMenus();
+	//this->setupMenus(false);});
+ //   confirmMenu->AddSelectElement("Cancel Profile Reset", [advancedOptions, confirmMenu]() {advancedOptions->enable();confirmMenu->disable();});
+
+
+
+	/////////////////////////////////////////////////
+	// End of Menu Code
+	//////////////////////////////////////////////////
+
+
+	if (loginRequired)
+	{
+		login->enable();
+	}
+	else
+	{
+		//mainMenu->enable();
+	}
+}
+
+
+#pragma region To Include Later 
+void 
+TeamProject::startGame()
+{
+	mKinect->StartSession();
+}
+
+void 
+TeamProject::endGame()
+{
+	mKinect->EndSession();
+}
+#pragma endregion 
 
 bool 
 TeamProject::setup(void)
@@ -129,13 +301,13 @@ TeamProject::setup(void)
 	createCamera();    
     createViewports();
 
+
     // Set default mipmap level (NB some APIs ignore this)
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
 
 
 	mOverlaySystem = new Ogre::OverlaySystem();
 	mSceneMgr->addRenderQueueListener(mOverlaySystem);
-
 
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
     createScene();
@@ -145,6 +317,8 @@ TeamProject::setup(void)
     // frame to the frame listeners.  These listeners are where all of the non-
     // rendering work is done.  
     createFrameListener();
+
+	setupMenus(false);
 
     return true;
 

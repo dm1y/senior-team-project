@@ -34,8 +34,9 @@
 
 using namespace rapidjson;
 
-World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib, Ogre::Root *mRoot)   : 
-	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib)
+World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, 
+			 GameLibrary *gameLib, Ogre::Root *mRoot, HUD *hud)   : 
+	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib), display(hud)
 {
 	sceneManager->setAmbientLight(Ogre::ColourValue(0, 0, 0));
 	// sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
@@ -77,9 +78,6 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	mCamera->mRenderCamera->lookAt(tempIceIsland->mSceneNode->getPosition());
 
 	// createWater();
-	
-	// Creates new HUD 
-	display = new HUD();
 }
 
 

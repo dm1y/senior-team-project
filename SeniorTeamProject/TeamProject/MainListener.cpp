@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Kinect.h"
 #include <ois.h>
+#include "Menu.h"
 
 MainListener::MainListener(Ogre::RenderWindow *mainWindow, InputHandler *inputManager, World *world, GameCamera *cam, Kinect *sensor) :
 mRenderWindow(mainWindow), mInputHandler(inputManager), mWorld(world), mGameCamera(cam), mKinect(sensor)
@@ -26,10 +27,13 @@ bool
     //   Feel free to change this to something that makes more sense to you.
 	mKinect->update(evt.timeSinceLastFrame);
 	mInputHandler->Think(time);
+	MenuManager::getInstance()->getMenu("main")->enable();
 	mWorld->Think(time);
     mGameCamera->Think(time);
 
 	// Call think methods on any other managers / etc you want to add
+	MenuManager::getInstance()->think(time);
+
 
 	bool keepGoing = true;
 
