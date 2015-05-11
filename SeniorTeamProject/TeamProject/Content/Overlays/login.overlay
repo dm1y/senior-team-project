@@ -10,6 +10,7 @@ ServerConnection/Failure
 		top 0.005
 		width 1
 		height 0.005
+		material simpleRed
 		
 		element TextArea(ServerConnection/Failure/Text)
 		{
@@ -38,6 +39,7 @@ Login/Failure
 		top 0
 		width 1
 		height 0.005
+		material simpleRed
 		
 		element TextArea(Login/Failure/Text)
 		{
@@ -64,6 +66,7 @@ Login/Success
 		top 0
 		width 1
 		height 0.005
+		material simpleGreen
 		
 		element TextArea(Login/Success/Text)
 		{

@@ -10,6 +10,8 @@ MainListener::MainListener(Ogre::RenderWindow *mainWindow, InputHandler *inputMa
 mRenderWindow(mainWindow), mInputHandler(inputManager), mWorld(world), mGameCamera(cam), mKinect(sensor)
 {
 	x = 0;
+	mPaused = false;
+	mQuit = false;
 }
 
 
@@ -25,12 +27,15 @@ bool
     //  The only reason we have the Think method of the InputHandler return
     //   a value, is for the escape key to cause our application to end.
     //   Feel free to change this to something that makes more sense to you.
+
+	if (!mPaused)
+	{
 	mKinect->update(evt.timeSinceLastFrame);
 	mInputHandler->Think(time);
-	MenuManager::getInstance()->getMenu("main")->enable();
+	
 	mWorld->Think(time);
     mGameCamera->Think(time);
-
+	}
 	// Call think methods on any other managers / etc you want to add
 	MenuManager::getInstance()->think(time);
 
@@ -47,6 +52,14 @@ bool
         {
             mKinect->cancelCallibration();
         }
+		 else if (MenuManager::getInstance()->getActiveMenu() != NULL)
+        {
+            // do nothing
+        }
+		 else 
+		 {
+		   MenuManager::getInstance()->getMenu("pause")->enable();
+		 }
 
 		keepGoing = false;
 	}

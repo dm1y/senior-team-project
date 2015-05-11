@@ -468,6 +468,7 @@ Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float
 	mItemSpacing = ydelta;
 	mCurrentMenuItem = 0;
 	mNumMenuItems = 0;
+
 	mStartingX = xPos;
 	mStartingY = yPos;
 	mName = name;
@@ -487,7 +488,7 @@ Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float
 	 mPanel = static_cast<Ogre::OverlayContainer*>( overlayManager.createOverlayElement( "Panel", name +"Panel" ) );
 	 mPanel->setPosition(xPos, yPos );
 	 mPanel->setDimensions( 1 - 2*mStartingX, 0.9f );
-	 //mPanel->setMaterialName( "Menu/Background/Blue" );
+	 mPanel->setMaterialName( "Menu/Background/Blue" );
 	 // Add the panel to the overlay
 	 mMenuOverlay->add2D( mPanel );
 
@@ -497,7 +498,7 @@ Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float
 
 	 mMenuHighlight = static_cast<Ogre::OverlayContainer*>( overlayManager.createOverlayElement( "Panel", name +"HighlightPanel" ) );
 	 mMenuHighlight->setDimensions( 1 - 2*mStartingX, mItemHeight * 1.5f);
-	 //mMenuHighlight->setMaterialName( "Menu/Highlight/Blue" );
+	 mMenuHighlight->setMaterialName( "Menu/Highlight/Blue" );
 	 mPanel->addChild(mMenuHighlight);
 
 
@@ -506,12 +507,13 @@ Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float
 	textArea->setPosition(mStartingX, mStartingY);
 	textArea->setCaption(header);
 	textArea->setCharHeight(mItemHeight * 1.5f);
-	//textArea->setFontName("Big");
+	textArea->setFontName("Big");
 	textArea->setColour(mUnHighlightColor);
 	mPanel->addChild(textArea);
 
 	 // Show the overlay
 	mEnabled = beginEnabled;
+
 	if (beginEnabled)
 	{
 		mMenuOverlay->show();

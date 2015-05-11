@@ -100,6 +100,7 @@ TeamProject::createScene()
 
 	// Display whether user is logged in [found on the upper left corner]  
 	Ogre::OverlayManager::getSingleton().getByName("Login/Failure")->show();
+
 }
 
 void
@@ -113,47 +114,46 @@ TeamProject::setupMenus(bool loginRequired)
 
     Menu *mainMenu = new Menu("Main Menu", "main", 0.05f, 0.1f, 0.08f);
 
-	OutputDebugString("creating first menu");
-
- //   Menu *options = new Menu("Options", "options", 0.05f, 0.1f, 0.1f, mainMenu);
- //   Menu *controlOptions = new Menu("Control Options", "controloptions", 0.05f, 0.1f, 0.07f, options);
- //   Menu *gameplayOptions = new Menu("Gameplay Options", "gameplayoptions", 0.05f, 0.05f, 0.07f, options);
+    Menu *options = new Menu("Options", "options", 0.05f, 0.1f, 0.1f, mainMenu);
+    Menu *controlOptions = new Menu("Control Options", "controloptions", 0.05f, 0.1f, 0.07f, options);
+    Menu *gameplayOptions = new Menu("Gameplay Options", "gameplayoptions", 0.05f, 0.05f, 0.07f, options);
  //   //Menu *soundOptions = new Menu("Sound Options", "soundOptions", 0.05f, 0.1f,0.1f, options);
- //   Menu *advancedOptions = new Menu("Advanced Options", "advancedOptions", 0.05f, 0.1f, 0.08f, options);
+    Menu *advancedOptions = new Menu("Advanced Options", "advancedOptions", 0.05f, 0.1f, 0.08f, options);
     Menu *login = new Menu("Login", "login", 0.05f, 0.1f,0.1f, mainMenu);
- //   Menu *pauseMenu = new Menu("Pause Menu", "pause", 0.05f, 0.1f);
- //   Menu *confirmMenu = new Menu("Confirm Profile Reset", "profleReset", 0.1f, 0.1f, 0.1f, advancedOptions);
-	//Menu *endGameMenu = new Menu("Game Over!", "gameOver", 0.1f, 0.1f, 0.1f, NULL);
+
+	Menu *pauseMenu = new Menu("Pause Menu", "pause", 0.05f, 0.1f);
+    Menu *confirmMenu = new Menu("Confirm Profile Reset", "profleReset", 0.1f, 0.1f, 0.1f, advancedOptions);
+	Menu *endGameMenu = new Menu("Game Over!", "gameOver", 0.1f, 0.1f, 0.1f, NULL);
 
 	menus->addMenu(mainMenu);
- //   menus->addMenu(options);
- //   menus->addMenu(pauseMenu);
-	//menus->addMenu(gameplayOptions);
-	//menus->addMenu(controlOptions);
+    menus->addMenu(options);
+    menus->addMenu(pauseMenu);
+	menus->addMenu(gameplayOptions);
+	menus->addMenu(controlOptions);
 	//menus->addMenu(soundOptions);
-	//menus->addMenu(advancedOptions);
-	//menus->addMenu(login);
-	//menus->addMenu(endGameMenu);
-	//menus->addMenu(confirmMenu);
+	menus->addMenu(advancedOptions);
+	menus->addMenu(login);
+	menus->addMenu(endGameMenu);
+	menus->addMenu(confirmMenu);
 
 	/////////////////////////////////////////////////
 	// Login Menu 
 	//////////////////////////////////////////////////
 
 	// Needs logger.cpp and logger.h which needs SSL setup 
-	/*login->AddChooseString("Username",[lm](Ogre::String s) {lm->changeUsername(s); },"",15,false);
-	login->AddChooseString("Password",[lm, this](Ogre::String s) {this->setFromConfigString(lm->changePassword(s));},"",15,true);
-	login->AddSelectElement("Return to Main Menu", [login, mainMenu]() {login->disable(); mainMenu->enable();});*/
+	//login->AddChooseString("Username",[lm](Ogre::String s) {lm->changeUsername(s); },"",15,false);
+	//login->AddChooseString("Password",[lm, this](Ogre::String s) {this->setFromConfigString(lm->changePassword(s));},"",15,true);
+	//login->AddSelectElement("Return to Main Menu", [login, mainMenu]() {login->disable(); mainMenu->enable();});
 	
 	/////////////////////////////////////////////////
 	// Options Menu 
 	//////////////////////////////////////////////////
 
- //   options->AddSelectElement("Control Options", [options, controlOptions]() {options->disable(); controlOptions->enable();});
- //   options->AddSelectElement("Gameplay Options", [options, gameplayOptions]() {options->disable(); gameplayOptions->enable();});
+    options->AddSelectElement("Control Options", [options, controlOptions]() {options->disable(); controlOptions->enable();});
+    options->AddSelectElement("Gameplay Options", [options, gameplayOptions]() {options->disable(); gameplayOptions->enable();});
  //   //options->AddSelectElement("Sound Options", [options, soundOptions]() {options->disable(); soundOptions->enable();});
- //   options->AddSelectElement("Advanced Options", [options, advancedOptions]() {options->disable(); advancedOptions->enable();});
-	//options->AddSelectElement("Return to Main Menu", [options, mainMenu]() {options->disable(); mainMenu->enable();});
+    options->AddSelectElement("Advanced Options", [options, advancedOptions]() {options->disable(); advancedOptions->enable();});
+	options->AddSelectElement("Return to Main Menu", [options, mainMenu]() {options->disable(); mainMenu->enable();});
 	
 	
 	/////////////////////////////////////////////////
@@ -194,8 +194,8 @@ TeamProject::setupMenus(bool loginRequired)
 
 
 	mainMenu->AddSelectElement("Start Standard Game", [mainMenu,this]() { mainMenu->disable(); this->startGame(); });
-	//mainMenu->AddSelectElement("Login", [mainMenu, login]() {mainMenu->disable(); login->enable();});
-	//mainMenu->AddSelectElement("Options", [options, mainMenu]() {options->enable(); mainMenu->disable();});
+	mainMenu->AddSelectElement("Login", [mainMenu, login]() {mainMenu->disable(); login->enable();});
+	mainMenu->AddSelectElement("Options", [options, mainMenu]() {options->enable(); mainMenu->disable();});
 	//mainMenu->AddSelectElement("Quit", [l, this]() {this->writeConfigStr(); l->quit();});
 
 	/////////////////////////////////////////////////
@@ -209,7 +209,7 @@ TeamProject::setupMenus(bool loginRequired)
 
 	/////////////////////////////////////////////////
 	// End Game / Ghost Menu 
-	//////////////////////////////////////////////////
+	////////////////////////////////////////////////
 
 
 	//endGameMenu->AddSelectElement("Replay Against Ghost", [this, endGameMenu]() {endGameMenu->disable(); this->replayGhost();});
@@ -248,7 +248,7 @@ TeamProject::setupMenus(bool loginRequired)
 	}
 	else
 	{
-		//mainMenu->enable();
+		mainMenu->enable();
 	}
 }
 
