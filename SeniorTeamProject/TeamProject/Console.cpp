@@ -111,10 +111,10 @@ void add(Console *console, std::vector<Ogre::String> *args) {
 				console->print("No DynamicObject with name \"" + (*args)[2] + "\" was found");
 			} 
 		} else if((*args)[1].compare("-s") == 0) {
-<<<<<<< HEAD
+
 			// adding a dynamic object
 			StaticScenery* tempObj = console->mWorld->gameLibrary->getStaticScenery((*args)[2], console->mWorld->mCamera->mRenderCamera->getPosition() + Ogre::Vector3(0, -20, -30), Ogre::Quaternion::IDENTITY);
-=======
+
 			// adding a StaticScenery object
 			Ogre::Vector3 objectPos = console->mWorld->mPlayer->getWorldPosition();
 			
@@ -131,8 +131,6 @@ void add(Console *console, std::vector<Ogre::String> *args) {
 			console->mWorld->mPlayer->setEnableKeyboard(false);
 			console->isInPlacementMode = true;
 
-
->>>>>>> origin/master
 
 		} else {
 			console->print("object type \"" + (*args)[1] + "\" not recognized");
@@ -319,7 +317,7 @@ void add(Console *console, std::vector<Ogre::String> *args) {
  }
 
  void Console::placeStaticScenery() {
-	StaticScenery* tempObj = this->mWorld->gameLibrary->getStaticScenery(statSceneNameToPlace, placementNode->getPosition(), Ogre::Quaternion::IDENTITY, -1);
+	StaticScenery* tempObj = this->mWorld->gameLibrary->getStaticScenery(statSceneNameToPlace, placementNode->getPosition(), Ogre::Quaternion::IDENTITY);
 	if (tempObj != NULL) {
 		this->print("Loaded!");
 		tempObj->addToBullet(this->mWorld->physManager);
