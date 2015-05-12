@@ -108,7 +108,7 @@ Player::Think(float time)
 	if (mEnableKeyboard) 
 	{	
 		// Jump
-		if (mInputHandler->IsKeyDown(OIS::KC_SPACE) || detectJump() == 0)
+		if (mInputHandler->IsKeyDown(OIS::KC_SPACE) || mKinect->detectJump() == 0)
 		{
 			playAnimation("fall_idle", time);
 
@@ -127,96 +127,189 @@ Player::Think(float time)
 		{
 			playAnimation("samba", time);
 
+			Ogre::Real sway = mKinect->detectSway();
+
 			// Left 
-			if (mInputHandler->IsKeyDown(OIS::KC_M) || detectSway() == 1)
+			if (mInputHandler->IsKeyDown(OIS::KC_M) || sway > 0.0)
 			{
 				playAnimation("strafeRight", time);
 
-				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
-					mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
+				if (mInputHandler->IsKeyDown(OIS::KC_M))
+				{
+					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
+						mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
 
-				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 
 
-				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 
-					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40,
-					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40,
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
+				}
+				else {
+					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
+						mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
 
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+
+
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * sway, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * sway));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * sway,
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * sway));
+				}
 			}
 
 			// Right 
-			else if (mInputHandler->IsKeyDown(OIS::KC_N) || detectSway() == 0)
+			else if (mInputHandler->IsKeyDown(OIS::KC_N) || sway < 0.0)
 			{
 				playAnimation("strafeLeft", time);
 
-				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
-					mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
+				if (mInputHandler->IsKeyDown(OIS::KC_N))
+				{
+					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
+						mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
 
-				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -40, 
-					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40,
-					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -40, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40,
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40));
+				}
+				else
+				{
+					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
+						mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
 
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * sway, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * sway));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * sway,
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * sway));
+				}
 			}
 
 			// Does the rotation counter-clockwise
-			else if (mInputHandler->IsKeyDown(OIS::KC_LEFT) || detectTurn() == 1)
+			Ogre::Real turn = mKinect->detectTurn();
+			Ogre::Real turnSpeed = turn * Ogre::Math::PI/180;
+
+			if (mInputHandler->IsKeyDown(OIS::KC_LEFT) || turn < 0.0)
 			{
 
 				playAnimation("turnLeft", time);
 			
-				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
-					mPhysManager->_world->getGravity().getY() + 70,0));
-				//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(0.01f));
+				if (mInputHandler->IsKeyDown(OIS::KC_LEFT))
+				{
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,1,0));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
+						mPhysManager->_world->getGravity().getY() + 70,0));
+				}
+				else
+				{
 
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,turnSpeed,0));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
+						mPhysManager->_world->getGravity().getY() + 70,0));
+				//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(0.01f));
+				}
 			
 			} 
 			// Does rotation clockwise 
-			else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) || detectTurn() == 0)
+			else if (mInputHandler->IsKeyDown(OIS::KC_RIGHT) || turn > 0.0)
 			{
 				playAnimation("turnRight", time);
 
-				mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
-					mPhysManager->_world->getGravity().getY() + 70,0));
+				if (mInputHandler->IsKeyDown(OIS::KC_RIGHT))
+				{
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-1,0));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
+						mPhysManager->_world->getGravity().getY() + 70,0));
+				}
+				else
+				{
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,turnSpeed,0));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
+						mPhysManager->_world->getGravity().getY() + 70,0));
 				//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(-0.01f));
-
+				}
 
 			}
 
+			Ogre::Real lean = mKinect->detectLean();
 			// Moves Forward 
-			else if (mInputHandler->IsKeyDown(OIS::KC_UP) || detectLean() == 0)
+			if (mInputHandler->IsKeyDown(OIS::KC_UP) || lean > 0.0)
 			{
-				playAnimation("walkForward", time);
+				if (mInputHandler->IsKeyDown(OIS::KC_UP))
+				{
+					playAnimation("walkForward", time);
 
-				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
-					mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+						mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
 
-				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
-					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
 			
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 
-					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40)); 
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40)); 
+				}
+				else
+				{
+					if (lean < 60.0)
+					{
+						playAnimation("walkForward", time);
+
+						btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+							mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+
+						mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
+							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
 			
+						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * lean, 
+							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * lean)); 
+					}
+					else if (lean > 60.0)
+					{
+						playAnimation("run", time);
+
+						btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+							mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+						
+						mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
+							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
+			
+						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * lean, 
+							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * lean)); 
+					}
+				}
 			}
 
 			// Moves Backward 
-			else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) || detectLean() == 1)
+			else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) || lean < 0.0)
 			{
 				playAnimation("walkBackward", time);
 
+				if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
+				{
+					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+						mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
 
-				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
-					mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -1, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()) * -1);
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40)); 
+				}
+				else
+				{
 
-				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -1, 
-					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()) * -1);
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -40, 
-					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -40)); 
+					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
+						mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
 
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -1, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()) * -1);
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * lean, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * lean)); 
+				}
 
 			}
 
@@ -227,19 +320,16 @@ Player::Think(float time)
 			else if (mInputHandler->IsKeyDown(OIS::KC_LSHIFT))
 			{
 				playAnimation("run", time);
-			
+
 				btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealDirection().x, 
-					mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
+						mCamera->mRenderCamera->getRealDirection().y, mCamera->mRenderCamera->getRealDirection().z); 
 
 				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
 					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
 			
 				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 100, 
 					mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 100)); 
-
-
 			}
-
 		}
 
 		checkGround(5000.0f, false); // checks if player is within stage 
@@ -295,191 +385,6 @@ Player::checkGround(float distance, bool checkJump)
 			canJump = false; 
 			//OutputDebugString("Player is in the air\n");
 		}
-	}
-}
-
-int
-Player::detectSway()
-{
-
-	Ogre::Degree leftRightAngle = Ogre::Degree(0);
-	Ogre::Degree frontBackAngle = Ogre::Degree(0);
-
-	getSkeletonAngles(leftRightAngle, frontBackAngle);
-	
-	//SWAY RIGHT
-	if ((leftRightAngle.valueDegrees()) < -25) return 0;
-
-	//SWAY LEFT
-	if ((leftRightAngle.valueDegrees()) > 25) return 1;
-
-	//NONE OF THE ABOVE
-	else
-		return -1;
-}
-
-int
-Player::detectLean()
-{
-
-	Ogre::Degree leftRightAngle = Ogre::Degree(0);
-	Ogre::Degree frontBackAngle = Ogre::Degree(0);
-
-	getSkeletonAngles(leftRightAngle, frontBackAngle);
-
-		//LEAN FORWARD
-	if (frontBackAngle.valueDegrees() > 25) return 1;
-
-	//LEAN BACK
-	if (frontBackAngle.valueDegrees() < -25) return 0;
-	
-	//NONE OF THE ABOVE
-	else
-		return -1;
-}
-
-int
-Player::detectArm()
-{
-
-	vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
-		//ARMS IN FRONT
-	if (skeletonNodes[NUI_SKELETON_POSITION_HAND_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SPINE].z &&
-		skeletonNodes[NUI_SKELETON_POSITION_HAND_RIGHT].z < skeletonNodes[NUI_SKELETON_POSITION_SPINE].z)
-		return 0;
-	
-	//ARMS IN BACK
-	if (skeletonNodes[NUI_SKELETON_POSITION_HAND_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SPINE].z &&
-		skeletonNodes[NUI_SKELETON_POSITION_HAND_RIGHT].z > skeletonNodes[NUI_SKELETON_POSITION_SPINE].z)
-		return 1;
-	
-	//NONE OF THE ABOVE
-	else
-		return -1;
-}
-
-int
-Player::detectTurn()
-{
-	vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
-
-	//RIGHT TURN
-	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z - 0.1)
-		return 0;
-	
-	//LEFT TURN
-	if (skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z + 0.1)
-		return 1;
-	
-	//NONE OF THE ABOVE
-	else
-		return -1;
-}
-
-int
-Player::detectJump()
-{
-	vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
-
-	//LEFT FOOT LIFTED
-	if ((skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y + 0.1) ||
-	//RIGHT FOOT LIFTED
-		(skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y + 0.1))
-		return 0;
-
-	else
-		return -1;
-}
-
-void
-Player::getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2)
-{
-	angle = mKinect->leftRightAngle();
-	angle2 = mKinect->frontBackAngle();
-}
-
-std::vector<Ogre::Vector3>
-Player::getSkeletonNodes() 
-{
-	vector<Ogre::Vector3> nodes;
-	nodes = mKinect->getSkeletonNodes();
-	return nodes;
-}
-
-void
-Player::drawSkeleton()
-{
-	//TORSO
-	drawLine("head2ShoulderCenter", NUI_SKELETON_POSITION_HEAD, NUI_SKELETON_POSITION_SHOULDER_CENTER);
-	drawLine("shoulderCenter2ShoulderLeft", NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_LEFT);
-    drawLine("shoulderCenter2ShoulderRight", NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_RIGHT);
-    drawLine("shoulderCenter2Spine", NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SPINE);
-    drawLine("spine2HipCenter", NUI_SKELETON_POSITION_SPINE, NUI_SKELETON_POSITION_HIP_CENTER);
-
-	
-    drawLine("hipCenter2HipLeft", NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_LEFT);
-    drawLine("hipCenter2HipRight", NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_RIGHT);
-
-    //LEFT ARM
-    drawLine("shoulderLeft2ElbowLeft", NUI_SKELETON_POSITION_SHOULDER_LEFT, NUI_SKELETON_POSITION_ELBOW_LEFT);
-    drawLine("elbowLeft2WristLeft", NUI_SKELETON_POSITION_ELBOW_LEFT, NUI_SKELETON_POSITION_WRIST_LEFT);
-    drawLine("wristLeft2HandLeft", NUI_SKELETON_POSITION_WRIST_LEFT, NUI_SKELETON_POSITION_HAND_LEFT);
-
-    //RIGHT ARM
-    drawLine("shoulderRight2ElbowRight", NUI_SKELETON_POSITION_SHOULDER_RIGHT, NUI_SKELETON_POSITION_ELBOW_RIGHT);
-    drawLine("elbowRight2WristRight", NUI_SKELETON_POSITION_ELBOW_RIGHT, NUI_SKELETON_POSITION_WRIST_RIGHT);
-    drawLine("wristRight2HandRight", NUI_SKELETON_POSITION_WRIST_RIGHT, NUI_SKELETON_POSITION_HAND_RIGHT);
-
-    //LEFT LEG
-    drawLine("hipLeft2KneeLeft", NUI_SKELETON_POSITION_HIP_LEFT, NUI_SKELETON_POSITION_KNEE_LEFT);
-    drawLine("kneeLeft2AnkleLeft", NUI_SKELETON_POSITION_KNEE_LEFT, NUI_SKELETON_POSITION_ANKLE_LEFT);
-    drawLine("ankleLeft2FootLeft", NUI_SKELETON_POSITION_ANKLE_LEFT, NUI_SKELETON_POSITION_FOOT_LEFT);
-
-    //RIGHT LEG
-    drawLine("hipRight2KneeRight", NUI_SKELETON_POSITION_HIP_RIGHT, NUI_SKELETON_POSITION_KNEE_RIGHT);
-    drawLine("kneeRight2AnkleRight", NUI_SKELETON_POSITION_KNEE_RIGHT, NUI_SKELETON_POSITION_ANKLE_RIGHT);
-    drawLine("ankleRight2FootRight", NUI_SKELETON_POSITION_ANKLE_RIGHT, NUI_SKELETON_POSITION_FOOT_RIGHT);
-
-	initSkel = true;
-}
-
-void
-Player::createLine(std::string bone, int joint1, int joint2)
-{
-	Ogre::ManualObject* myManualObject =  mSceneManager->createManualObject(bone); 
-	myManualObject->setDynamic(true);
-	Ogre::SceneNode* myManualObjectNode = mSceneManager->getRootSceneNode()->createChildSceneNode(bone + "_node"); 
- 
-	Ogre::MaterialPtr myManualObjectMaterial = Ogre::MaterialManager::getSingleton().create(bone + "Material","General"); 
-	myManualObjectMaterial->setReceiveShadows(false); 
-	myManualObjectMaterial->getTechnique(0)->setLightingEnabled(true);
-	myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(1,0,0,0); 
-	myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(1,0,0); 
-	myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(1,0,0);
-
-	myManualObjectNode->attachObject(myManualObject);
-
-}
-
-void
-Player::drawLine(std::string bone, int joint1, int joint2)
-{
-	if (!initSkel)
-		createLine(bone, joint1, joint2);
-	else if (initSkel)
-	{
-		vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
-		Ogre::ManualObject* myManualObject = mSceneManager->getManualObject(bone);
-		
-		myManualObject->clear();
-
-		Ogre::Vector3 bone1 = 20 * skeletonNodes[joint1] + Ogre::Vector3(-50, 30, 20);
-		Ogre::Vector3 bone2 = 20 * skeletonNodes[joint2] + Ogre::Vector3(-50, 30, 20);
-						
-		myManualObject->begin(bone + "Material", Ogre::RenderOperation::OT_LINE_LIST);
-		myManualObject->position(bone1.x, bone1.y, bone1.z); 
-		myManualObject->position(bone2.x, bone2.y, bone2.z); 
-		myManualObject->end();
 	}
 }
 
@@ -577,12 +482,88 @@ Player::drawHitBox(std::string name, btRigidBody *box)
 }
 
 void
+Player::drawSkeleton()
+{
+	//TORSO
+	drawLine("head2ShoulderCenter", NUI_SKELETON_POSITION_HEAD, NUI_SKELETON_POSITION_SHOULDER_CENTER);
+	drawLine("shoulderCenter2ShoulderLeft", NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_LEFT);
+    drawLine("shoulderCenter2ShoulderRight", NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_RIGHT);
+    drawLine("shoulderCenter2Spine", NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SPINE);
+    drawLine("spine2HipCenter", NUI_SKELETON_POSITION_SPINE, NUI_SKELETON_POSITION_HIP_CENTER);
+
+	
+    drawLine("hipCenter2HipLeft", NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_LEFT);
+    drawLine("hipCenter2HipRight", NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_RIGHT);
+
+    //LEFT ARM
+    drawLine("shoulderLeft2ElbowLeft", NUI_SKELETON_POSITION_SHOULDER_LEFT, NUI_SKELETON_POSITION_ELBOW_LEFT);
+    drawLine("elbowLeft2WristLeft", NUI_SKELETON_POSITION_ELBOW_LEFT, NUI_SKELETON_POSITION_WRIST_LEFT);
+    drawLine("wristLeft2HandLeft", NUI_SKELETON_POSITION_WRIST_LEFT, NUI_SKELETON_POSITION_HAND_LEFT);
+
+    //RIGHT ARM
+    drawLine("shoulderRight2ElbowRight", NUI_SKELETON_POSITION_SHOULDER_RIGHT, NUI_SKELETON_POSITION_ELBOW_RIGHT);
+    drawLine("elbowRight2WristRight", NUI_SKELETON_POSITION_ELBOW_RIGHT, NUI_SKELETON_POSITION_WRIST_RIGHT);
+    drawLine("wristRight2HandRight", NUI_SKELETON_POSITION_WRIST_RIGHT, NUI_SKELETON_POSITION_HAND_RIGHT);
+
+    //LEFT LEG
+    drawLine("hipLeft2KneeLeft", NUI_SKELETON_POSITION_HIP_LEFT, NUI_SKELETON_POSITION_KNEE_LEFT);
+    drawLine("kneeLeft2AnkleLeft", NUI_SKELETON_POSITION_KNEE_LEFT, NUI_SKELETON_POSITION_ANKLE_LEFT);
+    drawLine("ankleLeft2FootLeft", NUI_SKELETON_POSITION_ANKLE_LEFT, NUI_SKELETON_POSITION_FOOT_LEFT);
+
+    //RIGHT LEG
+    drawLine("hipRight2KneeRight", NUI_SKELETON_POSITION_HIP_RIGHT, NUI_SKELETON_POSITION_KNEE_RIGHT);
+    drawLine("kneeRight2AnkleRight", NUI_SKELETON_POSITION_KNEE_RIGHT, NUI_SKELETON_POSITION_ANKLE_RIGHT);
+    drawLine("ankleRight2FootRight", NUI_SKELETON_POSITION_ANKLE_RIGHT, NUI_SKELETON_POSITION_FOOT_RIGHT);
+
+	initSkel = true;
+}
+
+void
+Player::createLine(std::string bone, int joint1, int joint2)
+{
+	Ogre::ManualObject* myManualObject =  mSceneManager->createManualObject(bone); 
+	myManualObject->setDynamic(true);
+	Ogre::SceneNode* myManualObjectNode = mSceneManager->getRootSceneNode()->createChildSceneNode(bone + "_node"); 
+ 
+	Ogre::MaterialPtr myManualObjectMaterial = Ogre::MaterialManager::getSingleton().create(bone + "Material","General"); 
+	myManualObjectMaterial->setReceiveShadows(false); 
+	myManualObjectMaterial->getTechnique(0)->setLightingEnabled(true);
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(1,0,0,0); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(1,0,0); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(1,0,0);
+
+	myManualObjectNode->attachObject(myManualObject);
+
+}
+
+void
+Player::drawLine(std::string bone, int joint1, int joint2)
+{
+	if (!initSkel)
+		createLine(bone, joint1, joint2);
+	else if (initSkel)
+	{
+		vector<Ogre::Vector3> skeletonNodes = mKinect->getSkeletonNodes();
+		Ogre::ManualObject* myManualObject = mSceneManager->getManualObject(bone);
+		
+		myManualObject->clear();
+
+		Ogre::Vector3 bone1 = 20 * skeletonNodes[joint1] + Ogre::Vector3(-50, 30, 20);
+		Ogre::Vector3 bone2 = 20 * skeletonNodes[joint2] + Ogre::Vector3(-50, 30, 20);
+						
+		myManualObject->begin(bone + "Material", Ogre::RenderOperation::OT_LINE_LIST);
+		myManualObject->position(bone1.x, bone1.y, bone1.z); 
+		myManualObject->position(bone2.x, bone2.y, bone2.z); 
+		myManualObject->end();
+	}
+}
+
+void
 Player::clearLine(std::string bone)
 {
 	mSceneManager->destroyManualObject(bone);
 	mSceneManager->getRootSceneNode()->removeAndDestroyChild(bone + "_node");
 }
-
 
 /*		crouch_idle | crouch_to_stand | crouch_walk | fall_idle | fall_to_roll
  *		gangname_style | idle0 | idle1 | idle2 | jump | turnLeft | turnLeft90

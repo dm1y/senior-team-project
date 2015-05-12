@@ -26,6 +26,7 @@ Kinect::Kinect(void)
 	mToso2Overlay->setScroll(0.65f, 0.8f);
 
 	standingOrSeated = true; //Starts Standing
+
 }
 
 std::vector<Ogre::Vector3>
@@ -428,3 +429,138 @@ DWORD WINAPI Kinect::Nui_ProcessThread()
 	return 0;
 }
 #endif
+
+
+Ogre::Real
+Kinect::detectSway()
+{
+
+	Ogre::Degree leftRightAngle = Ogre::Degree(0);
+	Ogre::Degree frontBackAngle = Ogre::Degree(0);
+
+	getSkeletonAngles(leftRightAngle, frontBackAngle);
+	
+	//SWAY RIGHT
+	if ((leftRightAngle.valueDegrees()) < -25) 
+		return leftRightAngle.valueDegrees();
+
+	//SWAY LEFT
+	if ((leftRightAngle.valueDegrees()) > 25) 
+		return leftRightAngle.valueDegrees();
+
+	//NONE OF THE ABOVE
+	else
+		return 0.0;
+}
+
+Ogre::Real
+Kinect::detectLean()
+{
+
+	Ogre::Degree leftRightAngle = Ogre::Degree(0);
+	Ogre::Degree frontBackAngle = Ogre::Degree(0);
+
+	getSkeletonAngles(leftRightAngle, frontBackAngle);
+
+		//LEAN FORWARD
+	if (frontBackAngle.valueDegrees() > 25) 
+		return frontBackAngle.valueDegrees();
+
+	//LEAN BACK
+	if (frontBackAngle.valueDegrees() < -25) 
+		return frontBackAngle.valueDegrees();
+	
+	//NONE OF THE ABOVE
+	else
+		return 0.0;
+}
+
+int
+Kinect::detectArm()
+{
+
+	std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+		//ARMS IN FRONT
+	if (skeletonNodes[NUI_SKELETON_POSITION_HAND_LEFT].z < skeletonNodes[NUI_SKELETON_POSITION_SPINE].z &&
+		skeletonNodes[NUI_SKELETON_POSITION_HAND_RIGHT].z < skeletonNodes[NUI_SKELETON_POSITION_SPINE].z)
+		return 0;
+	
+	//ARMS IN BACK
+	if (skeletonNodes[NUI_SKELETON_POSITION_HAND_LEFT].z > skeletonNodes[NUI_SKELETON_POSITION_SPINE].z &&
+		skeletonNodes[NUI_SKELETON_POSITION_HAND_RIGHT].z > skeletonNodes[NUI_SKELETON_POSITION_SPINE].z)
+		return 1;
+	
+	//NONE OF THE ABOVE
+	else
+		return -1;
+}
+
+
+Ogre::Real
+Kinect::detectTurn()
+{
+	std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+
+	Ogre::Real opposite, adjacent, rotation;
+	rotation = 0;
+
+	enum direction { LEFT, RIGHT, NEITHER};
+
+	direction way = NEITHER;
+
+	if ((skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z) < -0.1)
+		way = LEFT;
+	else if ((skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z) < -0.1)
+		way = RIGHT;
+	else
+		way = NEITHER;
+
+	/*---------------------------------*/
+
+	if (way == RIGHT)
+	{
+		
+		opposite = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z;
+		adjacent = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].x - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].x;
+		rotation = atan2f(opposite, adjacent) * (180/Ogre::Math::PI);
+
+		return -rotation;
+		
+	}
+
+	if (way == LEFT)
+	{
+		opposite = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z;
+		adjacent = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].x - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].x;
+		rotation = atan2f(opposite, adjacent) * (180/Ogre::Math::PI);
+
+		return -rotation;
+	}
+	
+	else
+		return 0.0;
+}
+
+
+int
+Kinect::detectJump()
+{
+	std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+
+	//LEFT FOOT LIFTED
+	if ((skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y + 0.1) ||
+	//RIGHT FOOT LIFTED
+		(skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y + 0.1))
+		return 0;
+
+	else
+		return -1;
+}
+
+void
+Kinect::getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2)
+{
+	angle = leftRightAngle();
+	angle2 = frontBackAngle();
+}
+

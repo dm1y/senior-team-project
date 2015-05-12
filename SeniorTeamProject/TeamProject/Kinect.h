@@ -56,6 +56,14 @@ public:
 	virtual void StartSession();
 	virtual void EndSession();
 
+	
+	Ogre::Real detectSway();
+	Ogre::Real detectLean();
+	int detectArm();
+	Ogre::Real detectTurn();
+	int detectJump();
+	void getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2);
+
 protected:
 
 	void updateKinectSkeleton( );

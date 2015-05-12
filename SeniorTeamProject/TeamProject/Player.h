@@ -45,28 +45,20 @@ public:
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 
 
-
-	int detectSway();
-	int detectLean();
-	int detectArm();
-	int detectTurn();
-	int detectJump();
-	bool initSkel;
 	bool getEnableKinect() { return mEnableKinect; }
 	void setEnableKinect(bool enable) { mEnableKinect = enable; }
-	void drawSkeleton();
-	void createLine(std::string bone, int joint1, int joint2);
-	void drawLine(std::string bone, int joint1, int joint2);
-	void clearLine(std::string bone);
-	void getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2);
 	void playAnimation(std::string anim, float time);
 	void stopAnimation(std::string anim);
 	void finishAnimation(Ogre::AnimationState *animation, float time);
 	void disableAnimations();
+	bool initSkel;
 	bool initHitBox;
 	void createHitBox(std::string name);
-	void drawHitBox(std::string name, btRigidBody *box);
-	std::vector<Ogre::Vector3> getSkeletonNodes();
+	void drawHitBox(std::string name, btRigidBody *box);	
+	void drawSkeleton();
+	void createLine(std::string bone, int joint1, int joint2);
+	void drawLine(std::string bone, int joint1, int joint2);
+	void clearLine(std::string bone);
 
 
 	bool getEnableKeyboard() { return mEnableKeyboard; }
