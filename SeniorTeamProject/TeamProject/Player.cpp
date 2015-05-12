@@ -24,6 +24,7 @@ Player::Player(DynamicObject *dynamic, Ogre::Vector3 position, PhysicsManager *p
 	mWorld(world), mKinect(k), mSceneManager(sceneManager), mInputHandler(input), mCamera(camera)
 {
 	mPhysManager = physManager;
+	start = false;
 	
 	// For Kinect later on 
 	mAutoCallibrate = true;
@@ -103,7 +104,7 @@ Player::Think(float time)
 #pragma region Controls 
 
 
-
+	if (start) {
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
 	{	
@@ -334,7 +335,7 @@ Player::Think(float time)
 
 		checkGround(5000.0f, false); // checks if player is within stage 
 		checkGround(5.0f, true); // check if player is on the ground or currently jumping  
-
+		}
 		mPlayerObject->synchWithBullet();
 #pragma endregion Input controls for keyboard 
 	}

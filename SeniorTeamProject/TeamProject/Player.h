@@ -68,6 +68,8 @@ public:
 	// For testing purposes
 //	Ogre::Overlay *setOverlay(Ogre::Overlay *o) { return overly = o;}
 
+	bool start;
+
 	DynamicObject *getDynamicObject() { return mPlayerObject; }
 	DynamicObject *animObject;
 

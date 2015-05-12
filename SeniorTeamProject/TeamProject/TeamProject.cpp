@@ -94,7 +94,7 @@ TeamProject::createScene()
 	display = new HUD();
 	mKinect = new Kinect();
 	mKinect->initSensor();
-	mKinect->StartSession();
+	//mKinect->StartSession();
 
 	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary(mSceneMgr), this->mRoot, display);
 	
@@ -266,6 +266,7 @@ void
 TeamProject::startGame()
 {
 	mKinect->StartSession();
+	mWorld->mPlayer->start = true;
 }
 
 void 

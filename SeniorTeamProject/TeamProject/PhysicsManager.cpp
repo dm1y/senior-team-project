@@ -115,13 +115,14 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 
 	// Checks if player is colliding with a static scenary with interaction # 0 
 	for (std::list<StaticScenery*>::iterator it = mWorld->stage->staticScenery.begin(); it != mWorld->stage->staticScenery.end(); it++) {
-		MyContactResultCallback call;
-
-		/* Does the testing between player and the objects we want to iterate through */
-		_world->contactPairTest(mWorld->mPlayer->getDynamicObject()->fallRigidBody, it._Ptr->_Myval->mRigidBody, call);
-
+		
 		if (it._Ptr->_Myval->mRigidBody->getUserIndex() != -1)
 		{
+			MyContactResultCallback call;
+
+			/* Does the testing between player and the objects we want to iterate through */
+			_world->contactPairTest(mWorld->mPlayer->getDynamicObject()->fallRigidBody, it._Ptr->_Myval->mRigidBody, call);
+
 			if (call.m_connected)
 			{
 				OutputDebugString("connecting");

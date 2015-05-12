@@ -51,6 +51,7 @@ public:
 
 	HUD *display;
 	Stage* stage;	
+
 	void createWater();
 	void doWaterStuff(float time);
 

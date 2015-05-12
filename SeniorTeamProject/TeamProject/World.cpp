@@ -42,6 +42,7 @@ using namespace rapidjson;
 World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sensor, GameCamera *gameCamera, GameLibrary *gameLib, Ogre::Root *mRoot, HUD * hud)   : 
 	mSceneManager(sceneManager), mInputHandler(input), mKinect(sensor), mCamera(gameCamera), gameLibrary(gameLib), display(hud)
 {
+
 	sceneManager->setAmbientLight(Ogre::ColourValue(0.2, 0.2, 0.2));
 
 	Ogre::Vector3 lightdir(0.55, -0.3, 0.75);
@@ -106,7 +107,7 @@ World::Think(float time)
 	for (std::list<DynamicObject*>::iterator it = stage->dynObjects.begin(); it != stage->dynObjects.end(); it++) {
 		mPlayer->drawHitBox(it._Ptr->_Myval->mSceneNode->getName(), it._Ptr->_Myval->fallRigidBody);
 	}
-		
+
 	 mPlayer->Think(time);
 
 
