@@ -520,7 +520,7 @@ ScrollSelectMenu::~ScrollSelectMenu()
 
 
 Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float ydelta, Menu *parent, bool beginEnabled)
-	: mHighlightColor(1.0f,0.0f, 0.0f), mUnHighlightColor(1.0f, 1.0f, 1.0f)
+	: mHighlightColor(1.0f,1.0f, 1.0f), mUnHighlightColor(1.0f, 1.0f, 1.0f)
 {
 	mItemHeight = 0.05f;
 	mItemSpacing = ydelta;
@@ -546,7 +546,7 @@ Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float
 	 mPanel = static_cast<Ogre::OverlayContainer*>( overlayManager.createOverlayElement( "Panel", name +"Panel" ) );
 	 mPanel->setPosition(xPos, yPos );
 	 mPanel->setDimensions( 1 - 2*mStartingX, 0.9f );
-	 mPanel->setMaterialName( "Menu/Background/Blue" );
+	 mPanel->setMaterialName( "Menu/Background/Grey" );
 	 // Add the panel to the overlay
 	 mMenuOverlay->add2D( mPanel );
 
@@ -556,7 +556,7 @@ Menu::Menu(Ogre::String header, Ogre::String name, float xPos, float yPos, float
 
 	 mMenuHighlight = static_cast<Ogre::OverlayContainer*>( overlayManager.createOverlayElement( "Panel", name +"HighlightPanel" ) );
 	 mMenuHighlight->setDimensions( 1 - 2*mStartingX, mItemHeight * 1.5f);
-	 mMenuHighlight->setMaterialName( "Menu/Highlight/Blue" );
+	 mMenuHighlight->setMaterialName( "Menu/Highlight/Red" );
 	 mPanel->addChild(mMenuHighlight);
 
 
