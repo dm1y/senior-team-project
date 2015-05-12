@@ -44,6 +44,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 {
 
 	sceneManager->setAmbientLight(Ogre::ColourValue(0.2, 0.2, 0.2));
+	sceneManager->setSkyBox(true, "Skybox/Cloudy");
 
 	Ogre::Vector3 lightdir(0.55, -0.3, 0.75);
 	lightdir.normalise();
@@ -131,10 +132,10 @@ World::createWater()
 
 	Ogre::MeshManager::getSingleton().createPlane(
 		"WaterPlane", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-		mWaterPlane, 5000, 5000, 5, 1, true, 1, 10, 10, Ogre::Vector3::UNIT_Z);
+		mWaterPlane, 10000, 10000, 10, 100, true, 1, 10, 10, Ogre::Vector3::UNIT_Z);
 
 	mWaterEntity = mSceneManager->createEntity("water", "WaterPlane");
-	mWaterEntity->setMaterialName("Examples/Water9");
+	mWaterEntity->setMaterialName("Water/11");
 
 	Ogre::SceneNode *mWaterNode = mSceneManager->getRootSceneNode()->createChildSceneNode("WaterNode");
 	mWaterNode->attachObject(mWaterEntity);
@@ -146,7 +147,7 @@ World::createWater()
 	
 	Ogre::Light *mLight = mSceneManager->createLight("WaterLight");
 	mLight->setType(Ogre::Light::LT_DIRECTIONAL);
-	mLight->setDirection(0, -100, 0);
+	mLight->setDirection(-100, 0, 0);
 	
 }
 

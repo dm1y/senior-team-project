@@ -239,7 +239,7 @@ Player::Think(float time)
 
 			Ogre::Real lean = mKinect->detectLean();
 			// Moves Forward 
-			if (mInputHandler->IsKeyDown(OIS::KC_UP) || lean > 0.0)
+			if (mInputHandler->IsKeyDown(OIS::KC_UP) || lean < 0.0)
 			{
 				if (mInputHandler->IsKeyDown(OIS::KC_UP))
 				{
@@ -256,7 +256,7 @@ Player::Think(float time)
 				}
 				else
 				{
-					if (lean < 60.0)
+					if (lean > -60.0)
 					{
 						playAnimation("walkForward", time);
 
@@ -266,10 +266,10 @@ Player::Think(float time)
 						mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
 							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
 			
-						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * lean, 
-							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * lean)); 
+						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -lean, 
+							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -lean)); 
 					}
-					else if (lean > 60.0)
+					else if (lean < -60.0)
 					{
 						playAnimation("run", time);
 
@@ -279,14 +279,14 @@ Player::Think(float time)
 						mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
 							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
 			
-						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * lean, 
-							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * lean)); 
+						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -lean, 
+							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -lean)); 
 					}
 				}
 			}
 
 			// Moves Backward 
-			else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) || lean < 0.0)
+			else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) || lean > 0.0)
 			{
 				playAnimation("walkBackward", time);
 
@@ -308,8 +308,8 @@ Player::Think(float time)
 
 					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -1, 
 						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()) * -1);
-					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * lean, 
-						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * lean)); 
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -lean, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -lean)); 
 				}
 
 			}
