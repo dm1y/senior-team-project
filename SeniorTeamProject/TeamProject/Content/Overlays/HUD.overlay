@@ -1,3 +1,19 @@
+MenuBG
+{
+    zorder 10
+  
+    container Panel(MenuBG/Panel)
+    {
+      metrics_mode relative
+
+      left 0.0
+      top 0.0
+      width 1.0
+      height 1.0
+    material Menu/Background/Green
+    }
+}
+
 Ending
 {
     zorder 200
@@ -53,3 +69,4 @@ Score
 		}
     }
 }
+

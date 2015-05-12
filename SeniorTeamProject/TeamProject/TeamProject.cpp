@@ -81,6 +81,7 @@ TeamProject::createScene()
 	console->setVisible(false);
 
     mInputHandler = new InputHandler(mWindow, console);
+	
 	MenuManager* menuManager = MenuManager::getInstance();
 	menuManager->mConsole = console;
 	mInputHandler->setEventCallback(menuManager);
@@ -91,11 +92,11 @@ TeamProject::createScene()
 	//   of doing it, giving the world access to the camera and the input handler.
 	
 	mGameCamera = new GameCamera(mCamera, mInputHandler, mSceneMgr);   
-	display = new HUD();
+	
 	mKinect = new Kinect();
 	mKinect->initSensor();
 	//mKinect->StartSession();
-
+	display = new HUD();
 	mWorld = new World(mSceneMgr, mInputHandler, mKinect, mGameCamera, new GameLibrary(mSceneMgr), this->mRoot, display);
 	
 	// so ugly cringe coding omg im sorry
@@ -267,6 +268,8 @@ TeamProject::startGame()
 {
 	mKinect->StartSession();
 	mWorld->mPlayer->start = true;
+	display->displayScore(true);
+	display->displayMenuBG(false);
 }
 
 void 

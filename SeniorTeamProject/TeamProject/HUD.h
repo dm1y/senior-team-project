@@ -19,10 +19,12 @@ public:
 	void incrementScore();
 	void displayEnding(bool display);
 	void displayScore(bool display);
+	void displayMenuBG(bool display);
 
 protected: 
 	Ogre::Overlay *endingOverlay;
 	Ogre::Overlay *scoreOverlay;
+	Ogre::Overlay *menuBgOverlay;
 	Ogre::OverlayElement *scoreText;
 	Ogre::OverlayElement *endingText; 
 

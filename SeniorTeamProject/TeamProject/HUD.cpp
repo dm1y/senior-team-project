@@ -15,14 +15,16 @@ HUD::HUD()
 	// Sets up the overlay 
 	endingOverlay = Ogre::OverlayManager::getSingleton().getByName("Ending");
 	scoreOverlay = Ogre::OverlayManager::getSingleton().getByName("Score");
+	menuBgOverlay = Ogre::OverlayManager::getSingleton().getByName("MenuBG");
 
 	// Sets up text 
 	endingText = Ogre::OverlayManager::getSingleton().getOverlayElement("Ending/Panel/Text1");
 	scoreText = Ogre::OverlayManager::getSingleton().getOverlayElement("Score/Panel/Text1");
 
 	// default setup 
-	displayScore(true);
+	displayScore(false);
 	displayEnding(false);
+	displayMenuBG(true);
 }
 
 HUD::~HUD() 
@@ -43,6 +45,13 @@ void HUD::displayScore(bool display)
 		scoreOverlay->hide();
 }
 
+void HUD::displayMenuBG(bool display)
+{
+	if (display)
+		menuBgOverlay->show();
+	else 
+		menuBgOverlay->hide();
+}
 
 void HUD::displayEnding(bool display)
 {
