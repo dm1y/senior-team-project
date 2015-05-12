@@ -64,6 +64,15 @@ public:
 	int detectJump();
 	void getSkeletonAngles(Ogre::Degree &angle, Ogre::Degree &angle2);
 
+	Ogre::Real leanForwardMax;
+	Ogre::Real leanBackMax;
+	Ogre::Real swayLeftMax;
+	Ogre::Real swayRightMax;
+	Ogre::Real leftRotationMax;
+	Ogre::Real rightRotationMax;
+	Ogre::Real leftLegLiftMax;
+	Ogre::Real rightLegLiftMax;
+
 protected:
 
 	void updateKinectSkeleton( );

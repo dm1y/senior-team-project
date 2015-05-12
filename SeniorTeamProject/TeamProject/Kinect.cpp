@@ -161,7 +161,7 @@ Kinect::update(float time)
 	{
 		if (mTimeSinceLastUpdate > 1.0)
 		{
-			mCallibrationText->setCaption("Kinect cannot see you. \nPlease adjust position");
+			mCallibrationText->setCaption("Kinect Cannot See You. \nPlease Adjust Position.");
 		}
 		else
 		{

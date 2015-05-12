@@ -54,7 +54,7 @@ Kinect/CallibrationOverlay
          font_name Big
          char_height 0.05
          colour 1 1 1
-         caption Calibrating Kinect.  Please Sit up straight
+         caption Calibrating Kinect. Please Stand Up Straight
 		}
 		
 		element TextArea(Kinect/Calibrate2)
