@@ -72,6 +72,9 @@ public:
 	Ogre::Real rightRotationMax;
 	Ogre::Real leftLegLiftMax;
 	Ogre::Real rightLegLiftMax;
+	void performCallibration();
+
+	Ogre::Real leftRightRotation;
 
 protected:
 

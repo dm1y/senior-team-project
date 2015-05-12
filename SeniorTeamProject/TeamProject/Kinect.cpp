@@ -179,16 +179,7 @@ Kinect::update(float time)
 			}
 			else
 			{
-
-				std::string message = "Callibration in ";
-
-				long long printDelay = (long long) (mCalibrationClock + 0.99f);
-
-				message.append(std::to_string(printDelay));
-
-				message.append(" seconds");
-
-				mCallibrationText->setCaption(message);
+				performCallibration();
 			}
 
 		}
@@ -211,8 +202,104 @@ Kinect::update(float time)
 	}
 }
 
+void
+Kinect::performCallibration()
+{
+	std::string message = "Callibration Started \n Callibrating in ";
 
+	long long printDelay = (long long) (mCalibrationClock + 0.99f);
 
+	message.append(std::to_string(printDelay));
+
+	message.append(" seconds.\n");
+
+	if (mCalibrationClock <= 40 && mCalibrationClock > 35)
+	{
+		message.append("LEAN FORWARD As Far As Possible Without Moving Your Arms.");
+		if (fFrontBack() < leanForwardMax)
+			leanForwardMax = mFrontBackAngle.valueDegrees();
+	}
+	if (mCalibrationClock <= 35 && mCalibrationClock > 30)
+	{
+		message.append("LEAN BACK As Far As Possible Without Bending Your Knees.");
+		if (fFrontBack() > leanBackMax)
+			leanBackMax = mFrontBackAngle.valueDegrees();
+	}
+	if (mCalibrationClock <= 30 && mCalibrationClock > 25)
+	{
+		message.append("SWAY LEFT As Far As Possible.");
+		if (fLeftRight() < swayLeftMax)
+			swayLeftMax = mLeftRightAngle.valueDegrees();
+	}
+	if (mCalibrationClock <= 25 && mCalibrationClock > 20)
+	{
+		message.append("SWAY RIGHT As Far As Possible.");
+		if (fLeftRight() > swayRightMax)
+			swayRightMax = mLeftRightAngle.valueDegrees();
+	}
+	if (mCalibrationClock <= 20 && mCalibrationClock > 15)
+	{
+		message.append("ROTATE CLOCKWISE As Far As Possible Without Moving Your Feet.");
+		if (leftRightRotation > leftRotationMax)
+			leftRotationMax = leftRightRotation;
+	}
+	if (mCalibrationClock <= 15 && mCalibrationClock > 10)
+	{
+		message.append("ROTATE COUNTER-CLOCKWISE As Far As Possible Without Moving Your Feet.");
+		if (leftRightRotation < rightRotationMax)
+			rightRotationMax = leftRightRotation;
+	}
+	if (mCalibrationClock <= 10 && mCalibrationClock > 5)
+	{
+		message.append("LIFT Your LEFT LEG As High As Possible.");
+		std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+		if (skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y > leftLegLiftMax)
+			leftLegLiftMax = skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y;
+
+	}
+	if (mCalibrationClock <= 5 && mCalibrationClock > 0)
+	{
+		message.append("LIFT Your RIGHT LEG As High As Possible.");
+		std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+		if (skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > leftLegLiftMax)
+			leftLegLiftMax = skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y;
+	}
+
+	
+
+	mCallibrationText->setCaption(message);
+}
+
+/*
+ 
+
+1)      Weight shifting – all directions, in sitting and standing
+
+2)      Reaching
+
+3)      Stepping – i.e., marching in place, stepping forward/back, out to the side, backwards, or stepping up onto an object (like a step)
+
+4)      Turning in place
+
+5)      Turning the head
+
+6)      Kicking
+
+7)      Sit to/from stand
+
+8)      Squatting/lunging
+
+9)      Throwing
+
+10)   balancing on one leg, going up
+
+11)   down a step, turning (90, 180 and 360 degrees)
+
+12)   head movements (helpful for our vestibular patients.  We often have them do head turns while fixating eyes on a target
+
+13)   interesting to have an audio piece that could be done with eyes closed or blindfolded.  Different sounds that cue different movements to improve balance without vision.
+
+*/
 
 
 void
@@ -503,6 +590,10 @@ Kinect::detectTurn()
 
 	Ogre::Real opposite, adjacent, rotation;
 	rotation = 0;
+
+	opposite = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z;
+	adjacent = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].x - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].x;
+	leftRightRotation = atan2f(opposite, adjacent) * (180/Ogre::Math::PI);
 
 	enum direction { LEFT, RIGHT, NEITHER};
 
