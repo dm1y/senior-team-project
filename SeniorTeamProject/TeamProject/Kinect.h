@@ -75,6 +75,7 @@ public:
 	void performCallibration();
 
 	Ogre::Real leftRightRotation;
+	std::vector<Ogre::Vector3> initialPositions;
 
 protected:
 

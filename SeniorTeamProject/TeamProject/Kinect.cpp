@@ -97,6 +97,9 @@ Kinect::initSensor()
 
 	m_hEvNuiProcessStop = CreateEvent( NULL, FALSE, FALSE, NULL );
 	m_hThNuiProcess = CreateThread( NULL, 0, Nui_ProcessThread, this, 0, NULL );
+
+	initialPositions = getSkeletonNodes();
+
 	return hr;
 #else
 	return 0;
@@ -176,6 +179,29 @@ Kinect::update(float time)
 				recenterNext = true;
 				mCallibrating = false;	
 				mCallibrationOverlay->hide();
+				leftLegLiftMax = Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_LEFT].y - leftLegLiftMax);
+				rightLegLiftMax = Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].y - rightLegLiftMax);
+
+				OutputDebugString("\n--------------------------------------------------");
+				OutputDebugString("\nMAX FORWARD LEAN ANGLE: ");
+				OutputDebugString(std::to_string(leanForwardMax).c_str());
+				OutputDebugString("\nMAX BACK LEAN ANGLE: ");
+				OutputDebugString(std::to_string(leanBackMax).c_str());
+				OutputDebugString("\nMAX LEFT SWAY ANGLE: ");
+				OutputDebugString(std::to_string(swayLeftMax).c_str());
+				OutputDebugString("\nMAX RIGHT SWAY ANGLE: ");
+				OutputDebugString(std::to_string(swayRightMax).c_str());
+				OutputDebugString("\nMAX LEFT ROTATION: ");
+				OutputDebugString(std::to_string(leftRotationMax).c_str());
+				OutputDebugString("\nMAX RIGHT ROTATION: ");
+				OutputDebugString(std::to_string(rightRotationMax).c_str());
+				OutputDebugString("\nMAX LEFT LEG LIFT: ");
+				OutputDebugString(std::to_string(leftLegLiftMax).c_str());
+				OutputDebugString("\nMAX RIGHT LEG LIFT: ");
+				OutputDebugString(std::to_string(rightLegLiftMax).c_str());
+				OutputDebugString("\n--------------------------------------------------");
+				OutputDebugString("\n");
+
 			}
 			else
 			{
@@ -205,6 +231,13 @@ Kinect::update(float time)
 void
 Kinect::performCallibration()
 {
+
+	detectArm();
+	detectJump();
+	detectLean();
+	detectSway();
+	detectTurn();
+
 	std::string message = "Callibration Started \n Callibrating in ";
 
 	long long printDelay = (long long) (mCalibrationClock + 0.99f);
@@ -213,59 +246,78 @@ Kinect::performCallibration()
 
 	message.append(" seconds.\n");
 
+	std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
+
+
+	if (mCalibrationClock <= 45 && mCalibrationClock > 40)
+	{
+		message.append("Please Stand Up Straight And Stand Still. FOLLOW The Prompt.");
+
+		/* Getting Start/Initial Positions */
+		
+		initialPositions = skeletonNodes;
+
+	}
 	if (mCalibrationClock <= 40 && mCalibrationClock > 35)
 	{
 		message.append("LEAN FORWARD As Far As Possible Without Moving Your Arms.");
 		if (fFrontBack() < leanForwardMax)
-			leanForwardMax = mFrontBackAngle.valueDegrees();
+			leanForwardMax = Ogre::Math::Abs(fFrontBack());
+		if (leanForwardMax < -90)
+			leanForwardMax = 90;
 	}
 	if (mCalibrationClock <= 35 && mCalibrationClock > 30)
 	{
 		message.append("LEAN BACK As Far As Possible Without Bending Your Knees.");
 		if (fFrontBack() > leanBackMax)
-			leanBackMax = mFrontBackAngle.valueDegrees();
+			leanBackMax = fFrontBack();
+		if (leanBackMax > 90)
+			leanBackMax = 90;
 	}
 	if (mCalibrationClock <= 30 && mCalibrationClock > 25)
 	{
 		message.append("SWAY LEFT As Far As Possible.");
 		if (fLeftRight() < swayLeftMax)
-			swayLeftMax = mLeftRightAngle.valueDegrees();
+			swayLeftMax = Ogre::Math::Abs(fLeftRight());
+		if (swayLeftMax < -90)
+			swayLeftMax = 90;
 	}
 	if (mCalibrationClock <= 25 && mCalibrationClock > 20)
 	{
 		message.append("SWAY RIGHT As Far As Possible.");
 		if (fLeftRight() > swayRightMax)
-			swayRightMax = mLeftRightAngle.valueDegrees();
+			swayRightMax = fLeftRight();
+		if (swayRightMax > 90)
+			swayRightMax = 90;
 	}
 	if (mCalibrationClock <= 20 && mCalibrationClock > 15)
 	{
 		message.append("ROTATE CLOCKWISE As Far As Possible Without Moving Your Feet.");
 		if (leftRightRotation > leftRotationMax)
 			leftRotationMax = leftRightRotation;
+		if (leftRotationMax > 90)
+			leftRotationMax = 90;
 	}
 	if (mCalibrationClock <= 15 && mCalibrationClock > 10)
 	{
 		message.append("ROTATE COUNTER-CLOCKWISE As Far As Possible Without Moving Your Feet.");
 		if (leftRightRotation < rightRotationMax)
-			rightRotationMax = leftRightRotation;
+			rightRotationMax = Ogre::Math::Abs(leftRightRotation);
+		if (rightRotationMax < -90)
+			rightRotationMax = 90;
 	}
 	if (mCalibrationClock <= 10 && mCalibrationClock > 5)
 	{
 		message.append("LIFT Your LEFT LEG As High As Possible.");
-		std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
 		if (skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y > leftLegLiftMax)
 			leftLegLiftMax = skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y;
-
 	}
 	if (mCalibrationClock <= 5 && mCalibrationClock > 0)
 	{
 		message.append("LIFT Your RIGHT LEG As High As Possible.");
-		std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
-		if (skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > leftLegLiftMax)
-			leftLegLiftMax = skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y;
+		if (skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > rightLegLiftMax)
+			rightLegLiftMax = skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y;
 	}
-
-	
 
 	mCallibrationText->setCaption(message);
 }
@@ -591,18 +643,25 @@ Kinect::detectTurn()
 	Ogre::Real opposite, adjacent, rotation;
 	rotation = 0;
 
-	opposite = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z;
-	adjacent = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].x - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].x;
-	leftRightRotation = atan2f(opposite, adjacent) * (180/Ogre::Math::PI);
-
 	enum direction { LEFT, RIGHT, NEITHER};
 
 	direction way = NEITHER;
 
 	if ((skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z) < -0.1)
+	{
+		opposite = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].z;
+		adjacent = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].x - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_LEFT].x;
+		leftRightRotation = atan2f(opposite, adjacent) * (180/Ogre::Math::PI);
 		way = LEFT;
+
+	}
 	else if ((skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z) < -0.1)
+	{
+		opposite = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].z - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].z;
+		adjacent = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_RIGHT].x - skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER].x;
+		leftRightRotation = atan2f(opposite, adjacent) * (180/Ogre::Math::PI);
 		way = RIGHT;
+	}
 	else
 		way = NEITHER;
 
@@ -641,7 +700,10 @@ Kinect::detectJump()
 	//LEFT FOOT LIFTED
 	if ((skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y + 0.1) ||
 	//RIGHT FOOT LIFTED
-		(skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y + 0.1))
+		(skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y + 0.1) ||
+	//JUMP
+		((Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_LEFT].y - skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y) > 0.4) &&
+		 (Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].y - skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y) > 0.4)))
 		return 0;
 
 	else
