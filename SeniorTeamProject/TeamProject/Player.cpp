@@ -93,9 +93,9 @@ Player::Think(float time)
 
 #pragma region Kinect
 
-	drawSkeleton();
+	//drawSkeleton();
 
-	drawHitBox("HitBox", mPlayerObject->fallRigidBody);
+	//drawHitBox("HitBox", mPlayerObject->fallRigidBody);
 	
 	initHitBox = true;
 
@@ -108,8 +108,10 @@ Player::Think(float time)
 	// If the keyboard is enabled 
 	if (mEnableKeyboard) 
 	{	
+
+		Ogre::Real jump = mKinect->detectJump();
 		// Jump
-		if (mInputHandler->IsKeyDown(OIS::KC_SPACE) || mKinect->detectJump() == 0)
+		if (mInputHandler->IsKeyDown(OIS::KC_SPACE) || jump == 0 || jump == 1 || jump == 2)
 		{
 			playAnimation("fall_idle", time);
 
@@ -118,9 +120,41 @@ Player::Think(float time)
 
 			if (canJump)
 			{
-				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 125, currCameraPos.getZ() * 40));			
-				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 125, currCameraPos.getZ() * 40));			
+				vector<Ogre::Vector3> skeletonNodes = mKinect->getSkeletonNodes();
 
+				Ogre::Real jumpHeightPercentage;
+
+				// LEFT FOOT LIFT JUMP
+				if (jump == 0)
+				{
+					jumpHeightPercentage = Ogre::Math::Abs(mKinect->initialPositions[NUI_SKELETON_POSITION_FOOT_LEFT].y - 
+										   skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y) / mKinect->leftLegLiftMax;
+
+				}
+				// RIGHT FOOT LIFT JUMP
+				if (jump == 1)
+				{
+					jumpHeightPercentage = Ogre::Math::Abs(mKinect->initialPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].y - 
+										   skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y) / mKinect->rightLegLiftMax;
+				}
+				// BOTH FEET OFF GROUND JUMP
+				
+				if (jump = 2)
+				{
+					jumpHeightPercentage = ((Ogre::Math::Abs(mKinect->initialPositions[NUI_SKELETON_POSITION_FOOT_LEFT].y - 
+										     skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y) + 
+										     Ogre::Math::Abs(mKinect->initialPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].y - 
+											 skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y)) / 2) / 
+											 ((mKinect->leftLegLiftMax + mKinect->rightLegLiftMax) / 2);
+				}
+
+				if (jumpHeightPercentage <= 0.0 || jumpHeightPercentage > 1.2)
+					jumpHeightPercentage = 1.0;
+
+				Ogre::Real jumpHeight = 125 * jumpHeightPercentage;
+
+				mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, jumpHeight, currCameraPos.getZ() * 40));			
+				mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, jumpHeight, currCameraPos.getZ() * 40));			
 			}
 		}
 
@@ -135,6 +169,7 @@ Player::Think(float time)
 			{
 				playAnimation("strafeRight", time);
 
+				// KEYBOARD
 				if (mInputHandler->IsKeyDown(OIS::KC_M))
 				{
 					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
@@ -148,17 +183,26 @@ Player::Think(float time)
 					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40,
 						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * 40));
 				}
+				// KINECT WITH CALIBRATION
 				else {
+
+					Ogre::Real swayRightPercentage = sway / mKinect->swayRightMax;
+
+					if (swayRightPercentage <= 0.0 || swayRightPercentage > 1.2)
+						swayRightPercentage = 1.0;
+
+					Ogre::Real strafeRightSpeed = 50 * swayRightPercentage; 
+
 					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
 						mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
 
 					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
 
 
-					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * sway, 
-						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * sway));
-					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * sway,
-						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * sway));
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * strafeRightSpeed, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * strafeRightSpeed));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * strafeRightSpeed,
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * strafeRightSpeed));
 				}
 			}
 
@@ -180,14 +224,21 @@ Player::Think(float time)
 				}
 				else
 				{
+					Ogre::Real swayLeftPercentage = sway / mKinect->swayLeftMax;
+
+					if (swayLeftPercentage <= 0.0 || swayLeftPercentage > 1.2)
+						swayLeftPercentage = 1.0;
+
+					Ogre::Real strafeLeftSpeed = 50 * swayLeftPercentage; 
+
 					btVector3 currCameraPos = btVector3(mCamera->mRenderCamera->getRealRight().x, 
 						mCamera->mRenderCamera->getRealRight().y, mCamera->mRenderCamera->getRealRight().z); 
 
 					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,0,0));
-					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * sway, 
-						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * sway));
-					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * sway,
-						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * sway));
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -strafeLeftSpeed, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -strafeLeftSpeed));
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -strafeLeftSpeed,
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -strafeLeftSpeed));
 				}
 			}
 
@@ -208,8 +259,14 @@ Player::Think(float time)
 				}
 				else
 				{
+					Ogre::Real turnLeftPercentage = turn / mKinect->leftRotationMax;
 
-					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,turnSpeed,0));
+					if (turnLeftPercentage <= 0.0 || turnLeftPercentage > 1.2)
+						turnLeftPercentage = 1.0;
+
+					Ogre::Real turnLeftSpeed = turnLeftPercentage;
+
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,-turnLeftSpeed,0));
 					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 						mPhysManager->_world->getGravity().getY() + 70,0));
 				//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(0.01f));
@@ -229,7 +286,14 @@ Player::Think(float time)
 				}
 				else
 				{
-					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,turnSpeed,0));
+					Ogre::Real turnRightPercentage = turn / mKinect->rightRotationMax;
+
+					if (turnRightPercentage <= 0.0 || turnRightPercentage > 1.2)
+						turnRightPercentage = 1.0;
+
+					Ogre::Real turnRightSpeed = turnRightPercentage;
+					
+					mPlayerObject->fallRigidBody->setAngularVelocity(btVector3(0,turnRightSpeed,0));
 					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(0,
 						mPhysManager->_world->getGravity().getY() + 70,0));
 				//mPlayerObject->mSceneNode->getChild("child")->roll(Ogre::Radian(-0.01f));
@@ -256,7 +320,14 @@ Player::Think(float time)
 				}
 				else
 				{
-					if (lean > -60.0)
+					Ogre::Real leanForwardPercentage = Ogre::Math::Abs(lean / mKinect->leanForwardMax);
+
+					if (leanForwardPercentage <= 0.0 || leanForwardPercentage > 1.2)
+						leanForwardPercentage = 1.0;
+
+					Ogre::Real forwardSpeed = leanForwardPercentage * 50;
+
+					if (Ogre::Math::Abs(leanForwardPercentage) < 0.6)
 					{
 						playAnimation("walkForward", time);
 
@@ -266,10 +337,10 @@ Player::Think(float time)
 						mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
 							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
 			
-						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -lean, 
-							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -lean)); 
+						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * forwardSpeed, 
+							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * forwardSpeed)); 
 					}
-					else if (lean < -60.0)
+					else if (Ogre::Math::Abs(leanForwardPercentage) > 0.6)
 					{
 						playAnimation("run", time);
 
@@ -279,8 +350,8 @@ Player::Think(float time)
 						mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX(), 
 							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()));
 			
-						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -lean, 
-							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -lean)); 
+						mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * forwardSpeed, 
+							mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * forwardSpeed)); 
 					}
 				}
 			}
@@ -288,6 +359,13 @@ Player::Think(float time)
 			// Moves Backward 
 			else if (mInputHandler->IsKeyDown(OIS::KC_DOWN) || lean > 0.0)
 			{
+				Ogre::Real leanBackPercentage = lean / mKinect->leanBackMax;
+
+				if (leanBackPercentage <= 0.0 || leanBackPercentage > 1.2)
+					leanBackPercentage = 1.0;
+
+				Ogre::Real backSpeed = leanBackPercentage * 50;
+				
 				playAnimation("walkBackward", time);
 
 				if (mInputHandler->IsKeyDown(OIS::KC_DOWN))
@@ -308,8 +386,8 @@ Player::Think(float time)
 
 					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * -1, 
 						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ()) * -1);
-					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -lean, 
-						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -lean)); 
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * -backSpeed, 
+						mPhysManager->_world->getGravity().getY() + 70, currCameraPos.getZ() * -backSpeed)); 
 				}
 
 			}
