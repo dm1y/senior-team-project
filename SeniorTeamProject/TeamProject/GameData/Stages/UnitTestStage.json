@@ -3,11 +3,11 @@
 	"StaticScenery" : [
 		{"name" : "TenUnitBox", "position" : [20,0,0], "Orientation" : [1, 0, 0, 0]},
 		{"name" : "DolphinIsland", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]},
-{"name": "PalmTree1", "position": [50, 0, -500], "Orientation": [1, 0 , 0 , 0]},
-{"name": "PalmTree2", "position": [100, 0, -500], "Orientation": [1, 0 , 0 , 0]},
-{"name": "PalmTree1", "position": [472, 0, -284], "Orientation": [1, 0 , 0 , 0]},
-{"name": "PalmTree1", "position": [805, 0, -348], "Orientation": [1, 0 , 0 , 0]},
-{"name": "PalmTree1", "position": [1133, 0, -25], "Orientation": [1, 0 , 0 , 0]},
+{"name": "Banana", "position": [50, 0, -500], "Orientation": [1, 0 , 0 , 0]},
+{"name": "Banana", "position": [100, 0, -500], "Orientation": [1, 0 , 0 , 0]},
+{"name": "Banana", "position": [472, 0, -284], "Orientation": [1, 0 , 0 , 0]},
+{"name": "Banana", "position": [805, 0, -348], "Orientation": [1, 0 , 0 , 0]},
+{"name": "Banana", "position": [1133, 0, -25], "Orientation": [1, 0 , 0 , 0]},
 {"name": "PalmTree2", "position": [838, 0, -549], "Orientation": [1, 0 , 0 , 0]},
 {"name": "PalmTree2", "position": [1024, 0, -357], "Orientation": [1, 0 , 0 , 0]},
 {"name": "PalmTree2", "position": [604, 0, -554], "Orientation": [1, 0 , 0 , 0]},
@@ -53,6 +53,8 @@
 {"name": "PalmTree2", "position": [1782, 0, 1214], "Orientation": [1, 0 , 0 , 0]},
 {"name": "PalmTree1", "position": [1905, 0, 1009], "Orientation": [1, 0 , 0 , 0]},
 {"name": "PalmTree1", "position": [2119, 0, 1169], "Orientation": [1, 0 , 0 , 0]},
-		{"name" : "Ocean", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0], "interactive" : 0}
+{"name": "TreasureChestOpen", "position": [2119, 0, 1169], "Orientation": [1, 0 , 0 , 0]},
+{"name": "InfoSign", "position": [90, 0, -520], "Orientation": [1, 0 , 0 , 0]},
+{"name" : "Ocean", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0], "interactive" : 0}
 	]
 }

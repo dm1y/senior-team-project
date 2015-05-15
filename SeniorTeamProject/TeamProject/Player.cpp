@@ -97,7 +97,7 @@ Player::Think(float time)
 
 	//drawHitBox("HitBox", mPlayerObject->fallRigidBody);
 	
-	initHitBox = true;
+	//initHitBox = true;
 
 #pragma endregion End of Kinect code/Not used right now   
 	
@@ -122,7 +122,7 @@ Player::Think(float time)
 			{
 				vector<Ogre::Vector3> skeletonNodes = mKinect->getSkeletonNodes();
 
-				Ogre::Real jumpHeightPercentage;
+				Ogre::Real jumpHeightPercentage = 1.0;
 
 				// LEFT FOOT LIFT JUMP
 				if (jump == 0)
@@ -132,14 +132,14 @@ Player::Think(float time)
 
 				}
 				// RIGHT FOOT LIFT JUMP
-				if (jump == 1)
+				else if (jump == 1)
 				{
 					jumpHeightPercentage = Ogre::Math::Abs(mKinect->initialPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].y - 
 										   skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y) / mKinect->rightLegLiftMax;
 				}
 				// BOTH FEET OFF GROUND JUMP
 				
-				if (jump = 2)
+				else if (jump == 2)
 				{
 					jumpHeightPercentage = ((Ogre::Math::Abs(mKinect->initialPositions[NUI_SKELETON_POSITION_FOOT_LEFT].y - 
 										     skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y) + 
@@ -148,7 +148,7 @@ Player::Think(float time)
 											 ((mKinect->leftLegLiftMax + mKinect->rightLegLiftMax) / 2);
 				}
 
-				if (jumpHeightPercentage <= 0.0 || jumpHeightPercentage > 1.2)
+				if (jumpHeightPercentage <= 0.0 || jumpHeightPercentage > 1.2 || jump == -1)
 					jumpHeightPercentage = 1.0;
 
 				Ogre::Real jumpHeight = 125 * jumpHeightPercentage;

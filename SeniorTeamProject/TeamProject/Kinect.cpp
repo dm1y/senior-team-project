@@ -703,11 +703,12 @@ Kinect::detectJump()
 	//RIGHT FOOT LIFTED
 	else if (skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y > skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y + 0.1)
 		return 1;
-	////JUMP
-	//else if ((Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_LEFT].y - skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y) > 0.4) &&
-	//	 (Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].y - skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y) > 0.4))
-	//	return 2;
-
+	//JUMP
+	/*
+	else if ((Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_LEFT].y - skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y) > 0.4) &&
+		 (Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].y - skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y) > 0.4))
+		return 2;
+		*/
 	else
 		return -1;
 }
