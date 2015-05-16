@@ -6,6 +6,7 @@
 #include "Kinect.h"
 #include "HUD.h"
 #include "Menu.h"
+#include "Logger.h"
 
 #include "Ogre.h"
 #include "OgreConfigFile.h"
@@ -105,7 +106,7 @@ TeamProject::createScene()
 	console->placementNode = mWorld->mSceneManager->getRootSceneNode()->createChildSceneNode();
 	console->placementNode->setVisible(false);
 
-
+	mLogger = new Logger();
 
 	// Display whether user is logged in [found on the upper left corner]  
 	Ogre::OverlayManager::getSingleton().getByName("Login/Failure")->show();

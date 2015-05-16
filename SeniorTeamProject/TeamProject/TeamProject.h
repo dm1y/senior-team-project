@@ -19,6 +19,7 @@ class InputHandler;
 class World;
 class GameCamera;
 class MainListener;
+class Logger;
 class Kinect;
 class HUD; 
 
@@ -84,6 +85,7 @@ protected:
     GameCamera *mGameCamera;
 	Kinect *mKinect;
 	HUD *display;
+	Logger *mLogger;
 	
     Ogre::Root *mRoot;
     Ogre::Camera* mCamera;
