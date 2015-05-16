@@ -113,6 +113,11 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 		mWorld->SceneManager()->destroyEntity(objToRm->ent->getName().c_str()); 
 	}
 
+	// Removes static scenery 
+
+	StaticScenery *staticObjectToRm; 
+	bool staticObjRemove = false; 
+
 	// Checks if player is colliding with a static scenary with interaction # 0 
 	for (std::list<StaticScenery*>::iterator it = mWorld->stage->staticScenery.begin(); it != mWorld->stage->staticScenery.end(); it++) {
 		
@@ -125,7 +130,6 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 
 			if (call.m_connected)
 			{
-				OutputDebugString("connecting");
 				if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 0)
 				{
 					// Respawn player 
@@ -134,6 +138,17 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 					position.setOrigin(btVector3(30, 0, -500));
 					mWorld->mPlayer->getDynamicObject()->fallRigidBody->setWorldTransform(position);
 				}
+								/* Increments score if this object with index 1 has been touched by the player */
+				else if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 1) 
+				{
+					staticObjRemove = true;
+					staticObjectToRm = it._Ptr->_Myval;
+
+					mWorld->display->incrementScore();
+					break; 
+				}
+
+
 				else if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 2)
 				{
 					mWorld->display->displayEnding(true);
@@ -141,4 +156,14 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 			}
 		}
 	}
+
+	if (staticObjRemove)
+	{
+		/* Removes object and rigid body from Bullet */
+		_world->removeRigidBody(staticObjectToRm->mRigidBody);
+		mWorld->stage->staticScenery.remove(staticObjectToRm);
+
+		/* Removes from ogre world so it's no longer visible */
+		mWorld->SceneManager()->destroyEntity(staticObjectToRm->mEntity->getName().c_str()); 
+	}	
 }

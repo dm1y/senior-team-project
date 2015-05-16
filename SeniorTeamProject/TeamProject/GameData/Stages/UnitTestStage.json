@@ -55,6 +55,6 @@
 {"name": "PalmTree1", "position": [2119, 0, 1169], "Orientation": [1, 0 , 0 , 0]},
 {"name": "TreasureChestOpen", "position": [2119, 0, 1169], "Orientation": [1, 0 , 0 , 0]},
 {"name": "InfoSign", "position": [90, 0, -520], "Orientation": [1, 0 , 0 , 0]},
-{"name" : "Ocean", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0], "interactive" : 0}
+{"name" : "Ocean", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]}
 	]
 }
