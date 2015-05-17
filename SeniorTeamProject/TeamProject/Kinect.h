@@ -31,6 +31,12 @@ public:
 	HRESULT initSensor();
 	void update(float);
 
+	void setAutoCallibrate(bool autoCal) { mAutoCallibrate = autoCal; }
+	bool getAutoCallibrate() { return mAutoCallibrate; }
+
+	bool getEnableKinect() { return mEnableKinect; }
+	void setEnableKinect(bool enable) { mEnableKinect = enable; }
+
 	void callibrate(float delay = 4.0f, std::function<void(void)> callback = NULL);
 	void shutdown();
 
@@ -78,6 +84,9 @@ public:
 	std::vector<Ogre::Vector3> initialPositions;
 
 protected:
+
+	bool mEnableKinect;
+	bool mAutoCallibrate;
 
 	void updateKinectSkeleton( );
 	std::vector<KinectSkelMsgr *> mSkelListeners;

@@ -33,7 +33,9 @@ material PalmLeaf
 
 			scene_blend alpha_blend
             depth_write off
- 	
+ 			
+			cull_hardware none
+			cull_software none
 			
 			texture_unit
 			{

@@ -27,6 +27,8 @@ Kinect::Kinect(void)
 
 	standingOrSeated = true; //Starts Standing
 
+	mEnableKinect = true;
+	mAutoCallibrate = false;
 }
 
 std::vector<Ogre::Vector3>
@@ -119,7 +121,6 @@ void Kinect::EndSession()
 	mSessionStarted = false;
 
 }
-
 
 void 
 Kinect::callibrate(float delay, std::function<void(void)> callback)
@@ -231,13 +232,6 @@ Kinect::update(float time)
 void
 Kinect::performCallibration()
 {
-
-	detectArm();
-	detectJump();
-	detectLean();
-	detectSway();
-	detectTurn();
-
 	std::string message = "Callibration Started \n Callibrating in ";
 
 	long long printDelay = (long long) (mCalibrationClock + 0.99f);
@@ -362,6 +356,12 @@ Kinect::updateKinectSkeleton()
 
 	bool bFoundSkeleton = false;
 
+	detectArm();
+	detectJump();
+	detectLean();
+	detectSway();
+	detectTurn();
+
 	if ( SUCCEEDED(m_pNuiSensor->NuiSkeletonGetNextFrame( 0, &SkeletonFrame )) )
 	{
 		for ( int i = 0 ; i < NUI_SKELETON_COUNT ; i++ )
@@ -407,6 +407,7 @@ Kinect::updateKinectSkeleton()
 		{
 
 
+
 			NUI_SKELETON_DATA * pSkel =  &SkeletonFrame.SkeletonData[i];
 
 			// TODO:  Check for     pSkel->eSkeletonPositionTrackingState[ JOINT ];
@@ -435,7 +436,7 @@ Kinect::updateKinectSkeleton()
 				mSkelPositions[i] = Ogre::Vector3(pSkel->SkeletonPositions[i].x,pSkel->SkeletonPositions[i].y,pSkel->SkeletonPositions[i].z);
 			}
 
-
+			/*
 			int x = 3;
 			Ogre::Vector2 leftVector(leftShoulder.x - rightShoulder.x, leftShoulder.z - rightShoulder.z);
 			leftVector.normalise();
@@ -463,7 +464,7 @@ Kinect::updateKinectSkeleton()
 
 			Ogre::Radian frontBackAngle1 = Ogre::Math::ATan2(ZDisplacement, headPos.y - shoulderPos.y + 0.5f);
 			mFrontBackAngle = frontBackAngle1 * 4;
-
+			*/
 
 		}
 		else if ( true && SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_POSITION_ONLY )
@@ -573,7 +574,18 @@ DWORD WINAPI Kinect::Nui_ProcessThread()
 Ogre::Real
 Kinect::detectSway()
 {
+	std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
 
+	Ogre::Vector3 hipCenter = skeletonNodes[NUI_SKELETON_POSITION_HIP_CENTER];
+	Ogre::Vector3 shoulderCenter = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER];
+
+	Ogre::Real opposite = shoulderCenter.x - hipCenter.x;
+	Ogre::Real adjacent = shoulderCenter.y;
+
+	Ogre::Real swayAngle = atan2f(opposite, adjacent) * (180 / Ogre::Math::PI);
+
+	mLeftRightAngle = swayAngle;
+	/*
 	Ogre::Degree leftRightAngle = Ogre::Degree(0);
 	Ogre::Degree frontBackAngle = Ogre::Degree(0);
 
@@ -586,6 +598,9 @@ Kinect::detectSway()
 	//SWAY LEFT
 	if ((leftRightAngle.valueDegrees()) > 25) 
 		return leftRightAngle.valueDegrees();
+	*/
+	if (swayAngle != 0.0)
+		return swayAngle;
 
 	//NONE OF THE ABOVE
 	else
@@ -595,20 +610,41 @@ Kinect::detectSway()
 Ogre::Real
 Kinect::detectLean()
 {
+	std::vector<Ogre::Vector3> skeletonNodes = getSkeletonNodes();
 
+	Ogre::Vector3 hipCenter = skeletonNodes[NUI_SKELETON_POSITION_HIP_CENTER];
+	Ogre::Vector3 shoulderCenter = skeletonNodes[NUI_SKELETON_POSITION_SHOULDER_CENTER];
+
+	Ogre::Real opposite = shoulderCenter.z - hipCenter.z;
+	Ogre::Real adjacent = shoulderCenter.y;
+
+	Ogre::Real leanAngle = atan2f(opposite, adjacent) * (180 / Ogre::Math::PI);
+	/*
+	OutputDebugString("LEANING ANGLE: ");
+	OutputDebugString(std::to_string(leanAngle).c_str());
+	OutputDebugString("\n");
+	*/
+
+	mFrontBackAngle = leanAngle;
+
+	/*
 	Ogre::Degree leftRightAngle = Ogre::Degree(0);
 	Ogre::Degree frontBackAngle = Ogre::Degree(0);
 
 	getSkeletonAngles(leftRightAngle, frontBackAngle);
 
-		//LEAN FORWARD
+	//LEAN FORWARD
 	if (frontBackAngle.valueDegrees() > 25) 
 		return frontBackAngle.valueDegrees();
 
 	//LEAN BACK
 	if (frontBackAngle.valueDegrees() < -25) 
 		return frontBackAngle.valueDegrees();
-	
+	*/
+
+	if (leanAngle != 0.0)
+		return leanAngle;
+
 	//NONE OF THE ABOVE
 	else
 		return 0.0;
@@ -708,7 +744,7 @@ Kinect::detectJump()
 	else if ((Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_LEFT].y - skeletonNodes[NUI_SKELETON_POSITION_FOOT_LEFT].y) > 0.4) &&
 		 (Ogre::Math::Abs(initialPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].y - skeletonNodes[NUI_SKELETON_POSITION_FOOT_RIGHT].y) > 0.4))
 		return 2;
-		*/
+	*/
 	else
 		return -1;
 }

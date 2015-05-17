@@ -170,12 +170,12 @@ TeamProject::setupMenus(bool loginRequired)
 	// Options Submenu:  Controls 
 	//////////////////////////////////////////////////
 
-    //controlOptions->AddChooseBool("Callibrate Kinect Every Game", [p](bool x) {p->setAutoCallibrate(x); }, p->getAutoCallibrate(), true);
+    controlOptions->AddChooseBool("Callibrate Kinect Every Game", [k](bool x) {k->setAutoCallibrate(x); }, k->getAutoCallibrate(), true);
     //controlOptions->AddChooseFloat("Kinect Sensitivity Left / Right", [p](float x) {p->setKinectSentitivityLR(x); }, 0.7f, 1.5f, 1.f, 0.1f, true);
     //controlOptions->AddChooseFloat("Kinect Sensitivity Front / Back", [p](float x) {p->setKinectSentitivityFB(x); }, 0.7f, 1.5f, 1.f, 0.1f, true);
     controlOptions->AddSelectElement("Callibrate Kinect Now", [controlOptions, k]() {controlOptions->disable(); k->callibrate(45.0f, [controlOptions]() {controlOptions->enable();});});
     //controlOptions->AddChooseBool("Invert Front/Back Controls", [p](bool x) {p->setInvertControls(x); }, p->getInvertControls(), true);
-	//controlOptions->AddChooseBool("Enable Kinect", [p](bool x) { p->setEnableKinect(x);  if (!x) p->setAutoCallibrate(false); }, p->getEnableKinect(), true);
+	controlOptions->AddChooseBool("Enable Kinect", [k](bool x) { k->setEnableKinect(x);  if (!x) k->setAutoCallibrate(false); }, k->getEnableKinect(), true);
 	//controlOptions->AddChooseBool("Enable Keyboard", [p](bool x) { p->setEnableKeyboard(x);}, p->getEnableKeyboard(), true);
 
    controlOptions->AddSelectElement("Return to Options Menu", [controlOptions,options]() {controlOptions->disable(); options->enable();});

@@ -2,7 +2,7 @@
 	"type" : "Stage",
 	"StaticScenery" : [
 		{"name" : "TenUnitBox", "position" : [20,0,0], "Orientation" : [1, 0, 0, 0]},
-		{"name" : "DolphinIsland", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]},
+
 {"name": "Banana", "position": [50, 0, -500], "Orientation": [1, 0 , 0 , 0]},
 {"name": "Banana", "position": [100, 0, -500], "Orientation": [1, 0 , 0 , 0]},
 {"name": "Banana", "position": [472, 0, -284], "Orientation": [1, 0 , 0 , 0]},
@@ -55,6 +55,8 @@
 {"name": "PalmTree1", "position": [2119, 0, 1169], "Orientation": [1, 0 , 0 , 0]},
 {"name": "TreasureChestOpen", "position": [2119, 0, 1169], "Orientation": [1, 0 , 0 , 0]},
 {"name": "InfoSign", "position": [90, 0, -520], "Orientation": [1, 0 , 0 , 0]},
-{"name" : "Ocean", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]}
+{"name" : "Ocean", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]},
+{"name" : "Bridge", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]},
+{"name" : "DolphinIsland", "position" : [0,0,0], "Orientation" : [1, 0, 0, 0]}
 	]
 }

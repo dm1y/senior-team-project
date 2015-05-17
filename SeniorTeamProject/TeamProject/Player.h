@@ -40,13 +40,9 @@ public:
 	void setOrientation(Ogre::Quaternion newOrientation);
 	void checkGround(float distance, bool checkJump);
 
-
 	void Think(float time);
 	Ogre::SceneManager *SceneManager() { return mSceneManager; }
 
-
-	bool getEnableKinect() { return mEnableKinect; }
-	void setEnableKinect(bool enable) { mEnableKinect = enable; }
 	void playAnimation(std::string anim, float time);
 	void stopAnimation(std::string anim);
 	void finishAnimation(Ogre::AnimationState *animation, float time);
@@ -98,9 +94,8 @@ protected:
 //	bool overlyBool; 
 
 	// For kinect - Trying to follow format of RunnerTransfer for this 
-	bool mEnableKinect;
 	bool mEnableKeyboard;
-	bool mAutoCallibrate;
+	//bool mAutoCallibrate;
 };
 
 #endif
