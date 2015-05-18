@@ -162,6 +162,12 @@ Player::Think(float time)
 
 			else if (canJump)
 			{
+				if (mKinect->detectArm() == 0)
+				{
+					mWorld->display->displayHint(false);
+					mWorld->display->displayEnding(false);
+				}
+
 				Ogre::Real sway = mKinect->detectSway();
 
 				// RIGHT
@@ -308,7 +314,7 @@ Player::Think(float time)
 		}
 
 		// If the keyboard is enabled 
-		if (!mKinect->getEnableKinect()) 
+		if (mEnableKeyboard) 
 		{	
 
 			// turn off all overlays 

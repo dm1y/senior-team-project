@@ -130,7 +130,7 @@ TeamProject::setupMenus(bool loginRequired)
     //Menu *gameplayOptions = new Menu("Gameplay Options", "gameplayoptions", 0.05f, 0.05f, 0.07f, options);
  //   //Menu *soundOptions = new Menu("Sound Options", "soundOptions", 0.05f, 0.1f,0.1f, options);
     //Menu *advancedOptions = new Menu("Advanced Options", "advancedOptions", 0.05f, 0.1f, 0.08f, options);
-    Menu *login = new Menu("Login", "login", 0.05f, 0.1f,0.1f, mainMenu);
+    //Menu *login = new Menu("Login", "login", 0.05f, 0.1f,0.1f, mainMenu);
 
 	Menu *pauseMenu = new Menu("Pause Menu", "pause", 0.05f, 0.1f);
     //Menu *confirmMenu = new Menu("Confirm Profile Reset", "profleReset", 0.1f, 0.1f, 0.1f, advancedOptions);
@@ -145,7 +145,7 @@ TeamProject::setupMenus(bool loginRequired)
 	//menus->addMenu(soundOptions);
 	//menus->addMenu(advancedOptions);
 	menus->addMenu(instructions);
-	menus->addMenu(login);
+	//menus->addMenu(login);
 	menus->addMenu(endGameMenu);
 	//menus->addMenu(confirmMenu);
 
@@ -213,7 +213,7 @@ TeamProject::setupMenus(bool loginRequired)
 
 
 	mainMenu->AddSelectElement("Start Standard Game", [mainMenu,this]() { mainMenu->disable(); this->startGame(); });
-	mainMenu->AddSelectElement("Login", [mainMenu, login]() {mainMenu->disable(); login->enable();});
+	//mainMenu->AddSelectElement("Login", [mainMenu, login]() {mainMenu->disable(); login->enable();});
 	mainMenu->AddSelectElement("Options", [options, mainMenu]() {options->enable(); mainMenu->disable();});
 	mainMenu->AddSelectElement("Instructions", [instructions, mainMenu, h]() {instructions->enable(); 
 	mainMenu->disable(); h->displayInstructions(true);});
@@ -265,7 +265,7 @@ TeamProject::setupMenus(bool loginRequired)
 
 	if (loginRequired)
 	{
-		login->enable();
+		//login->enable();
 	}
 	else
 	{

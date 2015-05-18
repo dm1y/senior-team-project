@@ -27,7 +27,7 @@ Kinect::Kinect(void)
 
 	standingOrSeated = true; //Starts Standing
 
-	mEnableKinect = true;
+	mEnableKinect = false;
 	mAutoCallibrate = false;
 }
 
@@ -176,6 +176,7 @@ Kinect::update(float time)
                 if (mCallibrationFinishedCallback != NULL)
                 {
                     mCallibrationFinishedCallback();
+					mEnableKinect = true;
                 }
 				recenterNext = true;
 				mCallibrating = false;	
@@ -599,7 +600,7 @@ Kinect::detectSway()
 	if ((leftRightAngle.valueDegrees()) > 25) 
 		return leftRightAngle.valueDegrees();
 	*/
-	if (swayAngle != 0.0)
+	if (swayAngle < -15.0 || swayAngle > 15.0)
 		return swayAngle;
 
 	//NONE OF THE ABOVE
@@ -642,7 +643,7 @@ Kinect::detectLean()
 		return frontBackAngle.valueDegrees();
 	*/
 
-	if (leanAngle != 0.0)
+	if (leanAngle < -15.0 || leanAngle > 15.0)
 		return leanAngle;
 
 	//NONE OF THE ABOVE
