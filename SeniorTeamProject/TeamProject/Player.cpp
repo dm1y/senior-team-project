@@ -308,7 +308,7 @@ Player::Think(float time)
 		}
 
 		// If the keyboard is enabled 
-		if (!mKinect->getEnableKinect()) 
+		if (mEnableKeyboard) 
 		{	
 
 			// turn off all overlays 
