@@ -53,13 +53,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../OpenSSL-Win32/include;../SDL2-2.0.3/include;../SDL2_mixer-2.0.0/include;C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;../Bullet/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../curl-7.37.0-win32/curl-7.37.0-win32/include;../OpenSSL-Win32/include;../SDL2-2.0.3/include;../SDL2_mixer-2.0.0/include;C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;../Bullet/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../SDL2_mixer-2.0.0/lib/x86/;../SDL2-2.0.3/lib/x86/;..\OpenSSL-Win32\lib;C:\Program Files\Microsoft SDKs\Kinect\v1.8\lib\x86;$(OGRE_HOME)/boost/lib;$(OGRE_HOME)/lib/$(configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OIS_d.lib;OgreMain_d.lib;OgreOverlay_d.lib;winmm.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;Ws2_32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\curl-7.37.0-win32\curl-7.37.0-win32\lib\;../SDL2_mixer-2.0.0/lib/x86/;../SDL2-2.0.3/lib/x86/;..\OpenSSL-Win32\lib;C:\Program Files\Microsoft SDKs\Kinect\v1.8\lib\x86;$(OGRE_HOME)/boost/lib;$(OGRE_HOME)/lib/$(configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OIS_d.lib;OgreMain_d.lib;OgreOverlay_d.lib;winmm.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;libcurl.lib;Ws2_32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OGRE_HOME)\bin\$(Configuration)\OgreMain_d.dll" "$(OutDir)"
@@ -76,6 +76,7 @@ copy "..\SDL2_mixer-2.0.0\lib\x86\SDL2_mixer.dll" "$(OutDir)"
 copy "..\SDL2_mixer-2.0.0\lib\x86\libogg-0.dll" "$(OutDir)"
 copy "..\SDL2_mixer-2.0.0\lib\x86\libvorbis-0.dll" "$(OutDir)"
 copy "..\SDL2_mixer-2.0.0\lib\x86\libvorbisfile-3.dll" "$(OutDir)"
+copy "..\curl-7.37.0-win32\curl-7.37.0-win32\dlls\* " "$(OutDir)"
 
 copy plugins_d.cfg "$(OutDir)"
 copy resources_d.cfg "$(OutDir)"</Command>
@@ -128,6 +129,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="JsonUtils.h" />
     <ClInclude Include="Kinect.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="LoginWrapper.h" />
     <ClInclude Include="MainListener.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="PhysicsManager.h" />
@@ -178,6 +180,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClCompile Include="JsonUtils.cpp" />
     <ClCompile Include="Kinect.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="LoginWrapper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainListener.cpp" />
     <ClCompile Include="Menu.cpp" />
