@@ -104,6 +104,8 @@ Player::Think(float time)
 
 	if (start) {
 
+		
+
 		if (canJump)
 			playAnimation("samba", time);
 
@@ -309,6 +311,13 @@ Player::Think(float time)
 		if (mEnableKeyboard) 
 		{	
 
+			// turn off all overlays 
+			if (mInputHandler->IsKeyDown(OIS::KC_RETURN))
+			{
+				mWorld->display->displayHint(false);
+				mWorld->display->displayEnding(false);
+			}
+
 			// Jump
 			if (mInputHandler->IsKeyDown(OIS::KC_SPACE))
 			{
@@ -319,8 +328,8 @@ Player::Think(float time)
 
 				if (canJump)
 				{
-					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 40, 125, currCameraPos.getZ() * 40));			
-					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 40, 125, currCameraPos.getZ() * 40));			
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 80, 125, currCameraPos.getZ() * 80));			
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 80, 125, currCameraPos.getZ() * 80));			
 				}
 			}
 

@@ -14,6 +14,36 @@ MenuBG
     }
 }
 
+
+Hints
+{
+    zorder 200
+  
+    container Panel(Hints/Panel)
+    {
+      metrics_mode relative
+
+      left 0.05
+      top 0.2
+      width 0.9
+      height 0.2
+      material Menu/Background/Brown
+    
+    element TextArea(Hints/Panel/Text1)
+    {
+    metrics_mode relative
+    
+         left 0.25
+         top 0.07
+         font_name BlueHighwayBig
+         char_height 0.05
+         colour 1 1 1
+         caption Welcome to Dolphin Island! 
+    }
+
+    }
+}
+
 Ending
 {
     zorder 200
@@ -23,17 +53,17 @@ Ending
       metrics_mode relative
 
       left 0.05
-      top 0.3
-      width 0.75
+      top 0.2
+      width 0.9
       height 0.2
-	    material BlueSemiTran
+	    material Menu/Background/PrettyBlue
 	  
 		element TextArea(Ending/Panel/Text1)
 		{
 		metrics_mode relative
 		
-         left 0.1
-		     top 0.05
+         left 0.15
+		     top 0.07
          font_name BlueHighwayBig
          char_height 0.05
          colour 1 1 1
@@ -52,7 +82,7 @@ Score
     {
       metrics_mode relative
 
-      left 0.05
+      left 0.00
       top 0.9
       width 0.2
       height 0.1
@@ -63,11 +93,11 @@ Score
 		metrics_mode relative
 		
          left 0.02
-		     top 0.025
+		     top 0.03
          font_name BlueHighwayBig
          char_height 0.05
          colour 1 1 1
-         caption Score is: 0
+         caption Score: 0
 		}
     }
 }

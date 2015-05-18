@@ -16,14 +16,17 @@ HUD::HUD()
 	endingOverlay = Ogre::OverlayManager::getSingleton().getByName("Ending");
 	scoreOverlay = Ogre::OverlayManager::getSingleton().getByName("Score");
 	menuBgOverlay = Ogre::OverlayManager::getSingleton().getByName("MenuBG");
+	hintsOverlay = Ogre::OverlayManager::getSingleton().getByName("Hints");
 
 	// Sets up text 
 	endingText = Ogre::OverlayManager::getSingleton().getOverlayElement("Ending/Panel/Text1");
 	scoreText = Ogre::OverlayManager::getSingleton().getOverlayElement("Score/Panel/Text1");
+	hintText = Ogre::OverlayManager::getSingleton().getOverlayElement("Hints/Panel/Text1");
 
 	// default setup 
 	displayScore(false);
 	displayEnding(false);
+	displayHint(false);
 	displayMenuBG(true);
 }
 
@@ -61,8 +64,16 @@ void HUD::displayEnding(bool display)
 		endingOverlay->hide();
 }
 
+void HUD::displayHint(bool display)
+{
+	if (display)
+		hintsOverlay->show();
+	else 
+		hintsOverlay->hide();
+}
+
 void HUD::setScore()
 {
 	string scr = std::to_string(score);
-	scoreText->setCaption("Score is: " + scr);
+	scoreText->setCaption("Score: " + scr);
 }

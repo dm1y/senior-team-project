@@ -1,4 +1,5 @@
 {
 	"type" : "StaticScenery",
-	"meshName" : "TreasureChestOpen.MESH.mesh"
+	"meshName" : "TreasureChestOpen.MESH.mesh",
+	"interaction" : 2
 }

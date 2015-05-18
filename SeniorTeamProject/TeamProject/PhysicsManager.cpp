@@ -138,7 +138,8 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 					position.setOrigin(btVector3(30, 0, -500));
 					mWorld->mPlayer->getDynamicObject()->fallRigidBody->setWorldTransform(position);
 				}
-								/* Increments score if this object with index 1 has been touched by the player */
+
+				/* Increments score if this object with index 1 has been touched by the player */
 				else if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 1) 
 				{
 					staticObjRemove = true;
@@ -148,14 +149,19 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 					break; 
 				}
 
-
 				else if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 2)
 				{
 					mWorld->display->displayEnding(true);
 				}
+
+				else if (it._Ptr->_Myval->mRigidBody->getUserIndex() == 3)
+				{
+					mWorld->display->displayHint(true);
+				}
 			}
 		}
 	}
+
 
 	if (staticObjRemove)
 	{

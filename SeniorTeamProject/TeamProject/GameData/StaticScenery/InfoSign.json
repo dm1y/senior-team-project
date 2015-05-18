@@ -1,5 +1,5 @@
 {
 	"type" : "StaticScenery",
 	"meshName" : "InfoSign.MESH.mesh",
-	"interaction" : 2
+	"interaction" : 3
 }
