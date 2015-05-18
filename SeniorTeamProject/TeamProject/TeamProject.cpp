@@ -7,6 +7,7 @@
 #include "HUD.h"
 #include "Menu.h"
 #include "Logger.h"
+#include "JsonUtils.h"
 
 #include "Ogre.h"
 #include "OgreConfigFile.h"
@@ -113,6 +114,102 @@ TeamProject::createScene()
 
 }
 
+void TeamProject::setFromConfigString(std::string configString, int val)
+{
+
+	///TODO:  This parsing of JSON dictionaries really needs to be refactored ..
+
+	std::size_t braceIndex = configString.find_first_of('{');
+	if (braceIndex == std::string::npos)
+	{
+		return;
+	}
+
+	std::string remainder = configString.substr(braceIndex+1);
+
+	std::size_t nextIndex = remainder.find_first_not_of("\t \n");
+	while (nextIndex != std::string::npos && remainder[nextIndex] != '}')
+	{
+		std::string nextKey = JSON_UTIL::stripQuotes(JSON_UTIL::firstItem(remainder));
+
+		remainder = JSON_UTIL::removeFirstitem(remainder);
+	
+		size_t colonIndex = remainder.find_first_of(":");
+		if (colonIndex == std::string::npos)
+		{
+			// ERROR!
+			nextIndex = std::string::npos;
+			break;
+		}
+		remainder = remainder.substr(colonIndex+1);
+		std::string value = JSON_UTIL::firstItem(remainder);
+		remainder = JSON_UTIL::removeFirstitem(remainder);
+		setSingleConfig(nextKey, value, val);
+
+		nextIndex = remainder.find_first_not_of("\t \n");
+		if (nextIndex != std::string::npos && remainder[nextIndex] == ',')
+			nextIndex++;
+		remainder = remainder.substr(nextIndex);
+		nextIndex = remainder.find_first_not_of("\t \n");
+	}
+}
+
+void TeamProject::setSingleConfig(std::string key, std::string value, int val)
+{
+	key = JSON_UTIL::stripQuotes(key);
+	/*if (key == "menus")
+	{
+		MenuManager::getInstance()->setMenuConfig(value);
+	}
+	else if (key == "achievements")
+	{
+		mAchievements[player]->setCompletedAchievements(value);
+	}
+	else if (key == "coins")
+	{
+		mPlayer[player]->setTotalCoins(atoi(JSON_UTIL::stripQuotes(value).c_str()));
+	}
+	else if (key == "lifetimeCoins")
+	{
+		mPlayer[player]->setLifetimeCoins(atoi(JSON_UTIL::stripQuotes(value).c_str()));
+	}
+	else if (key == "totalMeters")
+	{
+		mPlayer[player]->setTotalMeters((float)atof(JSON_UTIL::stripQuotes(value).c_str()));
+
+	}
+	else if (key == "armor")
+	{
+		mPlayer[player]->setInitialArmor(atoi(JSON_UTIL::stripQuotes(value).c_str()));
+	}
+
+	else if (key == "boostFrequency")
+	{
+		mWorld->setBoostFreq(atoi(JSON_UTIL::stripQuotes(value).c_str()));
+	}
+		else if (key == "boostDuration")
+	{
+		mPlayer[player]->setBoostDuration(atoi(JSON_UTIL::stripQuotes(value).c_str()));
+	}
+
+		else if (key == "shieldFrequency")
+	{
+		mWorld->setShieldFreq(atoi(JSON_UTIL::stripQuotes(value).c_str()));
+	}
+		else if (key == "shieldDuration")
+	{
+		mPlayer[player]->setShieldDuration(atoi(JSON_UTIL::stripQuotes(value).c_str()));
+	}
+	    else if (key == "magnetFrequency")
+	{
+		mWorld->setShieldFreq(atoi(JSON_UTIL::stripQuotes(value).c_str()));
+	}
+		else if (key == "magnetDuration")
+	{
+		mPlayer[player]->setShieldDuration(atoi(JSON_UTIL::stripQuotes(value).c_str()));
+	}*/
+}
+
 void
 TeamProject::setupMenus(bool loginRequired)
 {
@@ -121,6 +218,7 @@ TeamProject::setupMenus(bool loginRequired)
     MainListener *l = mFrameListener;
     World *w = mWorld;
     Kinect *k = mKinect;
+	Logger *lm = mLogger;
 
     Menu *mainMenu = new Menu("Main Menu", "main", 0.05f, 0.1f, 0.08f);
 
@@ -130,7 +228,7 @@ TeamProject::setupMenus(bool loginRequired)
     //Menu *gameplayOptions = new Menu("Gameplay Options", "gameplayoptions", 0.05f, 0.05f, 0.07f, options);
  //   //Menu *soundOptions = new Menu("Sound Options", "soundOptions", 0.05f, 0.1f,0.1f, options);
     //Menu *advancedOptions = new Menu("Advanced Options", "advancedOptions", 0.05f, 0.1f, 0.08f, options);
-    //Menu *login = new Menu("Login", "login", 0.05f, 0.1f,0.1f, mainMenu);
+    Menu *login = new Menu("Login", "login", 0.05f, 0.1f,0.1f, mainMenu);
 
 	Menu *pauseMenu = new Menu("Pause Menu", "pause", 0.05f, 0.1f);
     //Menu *confirmMenu = new Menu("Confirm Profile Reset", "profleReset", 0.1f, 0.1f, 0.1f, advancedOptions);
@@ -145,7 +243,7 @@ TeamProject::setupMenus(bool loginRequired)
 	//menus->addMenu(soundOptions);
 	//menus->addMenu(advancedOptions);
 	menus->addMenu(instructions);
-	//menus->addMenu(login);
+	menus->addMenu(login);
 	menus->addMenu(endGameMenu);
 	//menus->addMenu(confirmMenu);
 
@@ -159,10 +257,9 @@ TeamProject::setupMenus(bool loginRequired)
 	// Login Menu 
 	//////////////////////////////////////////////////
 
-	// Needs logger.cpp and logger.h which needs SSL setup 
-	//login->AddChooseString("Username",[lm](Ogre::String s) {lm->changeUsername(s); },"",15,false);
-	//login->AddChooseString("Password",[lm, this](Ogre::String s) {this->setFromConfigString(lm->changePassword(s));},"",15,true);
-	//login->AddSelectElement("Return to Main Menu", [login, mainMenu]() {login->disable(); mainMenu->enable();});
+	login->AddChooseString("Username",[lm](Ogre::String s) {lm->changeUsername(s); },"",15,false);
+	login->AddChooseString("Password",[lm, this](Ogre::String s) {this->setFromConfigString(lm->changePassword(s));},"",15,true);
+	login->AddSelectElement("Return to Main Menu", [login, mainMenu]() {login->disable(); mainMenu->enable();});
 
 	/////////////////////////////////////////////////
 	// Options Menu 
@@ -213,7 +310,7 @@ TeamProject::setupMenus(bool loginRequired)
 
 
 	mainMenu->AddSelectElement("Start Standard Game", [mainMenu,this]() { mainMenu->disable(); this->startGame(); });
-	//mainMenu->AddSelectElement("Login", [mainMenu, login]() {mainMenu->disable(); login->enable();});
+	mainMenu->AddSelectElement("Login", [mainMenu, login]() {mainMenu->disable(); login->enable();});
 	mainMenu->AddSelectElement("Options", [options, mainMenu]() {options->enable(); mainMenu->disable();});
 	mainMenu->AddSelectElement("Instructions", [instructions, mainMenu, h]() {instructions->enable(); 
 	mainMenu->disable(); h->displayInstructions(true);});
@@ -265,7 +362,7 @@ TeamProject::setupMenus(bool loginRequired)
 
 	if (loginRequired)
 	{
-		//login->enable();
+		login->enable();
 	}
 	else
 	{
@@ -342,7 +439,7 @@ TeamProject::setup(void)
     // rendering work is done.  
     createFrameListener();
 
-	setupMenus(false);
+	setupMenus(true);
 
     return true;
 

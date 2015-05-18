@@ -55,7 +55,9 @@ protected:
     // Free up all memory & resources created in createScene
     void destroyScene(void);
 
-    // Create the rendering camera (separate from the game camera -- the game camera
+	void setFromConfigString(std::string, int val = 0);
+    void setSingleConfig(std::string key, std::string value, int val = 0);
+	// Create the rendering camera (separate from the game camera -- the game camera
     //   contains the logic of how the camera should be moved, the rendering camera
     //   is used by the rendering system to render the scene.  So, the game camera 
     //   decides where the camera should be, and then makes calls to the rendering camera
