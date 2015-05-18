@@ -107,6 +107,24 @@ material Menu/Background/Brown
    }
  }
 
+material Menu/Background/Instructions
+ {
+   technique
+   {
+     pass
+     {
+       scene_blend alpha_rejection
+       depth_write off
+ 
+       texture_unit
+       {
+         texture instructions.png 
+       }
+     }
+   }
+ }
+
+
 material Menu/Background/PrettyBlue
  {
    technique

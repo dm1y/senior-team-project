@@ -14,6 +14,34 @@ MenuBG
     }
 }
 
+InstructionsBG
+{
+    zorder 300
+  
+    container Panel(InstructionsBG/Panel)
+    {
+      metrics_mode relative
+
+      left 0.05
+      top 0.4
+      width 0.9
+      height 1.0
+      material Menu/Background/Instructions
+
+      element TextArea(Instructions/Panel/Text1)
+      {
+      metrics_mode relative
+    
+         left 0.25
+         top 0.03
+         font_name BlueHighwayBig
+         char_height 0.05
+         colour 1 1 1
+      }
+ 
+    }
+}
+
 
 Hints
 {

@@ -21,15 +21,19 @@ public:
 	void displayScore(bool display);
 	void displayMenuBG(bool display);
 	void displayHint(bool display);
-
+	void displayInstructions(bool display);
+	void setInstructions();
 protected: 
 	Ogre::Overlay *endingOverlay;
 	Ogre::Overlay *scoreOverlay;
 	Ogre::Overlay *menuBgOverlay;
 	Ogre::Overlay *hintsOverlay;
+	Ogre::Overlay *instructionsOverlay; 
+
 	Ogre::OverlayElement *scoreText;
 	Ogre::OverlayElement *endingText; 
 	Ogre::OverlayElement *hintText;
+	Ogre::OverlayElement *inText;
 
 
 	void setScore();

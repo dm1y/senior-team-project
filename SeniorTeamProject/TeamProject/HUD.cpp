@@ -17,17 +17,20 @@ HUD::HUD()
 	scoreOverlay = Ogre::OverlayManager::getSingleton().getByName("Score");
 	menuBgOverlay = Ogre::OverlayManager::getSingleton().getByName("MenuBG");
 	hintsOverlay = Ogre::OverlayManager::getSingleton().getByName("Hints");
+	instructionsOverlay = Ogre::OverlayManager::getSingleton().getByName("InstructionsBG");
 
 	// Sets up text 
 	endingText = Ogre::OverlayManager::getSingleton().getOverlayElement("Ending/Panel/Text1");
 	scoreText = Ogre::OverlayManager::getSingleton().getOverlayElement("Score/Panel/Text1");
 	hintText = Ogre::OverlayManager::getSingleton().getOverlayElement("Hints/Panel/Text1");
+	inText = Ogre::OverlayManager::getSingleton().getOverlayElement("Instructions/Panel/Text1");
 
 	// default setup 
 	displayScore(false);
 	displayEnding(false);
 	displayHint(false);
 	displayMenuBG(true);
+	displayInstructions(false);
 }
 
 HUD::~HUD() 
@@ -38,6 +41,14 @@ void HUD::incrementScore()
 {
 	score++;
 	setScore();
+}
+
+void HUD::displayInstructions(bool display)
+{
+	if (display)
+		instructionsOverlay->show();
+	else 
+		instructionsOverlay->hide();
 }
 
 void HUD::displayScore(bool display)
@@ -70,6 +81,10 @@ void HUD::displayHint(bool display)
 		hintsOverlay->show();
 	else 
 		hintsOverlay->hide();
+}
+
+void HUD::setInstructions()
+{
 }
 
 void HUD::setScore()
