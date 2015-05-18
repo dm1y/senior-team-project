@@ -8,6 +8,9 @@
 #include "Menu.h"
 #include "Logger.h"
 #include "JsonUtils.h"
+#include "SDL.h"
+#include "SDL_mixer.h"
+#include "Sound.h"
 
 #include "Ogre.h"
 #include "OgreConfigFile.h"
@@ -210,15 +213,29 @@ void TeamProject::setSingleConfig(std::string key, std::string value, int val)
 	}*/
 }
 
+
+void TeamProject::readConfigStr(int val)
+{
+	MenuManager *menus = MenuManager::getInstance();
+
+	std::string config = mLogger->getProfileData();
+	
+	if (config.size() > 0)
+	{
+		setFromConfigString(config, val);
+	}
+}
+
 void
 TeamProject::setupMenus(bool loginRequired)
 {
 	MenuManager *menus = MenuManager::getInstance();
-    HUD *h = display;
     MainListener *l = mFrameListener;
+	HUD *h = display;
     World *w = mWorld;
     Kinect *k = mKinect;
 	Logger *lm = mLogger;
+	SoundBank *sb = SoundBank::getInstance();
 
     Menu *mainMenu = new Menu("Main Menu", "main", 0.05f, 0.1f, 0.08f);
 
@@ -226,12 +243,12 @@ TeamProject::setupMenus(bool loginRequired)
     Menu *controlOptions = new Menu("Control Options", "controloptions", 0.05f, 0.1f, 0.07f, options);
 	Menu *instructions = new Menu("Instructions", "instructions", 0.05f, 0.1f, 0.1f, mainMenu);
     //Menu *gameplayOptions = new Menu("Gameplay Options", "gameplayoptions", 0.05f, 0.05f, 0.07f, options);
- //   //Menu *soundOptions = new Menu("Sound Options", "soundOptions", 0.05f, 0.1f,0.1f, options);
-    //Menu *advancedOptions = new Menu("Advanced Options", "advancedOptions", 0.05f, 0.1f, 0.08f, options);
+    Menu *soundOptions = new Menu("Sound Options", "soundOptions", 0.05f, 0.1f,0.1f, options);
+    Menu *advancedOptions = new Menu("Advanced Options", "advancedOptions", 0.05f, 0.1f, 0.08f, options);
     Menu *login = new Menu("Login", "login", 0.05f, 0.1f,0.1f, mainMenu);
 
 	Menu *pauseMenu = new Menu("Pause Menu", "pause", 0.05f, 0.1f);
-    //Menu *confirmMenu = new Menu("Confirm Profile Reset", "profleReset", 0.1f, 0.1f, 0.1f, advancedOptions);
+    Menu *confirmMenu = new Menu("Confirm Profile Reset", "profleReset", 0.1f, 0.1f, 0.1f, advancedOptions);
 	Menu *endGameMenu = new Menu("Game Over!", "gameOver", 0.1f, 0.1f, 0.1f, NULL);
 
 	menus->addMenu(mainMenu);
@@ -240,12 +257,12 @@ TeamProject::setupMenus(bool loginRequired)
 	//menus->addMenu(gameplayOptions);
 	menus->addMenu(controlOptions);
 	
-	//menus->addMenu(soundOptions);
-	//menus->addMenu(advancedOptions);
+	menus->addMenu(soundOptions);
+	menus->addMenu(advancedOptions);
 	menus->addMenu(instructions);
 	menus->addMenu(login);
 	menus->addMenu(endGameMenu);
-	//menus->addMenu(confirmMenu);
+	menus->addMenu(confirmMenu);
 
 	/////////////////////////////////////////////////
 	// Instructions Menu 
@@ -267,8 +284,8 @@ TeamProject::setupMenus(bool loginRequired)
 
     options->AddSelectElement("Control Options", [options, controlOptions]() {options->disable(); controlOptions->enable();});
     //options->AddSelectElement("Gameplay Options", [options, gameplayOptions]() {options->disable(); gameplayOptions->enable();});
- //   //options->AddSelectElement("Sound Options", [options, soundOptions]() {options->disable(); soundOptions->enable();});
-    //options->AddSelectElement("Advanced Options", [options, advancedOptions]() {options->disable(); advancedOptions->enable();});
+    options->AddSelectElement("Sound Options", [options, soundOptions]() {options->disable(); soundOptions->enable();});
+    options->AddSelectElement("Advanced Options", [options, advancedOptions]() {options->disable(); advancedOptions->enable();});
 	options->AddSelectElement("Return to Main Menu", [options, mainMenu]() {options->disable(); mainMenu->enable();});
 	
 	
@@ -290,19 +307,19 @@ TeamProject::setupMenus(bool loginRequired)
 	// Options Submenu:  Sounds 
 	//////////////////////////////////////////////////
 
-    //soundOptions->AddChooseBool("Enalbe Sound", [sb](bool x) {sb->setEnableSound(x); }, sb->getEnableSound(), true);
-	//soundOptions->AddChooseInt("Volume", [sb](int x) {sb->setVolume(x); }, 0, 128, sb->getVolume(), 5, true);
+    soundOptions->AddChooseBool("Enable Sound", [sb](bool x) {sb->setEnableSound(x); }, sb->getEnableSound(), true);
+	soundOptions->AddChooseInt("Volume", [sb](int x) {sb->setVolume(x); }, 0, 128, sb->getVolume(), 5, true);
 
-	//std::vector<Ogre::String> namesSoundType;
-	//std::vector<std::function<void()>> callbacksSoundType;
-	//namesSoundType.push_back("Realistic (blades)");
-	//callbacksSoundType.push_back([sb]() {sb->setCurrentIndex(0); });
+	/*std::vector<Ogre::String> namesSoundType;
+	std::vector<std::function<void()>> callbacksSoundType;
+	namesSoundType.push_back("Realistic (blades)");
+	callbacksSoundType.push_back([sb]() {sb->setCurrentIndex(0); });
 
-	//namesSoundType.push_back("Representational (tones)");
-	//callbacksSoundType.push_back([sb]() {sb->setCurrentIndex(1); });
+	namesSoundType.push_back("Representational (tones)");
+	callbacksSoundType.push_back([sb]() {sb->setCurrentIndex(1); });
 
-	//soundOptions->AddChooseEnum("Sound Type",namesSoundType,callbacksSoundType,0, true);	
-	//soundOptions->AddSelectElement("Return to Options Menu", [soundOptions,options]() {soundOptions->disable(); options->enable();});
+	soundOptions->AddChooseEnum("Sound Type",namesSoundType,callbacksSoundType,0, true);	*/
+	soundOptions->AddSelectElement("Return to Options Menu", [soundOptions,options]() {soundOptions->disable(); options->enable();});
 
 	/////////////////////////////////////////////////
 	// Main Menu 
@@ -343,17 +360,12 @@ TeamProject::setupMenus(bool loginRequired)
 	// Options Submenu:  Advanced 
 	//////////////////////////////////////////////////
 
- //   advancedOptions->AddSelectElement("Get Profile from Server", [this]() {this->readConfigStr();});
- //   advancedOptions->AddSelectElement("Reset Profile", [advancedOptions, confirmMenu]() {advancedOptions->disable();confirmMenu->enable();});
-	//advancedOptions->AddSelectElement("Return to Options Menu", [advancedOptions, options]() {advancedOptions->disable(); options->enable();});
- //   confirmMenu->AddSelectElement("Reset Profile (Cannot be undone!)", [this, p, w, a, advancedOptions, confirmMenu, menus]() {p->resetToDefaults();
-	// w->resetToDefaults(); 
-	// a->ResetAll();
-	//menus->resetMenus();
-	//this->setupMenus(false);});
- //   confirmMenu->AddSelectElement("Cancel Profile Reset", [advancedOptions, confirmMenu]() {advancedOptions->enable();confirmMenu->disable();});
-
-
+    advancedOptions->AddSelectElement("Get Profile from Server", [this]() {this->readConfigStr();});
+    advancedOptions->AddSelectElement("Reset Profile", [advancedOptions, confirmMenu]() {advancedOptions->disable();confirmMenu->enable();});
+	advancedOptions->AddSelectElement("Return to Options Menu", [advancedOptions, options]() {advancedOptions->disable(); options->enable();});
+    confirmMenu->AddSelectElement("Reset Profile (Cannot be undone!)", [this,advancedOptions, confirmMenu, menus]() {menus->resetMenus();
+	this->setupMenus(false);});
+    confirmMenu->AddSelectElement("Cancel Profile Reset", [advancedOptions, confirmMenu]() {advancedOptions->enable();confirmMenu->disable();});
 
 	/////////////////////////////////////////////////
 	// End of Menu Code

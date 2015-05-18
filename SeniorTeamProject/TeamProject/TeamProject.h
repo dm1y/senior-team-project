@@ -78,7 +78,8 @@ protected:
 
 	// sets up menus 
 	void setupMenus(bool loginRequired);
-
+	
+	void readConfigStr(int val = 0);
 
 	MainListener *mFrameListener;
 
