@@ -93,7 +93,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	mCamera->mRenderCamera->pitch(Ogre::Radian(0.2f));
 
 	createWater();
-	
+	paused = false;
 
 }
 
@@ -110,7 +110,11 @@ World::Think(float time)
 		mPlayer->drawHitBox(it._Ptr->_Myval->mSceneNode->getName(), it._Ptr->_Myval->fallRigidBody);
 	}
 	*/
-	 mPlayer->Think(time);
+
+	if (paused)
+		return;
+	else
+		mPlayer->Think(time);
 
 
 	physManager->stepSimulation(time, this);

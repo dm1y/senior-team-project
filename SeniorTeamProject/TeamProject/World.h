@@ -48,9 +48,9 @@ public:
 	Ogre::SceneManager *mSceneManager;
 	
 	Player* mPlayer; 
-
 	HUD *display;
 	Stage* stage;	
+	bool paused;
 
 	void createWater();
 	void doWaterStuff(float time);

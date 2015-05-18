@@ -30,22 +30,21 @@ bool
 
 	if (!mPaused)
 	{
-	mKinect->update(evt.timeSinceLastFrame);
-	mInputHandler->Think(time);
-	
-	mWorld->Think(time);
-    mGameCamera->Think(time);
+		mKinect->update(evt.timeSinceLastFrame);
+		mInputHandler->Think(time);
+		mWorld->Think(time);
+		mGameCamera->Think(time);
 	}
+
 	// Call think methods on any other managers / etc you want to add
 	MenuManager::getInstance()->think(time);
-
 
 	bool keepGoing = true;
 
 	// Ogre will shut down if a listener returns false.  We will shut everything down if
 	// either the user presses escape or the main render window is closed.  Feel free to 
 	// modify this as you like.
-	if (mInputHandler->IsKeyDown(OIS::KC_ESCAPE) || mRenderWindow->isClosed())
+	if (mInputHandler->IsKeyDown(OIS::KC_ESCAPE))// || mRenderWindow->isClosed())
 	{
 		// have the kinect stop callibrating 
 		if (mKinect->callibrating())
@@ -59,9 +58,16 @@ bool
 		 else 
 		 {
 		   MenuManager::getInstance()->getMenu("pause")->enable();
+		   mWorld->paused = true;
 		 }
 
+		//keepGoing = false;
+	}
+
+	if ( mRenderWindow->isClosed() || mQuit)
+	{
 		keepGoing = false;
+	//	mKinect->shutdown();
 	}
 
 	return keepGoing;
