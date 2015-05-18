@@ -71,6 +71,11 @@ copy "$(OGRE_HOME)\bin\$(Configuration)\RenderSystem_GL_d.dll" "$(OutDir)"
 copy "$(OGRE_HOME)\bin\$(Configuration)\Plugin_OctreeZone_d.dll" "$(OutDir)"
 copy "$(OGRE_HOME)\bin\$(Configuration)\Plugin_OctreeSceneManager_d.dll" "$(OutDir)"
 copy "$(OGRE_HOME)\bin\$(Configuration)\Plugin_PCZSceneManager_d.dll" "$(OutDir)"
+copy "..\SDL2-2.0.3\lib\x86\SDL2.dll" "$(OutDir)"
+copy "..\SDL2_mixer-2.0.0\lib\x86\SDL2_mixer.dll" "$(OutDir)"
+copy "..\SDL2_mixer-2.0.0\lib\x86\libogg-0.dll" "$(OutDir)"
+copy "..\SDL2_mixer-2.0.0\lib\x86\libvorbis-0.dll" "$(OutDir)"
+copy "..\SDL2_mixer-2.0.0\lib\x86\libvorbisfile-3.dll" "$(OutDir)"
 
 copy plugins_d.cfg "$(OutDir)"
 copy resources_d.cfg "$(OutDir)"</Command>
