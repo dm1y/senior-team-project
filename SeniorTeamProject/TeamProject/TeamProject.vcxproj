@@ -53,13 +53,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../OpenSSL-Win32\include;C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;../Bullet/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../OpenSSL-Win32\include;../SDL2-2.0.3/include;../SDL2_mixer-2.0.0/include;C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc;$(OGRE_HOME)/include/OGRE/Overlay;$(OGRE_HOME)/boost/;$(OGRE_HOME)/include/OIS;$(OGRE_HOME)/include/OGRE;$(OGRE_HOME)/include;../Bullet/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../OpenSSL-Win32\lib;C:\Program Files\Microsoft SDKs\Kinect\v1.8\lib\x86;$(OGRE_HOME)/boost/lib;$(OGRE_HOME)/lib/$(configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OIS_d.lib;OgreMain_d.lib;OgreOverlay_d.lib;winmm.lib;Ws2_32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../SDL2_mixer-2.0.0/lib/x86/;../SDL2-2.0.3/lib/x86/;../OpenSSL-Win32\lib;C:\Program Files\Microsoft SDKs\Kinect\v1.8\lib\x86;$(OGRE_HOME)/boost/lib;$(OGRE_HOME)/lib/$(configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OIS_d.lib;OgreMain_d.lib;OgreOverlay_d.lib;winmm.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;Ws2_32.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OGRE_HOME)\bin\$(Configuration)\OgreMain_d.dll" "$(OutDir)"
@@ -156,6 +156,7 @@ copy resources.cfg "$(OutDir)"</Command>
     <ClInclude Include="rapidjson\stringbuffer.h" />
     <ClInclude Include="rapidjson\writer.h" />
     <ClInclude Include="Receivers.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StaticScenery.h" />
     <ClInclude Include="TeamProject.h" />
