@@ -308,7 +308,7 @@ Player::Think(float time)
 		}
 
 		// If the keyboard is enabled 
-		if (mEnableKeyboard) 
+		if (!mKinect->getEnableKinect()) 
 		{	
 
 			// turn off all overlays 
@@ -328,8 +328,8 @@ Player::Think(float time)
 
 				if (canJump)
 				{
-					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 80, 125, currCameraPos.getZ() * 80));			
-					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 80, 125, currCameraPos.getZ() * 80));			
+					mPlayerObject->fallRigidBody->applyCentralImpulse(btVector3(currCameraPos.getX() * 90, 125, currCameraPos.getZ() * 90));			
+					mPlayerObject->fallRigidBody->setLinearVelocity(btVector3(currCameraPos.getX() * 90, 125, currCameraPos.getZ() * 90));			
 				}
 			}
 
