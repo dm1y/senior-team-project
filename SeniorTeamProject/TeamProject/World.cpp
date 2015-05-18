@@ -90,6 +90,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 
 	// TODO: Fix this so it's not hardcoded
 	mCamera->mRenderCamera->lookAt(camLookIt->mSceneNode->getPosition());
+	mCamera->mRenderCamera->pitch(Ogre::Radian(0.25f));
 
 	createWater();
 	

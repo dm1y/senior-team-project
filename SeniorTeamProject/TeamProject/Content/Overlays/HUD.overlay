@@ -10,7 +10,7 @@ MenuBG
       top 0.0
       width 1.0
       height 1.0
-    material Menu/Background/Black
+      material Menu/Background/Black
     }
 }
 
@@ -26,19 +26,20 @@ Ending
       top 0.3
       width 0.75
       height 0.2
-	  material BlueSemiTran
+	    material BlueSemiTran
 	  
 		element TextArea(Ending/Panel/Text1)
 		{
 		metrics_mode relative
 		
          left 0.1
-		 top 0.05
+		     top 0.05
          font_name BlueHighwayBig
          char_height 0.05
          colour 1 1 1
          caption Congratulations, you have beat the game! 
 		}
+
     }
 }
 
@@ -52,16 +53,17 @@ Score
       metrics_mode relative
 
       left 0.05
-      top 0.7
+      top 0.9
       width 0.2
-      height 0.2
+      height 0.1
+      material Menu/Background/Black
 	  
 		element TextArea(Score/Panel/Text1)
 		{
 		metrics_mode relative
 		
-         left 0.1
-		 top 0.05
+         left 0.02
+		     top 0.025
          font_name BlueHighwayBig
          char_height 0.05
          colour 1 1 1
