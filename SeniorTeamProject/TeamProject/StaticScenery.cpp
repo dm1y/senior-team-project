@@ -120,6 +120,10 @@ void StaticScenery::addToOgreScene(Ogre::SceneManager *sceneManager) {
     mSceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
 	mSceneNode->attachObject(mEntity);	// attach entity to the new scene node
 	synchWithBullet();
+
+	if (mEntity->getMesh()->getName().compare("Ocean.MESH.mesh") == 0)
+		mSceneNode->setVisible(false);
+
 }
 
 void StaticScenery::addToBullet(PhysicsManager *physmanager) {
