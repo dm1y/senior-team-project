@@ -67,7 +67,7 @@ World::World(Ogre::SceneManager *sceneManager, InputHandler *input, Kinect *sens
 	DynamicObject *j = gameLibrary->getDynamicObject("Jordan");
 	
 
-	mPlayer = new Player(j, Ogre::Vector3(90, 0, -600), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
+	mPlayer = new Player(j, Ogre::Vector3(-2645, 58, -918), physManager, this, mKinect, mSceneManager, mInputHandler, mCamera);
 	mPlayer->setAnimation(p);
 	mPlayer->setScale(Ogre::Vector3(.25, .25, .25));
 

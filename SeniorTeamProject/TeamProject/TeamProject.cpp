@@ -293,7 +293,7 @@ TeamProject::setupMenus(bool loginRequired)
 	// Options Submenu:  Controls 
 	//////////////////////////////////////////////////
 
-    controlOptions->AddChooseBool("Callibrate Kinect Every Game", [k](bool x) {k->setAutoCallibrate(x); }, k->getAutoCallibrate(), true);
+    //controlOptions->AddChooseBool("Callibrate Kinect Every Game", [k](bool x) {k->setAutoCallibrate(x); }, k->getAutoCallibrate(), true);
     //controlOptions->AddChooseFloat("Kinect Sensitivity Left / Right", [p](float x) {p->setKinectSentitivityLR(x); }, 0.7f, 1.5f, 1.f, 0.1f, true);
     //controlOptions->AddChooseFloat("Kinect Sensitivity Front / Back", [p](float x) {p->setKinectSentitivityFB(x); }, 0.7f, 1.5f, 1.f, 0.1f, true);
     controlOptions->AddSelectElement("Callibrate Kinect Now", [controlOptions, k]() {controlOptions->disable(); k->callibrate(45.0f, [controlOptions]() {controlOptions->enable();});});
@@ -331,7 +331,7 @@ TeamProject::setupMenus(bool loginRequired)
 	mainMenu->AddSelectElement("Options", [options, mainMenu]() {options->enable(); mainMenu->disable();});
 	mainMenu->AddSelectElement("Instructions", [instructions, mainMenu, h]() {instructions->enable(); 
 	mainMenu->disable(); h->displayInstructions(true);});
-	//mainMenu->AddSelectElement("Quit", [l, this]() {this->writeConfigStr(); l->quit();});
+	mainMenu->AddSelectElement("Quit", [l]() {l->quit();});
 
 	/////////////////////////////////////////////////
 	// Pause Menu 

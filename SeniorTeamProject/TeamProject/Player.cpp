@@ -107,7 +107,7 @@ Player::Think(float time)
 		
 
 		if (canJump)
-			playAnimation("samba", time);
+			playAnimation("idle1", time);
 
 		if (mKinect->getEnableKinect())
 		{
@@ -260,7 +260,7 @@ Player::Think(float time)
 					if (leanForwardPercentage <= 0.0 || leanForwardPercentage > 1.2)
 						leanForwardPercentage = 1.0;
 
-					Ogre::Real forwardSpeed = leanForwardPercentage * 50;
+					Ogre::Real forwardSpeed = leanForwardPercentage * 80;
 
 					if (Ogre::Math::Abs(leanForwardPercentage) < 0.6)
 					{

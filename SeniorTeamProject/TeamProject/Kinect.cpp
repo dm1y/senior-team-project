@@ -600,7 +600,7 @@ Kinect::detectSway()
 	if ((leftRightAngle.valueDegrees()) > 25) 
 		return leftRightAngle.valueDegrees();
 	*/
-	if (swayAngle < -15.0 || swayAngle > 15.0)
+	if (swayAngle < -10.0 || swayAngle > 10.0)
 		return swayAngle;
 
 	//NONE OF THE ABOVE
@@ -643,7 +643,7 @@ Kinect::detectLean()
 		return frontBackAngle.valueDegrees();
 	*/
 
-	if (leanAngle < -15.0 || leanAngle > 15.0)
+	if (leanAngle < -10.0 || leanAngle > 10.0)
 		return leanAngle;
 
 	//NONE OF THE ABOVE

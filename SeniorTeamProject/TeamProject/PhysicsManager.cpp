@@ -14,7 +14,7 @@ PhysicsManager::PhysicsManager() {
     _dispatcher = new btCollisionDispatcher(_collisionConfiguration);
     _solver = new btSequentialImpulseConstraintSolver();
     _world = new btDiscreteDynamicsWorld(_dispatcher, _broadphase, _solver, _collisionConfiguration);
-    _world->setGravity(btVector3(0, -100, 0));
+    _world->setGravity(btVector3(0, -150, 0));
 }
 
 /* Deconstructor */
@@ -135,7 +135,7 @@ void PhysicsManager::stepSimulation(float time, World* mWorld) {
 					// Respawn player 
 					btTransform position; 
 					mWorld->mPlayer->getDynamicObject()->fallRigidBody->getMotionState()->getWorldTransform(position);
-					position.setOrigin(btVector3(30, 0, -500));
+					position.setOrigin(btVector3(-2645, 58, -918));
 					mWorld->mPlayer->getDynamicObject()->fallRigidBody->setWorldTransform(position);
 				}
 
