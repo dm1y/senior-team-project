@@ -24,10 +24,11 @@ Kinect - getSkeletonNodes(), modified initSensor for standing,
 		 callibrate(), update(), performCalibration(), updateKinectSkeleton(),
 		 detectSway(), detectLean(), detectArm(), detectTurn(), detectJump(),
 		 getSkeletonAngles();
+Number of Files - 8
+Lines of Code (SLOC) - 925
 Content (Mesh/Material) - Player, Animations, Water
-Number of Files - 10
-Lines of Code (SLOC) - 985
-
+Number of Files - 4
+Lines of Code (SLOC) - 46
 
 Diana
 Filenames: 
@@ -49,3 +50,23 @@ Number of files: 22
 Number of lines (SLOC): 873
 
 Jordan 
+Filenames:
+World.cpp/h, TeamProject.cpp/h, GameLibrary.cpp/h, StaticScenery.cpp/h, DynamicObject.cpp/h,
+iPhysObject.h, PhysicsManager.cpp/h, Console.cpp/h
+
+GameLibrary - 349 lines of code
+StaticScenery - 133
+DynamicObject - 126
+PhysicsManager - 60
+Console - 260
+
+868 lines of code in total
+
+Models created:
+	Island
+	PalmTree1
+	PalmTree2
+	TreasureChest
+	Banana
+	Bridge
+	InfoSign
