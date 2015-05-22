@@ -14,6 +14,20 @@ Kinect.cpp/h, Menu.cpp/h, Logger.cpp/h, LoginWrapper.cpp/h, Receivers.cpp/h,
 TeamProject.cpp/h, MainListener.cpp/h
 
 Simon
+Filenames:
+ World.cpp/h, Player.cpp/h, Kinect.cpp/h
+World - createWater(), doWaterStuff()
+Player - movement related to Kinect, createHitBox(), drawHitBox(), 
+		 drawSkeleton(), createLine(), drawLine(), clearLine(),
+		 playAnimation(), finishAnimation(), stopAnimation(), disable()
+Kinect - getSkeletonNodes(), modified initSensor for standing,
+		 callibrate(), update(), performCalibration(), updateKinectSkeleton(),
+		 detectSway(), detectLean(), detectArm(), detectTurn(), detectJump(),
+		 getSkeletonAngles();
+Content (Mesh/Material) - Player, Animations, Water
+Number of Files - 10
+Lines of Code (SLOC) - 985
+
 
 Diana
 Filenames: 
