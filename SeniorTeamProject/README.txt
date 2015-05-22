@@ -19,7 +19,8 @@ Diana
 Filenames: 
  World.cpp/h, TeamProject.cpp/h, MainListener.cpp/h, Player.cpp/h
  GameLibrary.cpp, HUD.cpp/h, Camera.cpp/h, HUD.overlay, HUD.material, 
- Menu.material, StaticScenery.cpp/h, DynamicObject.cpp/h, iPhysObject.h
+ Menu.material, StaticScenery.cpp/h, DynamicObject.cpp/h, iPhysObject.h,
+ PhysicsManager.cpp 
 My parts from starter code/overlapping code: 
  Pause menu, addition of the player, setup of the camera in World
  Setup of start game and menu in TeamProject
@@ -29,7 +30,8 @@ My parts from starter code/overlapping code:
  Added more materials in Menu.material  
  Adding interaction for StaticScenery and DynamicObjects
  Adding an entity for iPhysObject.h 
-Number of files: 21
+ stepSimulation function in PhysicsManager
+Number of files: 22
 Number of lines (SLOC): 873
 
 Jordan 
